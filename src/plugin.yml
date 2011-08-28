@@ -1,0 +1,55 @@
+name: AdminStuff
+main: com.bukkit.Souli.AdminStuff.ASCore
+version: 1.0
+commands:
+  afk:
+    description: Toggle AFK status
+    usage: /afk
+  compass:
+    description: Show the compassdir
+    usage: /compass    
+  clearinventory:
+    description: Clears an inventory
+    usage: /clearinventory [Player]
+  give:
+    description: Give items to a specific player
+    usage: /give <Player> <ItemID or Name>[:SubID]    
+  glue:
+    description: Glue a Player
+    usage: /glue <Player>
+  gluehere:
+    description: Glue a Player at a specific location
+    usage: /gluehere <Player>    
+  home:
+    description: Teleport to home
+    usage: /home
+  i:
+    description: Give yourself items
+    usage: /i <ItemID or Name>[:SubID]
+  invsee:
+    description: See a players inventory
+    usage: /invsee <Player>
+  kill:
+    description: Kill a Player
+    usage: /kill <Player>    
+  sethome:
+    description: Set your home to the current location
+    usage: /sethome
+  setspawn:
+    description: Set the worldspawn to the current location
+    usage: /setspawn
+  slap:
+    description: Slap a player
+    usage: /slap <Player>
+  spawn:
+    description: Teleport to worldspawn
+    usage: /spawn   
+  time:
+    description: Set the time of your world
+    usage: /time <day|night>
+  unlimited:
+    description: Toggle unlimited Items
+    usage: /unlimited <ItemID or Name> [Player]
+  weather:
+    description: Set the weather of your world
+    usage: /weather <sun|rain|storm>
