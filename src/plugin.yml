@@ -5,9 +5,15 @@ commands:
   afk:
     description: Toggle AFK status
     usage: /afk
+  ban:
+    description: Ban a player
+    usage: /ban <Player> [Message]    
   compass:
     description: Show the compassdir
     usage: /compass    
+  chat:
+    description: Chat to some people only
+    usage: /chat [Player 1 .. Player n]       
   clearinventory:
     description: Clears an inventory
     usage: /clearinventory [Player]
@@ -40,13 +46,22 @@ commands:
   kill:
     description: Kill a Player
     usage: /kill <Player>    
+  kick:
+    description: Kick a player
+    usage: /kick <Player> [Message]
+  kickall:
+    description: Kick all players
+    usage: /kickall <Player> [Message]    
   msg:
     description: Message a player
-    usage: /msg [Player] [Message]
-    aliases: ['m', 'message']     
+    usage: /msg <Player> <Message>
+    aliases: ['m', 'message']    
+  mute:
+    description: Mute a player
+    usage: /mute <Player>      
   r:
     description: Reply to a message
-    usage: /r [Message]
+    usage: /r <Message>
   sethome:
     description: Set your home to the current location
     usage: /sethome
@@ -59,6 +74,9 @@ commands:
   spawn:
     description: Teleport to worldspawn
     usage: /spawn   
+  tempban:
+    description: Temporary ban a player
+    usage: /tempban <Player> <Time>        
   time:
     description: Set the time of your world
     usage: /time <day|night>

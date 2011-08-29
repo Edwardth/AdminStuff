@@ -22,7 +22,6 @@
 package com.bukkit.Souli.AdminStuff.commands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
@@ -30,18 +29,17 @@ import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
-public class cmdGlueHere extends Command {
+public class cmdBan extends Command {
 
-    public cmdGlueHere(String syntax, String arguments, String node,
-	    Server server) {
+    public cmdBan(String syntax, String arguments, String node, Server server) {
 	super(syntax, arguments, node, server);
     }
 
     @Override
     /**
      * Representing the command <br>
-     * /gluehere <Player><br>
-     * Kills the Player and clears the inventory
+     * /ban <Player><br>
+     * Ban a single player
      * 
      * @param player
      *            Called the command
@@ -49,41 +47,25 @@ public class cmdGlueHere extends Command {
      *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-	Player target = ASCore.getPlayer(args[0]);
+	Player target = ASCore.getDirectPlayer(args[0]);
 	if (target != null) {
-	    if (!target.isDead() && target.isOnline()) {
+	    if (target.isOnline()) {
 		// ADD PLAYER, IF NOT FOUND
 		if (!ASPlayerListener.playerMap.containsKey(target.getName())) {
 		    ASPlayerListener.playerMap.put(target.getName(),
 			    new ASPlayer());
-		}
-
-		Location glueLocation = player.getLastTwoTargetBlocks(null, 50)
-			.get(0).getLocation();
-
-		ASPlayer thisPlayer = ASPlayerListener.playerMap.get(target
-			.getName());
-		thisPlayer.setGlued(!thisPlayer.isGlued());
-		if (thisPlayer.isGlued()) {
-		    target.teleport(glueLocation);
-		    thisPlayer.setGlueLocation(glueLocation);
-		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + target.getName() + "' glued!");
-		    target.sendMessage(ChatColor.BLUE + "You are now glued!");
-		} else {
-		    thisPlayer.setGlueLocation(null);
-		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + target.getName() + "' is no longer glued!");
-		    target.sendMessage(ChatColor.BLUE
-			    + "You are no longer glued!");
-		}
-
-		thisPlayer.saveConfig(target.getName(), false, false, false,
-			false, true, false);
+		}	
+		
+		ASPlayerListener.playerMap.get(target.getName()).setBanned(true);
+		ASPlayerListener.playerMap.get(target.getName()).saveConfig(target.getName(), false, false, false, false, false, true);
+		String message = "You were banned.";
+		target.kickPlayer(message);
+		player.sendMessage(ChatColor.GRAY + "Player '"
+			+ target.getName() + "' banned!");
 	    }
 	} else {
-	    player.sendMessage(ChatColor.RED + "Player '" + args[0]
-		    + "' not found (or is not online!)");
+	    player.sendMessage(ChatColor.GRAY + "Player '"
+			+ args[0] + "' banned!");
 	}
     }
 }

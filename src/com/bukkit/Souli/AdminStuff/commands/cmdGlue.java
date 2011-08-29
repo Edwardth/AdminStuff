@@ -73,7 +73,7 @@ public class cmdGlue extends Command {
 		}
 
 		thisPlayer.saveConfig(target.getName(), false, false, false,
-			false, true);
+			false, true, false);
 	    }
 	} else {
 	    player.sendMessage(ChatColor.RED + "Player '" + args[0]

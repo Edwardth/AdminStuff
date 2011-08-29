@@ -41,6 +41,8 @@ public class CommandList {
 		new cmdGlue("/glue", "<Player>", "commands.admin.glue", server),
 		new cmdGlueHere("/gluehere", "<Player>",
 			"commands.admin.gluehere", server),
+
+		// FLASH COMMANDS
 		new cmdFlash("/flash", "", "commands.admin.flash", server),
 		new cmdFlashPlayer("/flash", "<Player>",
 			"commands.admin.flashplayer", server),
@@ -48,7 +50,21 @@ public class CommandList {
 		new cmdFlashPlayer("/lightning", "<Player>",
 			"commands.admin.flashplayer", server),
 
-		// GIVE ITEMS
+		// KICK COMMANDS
+		new cmdKick("/kick", "<Player>", "commands.admin.kick", server),
+		new cmdKickMessage("/kick", "<Player> <Message>",
+			"commands.admin.kick", server),
+		new cmdKickAll("/kickall", "", "commands.admin.kickall", server),
+		new cmdKickAllMessage("/kickall", "<Message>",
+			"commands.admin.kickall", server),
+
+		// BAN COMMANDS
+		new cmdBan("/ban", "<Player>", "commands.admin.ban", server),
+		new cmdBanMessage("/ban", "<Player> <Message>",
+			"commands.admin.ban", server),
+		new cmdTempBan("/tempban", "<Player> <Time>", "commands.admin.tempban", server),
+
+		// GIVE COMMANDS
 		new cmdINoAmount("/i", "<ItemID or Name>[:SubID]",
 			"commands.admin.i", server),
 		new cmdIAmount("/i", "<ItemID or Name>[:SubID] <Amount>",
@@ -76,14 +92,20 @@ public class CommandList {
 			"commands.admin.fillchest", server),
 
 		// MESSAGE COMMANDS
+		new cmdMutePlayer("/mute", "<Player>", "commands.admin.mute",
+			server),
 		new cmdMessage("/message", "<Player> <Message>",
 			"commands.user.message", server),
 		new cmdMessage("/msg", "<Player> <Message>",
 			"commands.user.message", server),
 		new cmdMessage("/m", "<Player> <Message>",
 			"commands.user.message", server),
-		new cmdReply("/r", "<Message>",
-			"commands.user.reply", server),
+		new cmdReply("/r", "<Message>", "commands.user.reply", server),
+
+		// RECIPIENT COMMANDS
+		new cmdChatAdd("/chat", "<Player1 .. Player n>",
+			"commands.user.chat", server),
+		new cmdChatDel("/chat", "", "commands.user.chat", server),
 
 		// UNLIMITED COMMANDS
 		new cmdUnlimited("/unlimited", "<ItemID or Name>",
@@ -115,9 +137,10 @@ public class CommandList {
     public static void initCommandList(Command[] cmds) {
 	for (Command cmd : cmds) {
 	    if (cmd instanceof ExtendedCommand)
-		commandList.put(cmd.getSyntax(), (ExtendedCommand) cmd);
+		commandList.put(cmd.getSyntax().toLowerCase(),
+			(ExtendedCommand) cmd);
 	    else
-		commandList.put(cmd.getSyntax() + "_"
+		commandList.put(cmd.getSyntax().toLowerCase() + "_"
 			+ (cmd.getArguments().split("<").length - 1), cmd);
 	}
     }
@@ -125,7 +148,7 @@ public class CommandList {
     public static void handleCommand(CommandSender sender, String label,
 	    String[] args) {
 	if (!label.startsWith("/"))
-	    label = "/" + label;
+	    label = "/" + label.toLowerCase();
 
 	if (sender instanceof Player) {
 	    if (commandList.containsKey(label + "_" + args.length)) {

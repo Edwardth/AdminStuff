@@ -22,7 +22,6 @@
 package com.bukkit.Souli.AdminStuff.commands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
@@ -30,9 +29,9 @@ import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
-public class cmdGlueHere extends Command {
+public class cmdMutePlayer extends Command {
 
-    public cmdGlueHere(String syntax, String arguments, String node,
+    public cmdMutePlayer(String syntax, String arguments, String node,
 	    Server server) {
 	super(syntax, arguments, node, server);
     }
@@ -40,8 +39,8 @@ public class cmdGlueHere extends Command {
     @Override
     /**
      * Representing the command <br>
-     * /gluehere <Player><br>
-     * Kills the Player and clears the inventory
+     * /mute <Player><br>
+     * Flashes a player and kills him
      * 
      * @param player
      *            Called the command
@@ -51,35 +50,30 @@ public class cmdGlueHere extends Command {
     public void execute(String[] args, Player player) {
 	Player target = ASCore.getPlayer(args[0]);
 	if (target != null) {
-	    if (!target.isDead() && target.isOnline()) {
+	    if (target.isOnline()) {
 		// ADD PLAYER, IF NOT FOUND
 		if (!ASPlayerListener.playerMap.containsKey(target.getName())) {
 		    ASPlayerListener.playerMap.put(target.getName(),
 			    new ASPlayer());
 		}
+		ASPlayerListener.playerMap.get(target.getName()).setMuted(
+			!ASPlayerListener.playerMap.get(target.getName())
+				.isMuted());
 
-		Location glueLocation = player.getLastTwoTargetBlocks(null, 50)
-			.get(0).getLocation();
-
-		ASPlayer thisPlayer = ASPlayerListener.playerMap.get(target
-			.getName());
-		thisPlayer.setGlued(!thisPlayer.isGlued());
-		if (thisPlayer.isGlued()) {
-		    target.teleport(glueLocation);
-		    thisPlayer.setGlueLocation(glueLocation);
+		if (ASPlayerListener.playerMap.get(target.getName()).isMuted()) {
 		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + target.getName() + "' glued!");
-		    target.sendMessage(ChatColor.BLUE + "You are now glued!");
+			    + target.getName() + "' is now muted!");
+		    target.sendMessage(ChatColor.GRAY + "You are now muted!");
 		} else {
-		    thisPlayer.setGlueLocation(null);
 		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + target.getName() + "' is no longer glued!");
-		    target.sendMessage(ChatColor.BLUE
-			    + "You are no longer glued!");
+			    + target.getName() + "' is no longer muted!");
+		    target.sendMessage(ChatColor.GRAY
+			    + "You are no longer muted!");
 		}
 
-		thisPlayer.saveConfig(target.getName(), false, false, false,
-			false, true, false);
+		ASPlayerListener.playerMap.get(target.getName()).saveConfig(
+			target.getName(), false, false, true, false, false,
+			false);
 	    }
 	} else {
 	    player.sendMessage(ChatColor.RED + "Player '" + args[0]

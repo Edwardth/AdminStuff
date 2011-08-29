@@ -33,325 +33,399 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.config.Configuration;
 
 public class ASPlayer {
-	private Map<Integer, ASItem> unlimitedList = new HashMap<Integer, ASItem>();
-	private Location homeLocation = null;
-	private boolean isAFK = false;
-	private boolean isMuted = false;
-	private boolean isGlued = false;
-	private boolean isSlapped = false;
-	private Location glueLocation = null;
-	private String lastSender = null;
-	private ItemStack[] invBackUp = new ItemStack[36];
+    private Map<Integer, ASItem> unlimitedList = new HashMap<Integer, ASItem>();
+    private Location homeLocation = null;
+    private boolean isAFK = false;
+    private boolean isMuted = false;
+    private boolean isGlued = false;
+    private boolean isSlapped = false;
+    private boolean isBanned = false;
+    private boolean isTempBanned = false;
+    private long banEndTime = 0;
+    private Location glueLocation = null;
+    private String lastSender = null;
+    private String[] Recipients = null;
+    private ItemStack[] invBackUp = new ItemStack[36];
 
-	public ASPlayer() {
+    public ASPlayer() {
+    }
+
+    /**
+     * LOAD PLAYERCONFIG
+     * 
+     * @param playerName
+     */
+    public void loadConfig(String playerName) {
+	new File("plugins/AdminStuff/userdata/").mkdirs();
+	Configuration config = new Configuration(new File(
+		"plugins/AdminStuff/userdata/" + playerName + ".yml"));
+
+	config.load();
+
+	setGlued(config.getBoolean("glue.isGlued", false));
+	setAFK(config.getBoolean("isAFK", false));
+	setMuted(config.getBoolean("isMuted", false));
+	setBanned(config.getBoolean("isBanned", false));
+	setTempBanned(config.getBoolean("isTempBanned", false));
+	setBanEndTime(Long.valueOf(config.getString("banEndTime", "0")));
+	// LOAD GLUE
+	if (isGlued()) {
+	    World world = ASCore.getMCServer().getWorld(
+		    config.getString("glue.Worldname", null));
+	    if (world != null) {
+		glueLocation = new Location(world, config.getInt("glue.X", 0),
+			config.getInt("glue.Y", 127),
+			config.getInt("glue.Z", 0),
+			config.getInt("glue.Yaw", 0), config.getInt(
+				"glue.Pitch", 0));
+	    } else {
+		glueLocation = null;
+	    }
+	} else {
+	    glueLocation = null;
 	}
 
-	/**
-	 * LOAD PLAYERCONFIG
-	 * 
-	 * @param playerName
-	 */
-	public void loadConfig(String playerName) {
-		new File("plugins/AdminStuff/userdata/").mkdirs();
-		Configuration config = new Configuration(new File(
-				"plugins/AdminStuff/userdata/" + playerName + ".yml"));
-		
-		config.load();
+	// LOAD HOME
+	World world = ASCore.getMCServer().getWorld(
+		config.getString("home.Worldname", ""));
+	if (world != null) {
+	    homeLocation = new Location(world, config.getDouble("home.X", 0),
+		    config.getDouble("home.Y", 127d), config.getDouble(
+			    "home.Z", 0), Float.valueOf(""
+			    + config.getDouble("home.Yaw", 0d)),
+		    Float.valueOf("" + config.getDouble("home.Pitch", 0d)));
+	} else {
+	    homeLocation = null;
+	}
+    }
 
-		setGlued(config.getBoolean("glue.isGlued", false));
-		setAFK(config.getBoolean("isAFK", false));
-		setMuted(config.getBoolean("isMuted", false));
-
-		// LOAD GLUE
-		if (isGlued()) {
-			World world = ASCore.getMCServer().getWorld(
-					config.getString("glue.Worldname", null));
-			if (world != null) {
-				glueLocation = new Location(world, config.getInt("glue.X", 0),
-						config.getInt("glue.Y", 127),
-						config.getInt("glue.Z", 0),
-						config.getInt("glue.Yaw", 0), config.getInt(
-								"glue.Pitch", 0));
-			} else {
-				glueLocation = null;
-			}
-		} else {
-			glueLocation = null;
-		}
-
-	
-		// LOAD HOME
-		World world = ASCore.getMCServer().getWorld(
-				config.getString("home.Worldname", ""));
-		if (world != null) {
-			homeLocation = new Location(world, config.getDouble("home.X", 0),
-					config.getDouble("home.Y", 127d), config.getDouble("home.Z", 0),
-					Float.valueOf("" + config.getDouble("home.Yaw", 0d)),
-					Float.valueOf("" + config.getDouble("home.Pitch", 0d)));
-		} else {
-			homeLocation = null;
-		}
+    /**
+     * SAVE PLAYERDATA TO A FILE
+     */
+    public void saveConfig(String playerName, boolean saveHome,
+	    boolean saveAFK, boolean saveMute, boolean saveUnlimited,
+	    boolean saveGlue, boolean saveBan) {
+	new File("plugins/AdminStuff/userdata/").mkdirs();
+	Configuration config = new Configuration(new File(
+		"plugins/AdminStuff/userdata/" + playerName + ".yml"));
+	config.load();
+	if (saveHome) {
+	    if (homeLocation != null) {
+		config.setProperty("home.X", homeLocation.getX());
+		config.setProperty("home.Y", homeLocation.getY());
+		config.setProperty("home.Z", homeLocation.getZ());
+		config.setProperty("home.Pitch", homeLocation.getPitch());
+		config.setProperty("home.Yaw", homeLocation.getYaw());
+		config.setProperty("home.Worldname", homeLocation.getWorld()
+			.getName());
+	    }
+	}
+	if (saveBan) {
+	    config.setProperty("isBanned", isBanned);
+	    config.setProperty("isTempBanned", isTempBanned);
+	    config.setProperty("banEndTime", String.valueOf(getBanEndTime()));
 	}
 
-	/**
-	 * SAVE PLAYERDATA TO A FILE
-	 */
-	public void saveConfig(String playerName, boolean saveHome,
-			boolean saveAFK, boolean saveMute, boolean saveUnlimited,
-			boolean saveGlue) {
-		new File("plugins/AdminStuff/userdata/").mkdirs();
-		Configuration config = new Configuration(new File(
-				"plugins/AdminStuff/userdata/" + playerName + ".yml"));
-		config.load();
-		if (saveHome) {
-			if (homeLocation != null) {
-				config.setProperty("home.X", homeLocation.getX());
-				config.setProperty("home.Y", homeLocation.getY());
-				config.setProperty("home.Z", homeLocation.getZ());
-				config.setProperty("home.Pitch", homeLocation.getPitch());
-				config.setProperty("home.Yaw", homeLocation.getYaw());
-				config.setProperty("home.Worldname", homeLocation.getWorld()
-						.getName());
-			}
-		}
-		if (saveAFK)
-			config.setProperty("isAFK", isAFK);
+	if (saveAFK)
+	    config.setProperty("isAFK", isAFK);
 
-		if (saveMute)
-			config.setProperty("isMuted", isMuted);
+	if (saveMute)
+	    config.setProperty("isMuted", isMuted);
 
-		if (saveUnlimited) {
-			ArrayList<Integer> list = new ArrayList<Integer>();
-			for (int val : unlimitedList.keySet())
-				list.add(val);
-			config.setProperty("unlimited", list);
-		}
-
-		if (saveGlue) {
-			config.setProperty("glue.isGlued", isGlued);
-			if (glueLocation != null) {
-				config.setProperty("glue.X", glueLocation.getBlockX());
-				config.setProperty("glue.Y", glueLocation.getBlockY());
-				config.setProperty("glue.Z", glueLocation.getBlockZ());
-				config.setProperty("glue.Pitch", glueLocation.getPitch());
-				config.setProperty("glue.Yaw", glueLocation.getYaw());
-				config.setProperty("glue.Worldname", glueLocation.getWorld()
-						.getName());
-			}
-		}
-		config.save();
+	if (saveUnlimited) {
+	    ArrayList<Integer> list = new ArrayList<Integer>();
+	    for (int val : unlimitedList.keySet())
+		list.add(val);
+	    config.setProperty("unlimited", list);
 	}
 
-	/**
-	 * TOGGLE UNLIMITED ITEM
-	 * 
-	 * @param TypeID
-	 * @return true, if added (false, if removed)
-	 */
-	public boolean toggleUnlimitedItem(int TypeID) {
-		if (!hasUnlimitedItem(TypeID)) {
-			// ADD ITEM
-			unlimitedList.put(TypeID, new ASItem(TypeID));
-			return true;
-		} else {
-			// REMOVE ITEM
-			unlimitedList.remove(TypeID);
-			return false;
-		}
+	if (saveGlue) {
+	    config.setProperty("glue.isGlued", isGlued);
+	    if (glueLocation != null) {
+		config.setProperty("glue.X", glueLocation.getBlockX());
+		config.setProperty("glue.Y", glueLocation.getBlockY());
+		config.setProperty("glue.Z", glueLocation.getBlockZ());
+		config.setProperty("glue.Pitch", glueLocation.getPitch());
+		config.setProperty("glue.Yaw", glueLocation.getYaw());
+		config.setProperty("glue.Worldname", glueLocation.getWorld()
+			.getName());
+	    }
 	}
+	config.save();
+    }
 
-	/**
-	 * 
-	 * @param TypeID
-	 * @return true, if found
-	 */
-	public boolean hasUnlimitedItem(int TypeID) {
-		return unlimitedList.containsKey(TypeID);
+    /**
+     * TOGGLE UNLIMITED ITEM
+     * 
+     * @param TypeID
+     * @return true, if added (false, if removed)
+     */
+    public boolean toggleUnlimitedItem(int TypeID) {
+	if (!hasUnlimitedItem(TypeID)) {
+	    // ADD ITEM
+	    unlimitedList.put(TypeID, new ASItem(TypeID));
+	    return true;
+	} else {
+	    // REMOVE ITEM
+	    unlimitedList.remove(TypeID);
+	    return false;
 	}
+    }
 
-	/**
-	 * HASHOMELOCATION
-	 * 
-	 * @return true, if home is set
-	 */
-	public boolean hasHomeLocation() {
-		return getHomeLocation() != null;
+    /**
+     * 
+     * @param TypeID
+     * @return true, if found
+     */
+    public boolean hasUnlimitedItem(int TypeID) {
+	return unlimitedList.containsKey(TypeID);
+    }
+
+    /**
+     * HASHOMELOCATION
+     * 
+     * @return true, if home is set
+     */
+    public boolean hasHomeLocation() {
+	return getHomeLocation() != null;
+    }
+
+    /**
+     * SET HOMELOCATION
+     */
+    public void setHomeLocation(Location newHome) {
+	this.homeLocation = newHome;
+    }
+
+    /**
+     * GET HOMELOCATION
+     * 
+     * @return the HomeLocation
+     */
+    public Location getHomeLocation() {
+	return this.homeLocation;
+    }
+
+    /**
+     * @return the isAFK
+     */
+    public boolean isAFK() {
+	return isAFK;
+    }
+
+    /**
+     * @param isAFK
+     *            the isAFK to set
+     */
+    public void setAFK(boolean isAFK) {
+	this.isAFK = isAFK;
+    }
+
+    /**
+     * @return the muted
+     */
+    public boolean isMuted() {
+	return isMuted;
+    }
+
+    /**
+     * @param muted
+     *            the muted to set
+     */
+    public void setMuted(boolean muted) {
+	this.isMuted = muted;
+    }
+
+    /**
+     * @return the lastSender
+     */
+    public String getLastSender() {
+	return lastSender;
+    }
+
+    /**
+     * @param lastSender
+     *            the lastSender to set
+     */
+    public void setLastSender(String lastSender) {
+	this.lastSender = lastSender;
+    }
+
+    /**
+     * @return the invBackUp
+     */
+    public ItemStack[] getInvBackUp() {
+	return invBackUp;
+    }
+
+    /**
+     * @param invBackUp
+     *            the invBackUp to set
+     */
+    public void setInvBackUp(ItemStack[] invBackUp) {
+	this.invBackUp = invBackUp;
+    }
+
+    /**
+     * UPDATE NICKNAME
+     * 
+     * @param playerName
+     * @param isAFK
+     */
+    public static void updateNick(String playerName, boolean isAFK,
+	    boolean isSlapped) {
+	Player player = ASCore.getPlayer(playerName);
+	if (player == null)
+	    return;
+
+	String nick = player.getName();
+	if (player.getDisplayName() != null) {
+	    nick = player.getDisplayName();
 	}
+	nick = nick.replace("[AFK] ", "");
+	nick = nick.replace(" was fished!", "");
+	if (isAFK)
+	    nick = "[AFK] " + nick;
 
-	/**
-	 * SET HOMELOCATION
-	 */
-	public void setHomeLocation(Location newHome) {
-		this.homeLocation = newHome;
-	}
+	if (isSlapped)
+	    nick = nick + " was fished!";
 
-	/**
-	 * GET HOMELOCATION
-	 * 
-	 * @return the HomeLocation
-	 */
-	public Location getHomeLocation() {
-		return this.homeLocation;
-	}
+	player.setDisplayName(nick);
+    }
 
-	/**
-	 * @return the isAFK
-	 */
-	public boolean isAFK() {
-		return isAFK;
-	}
+    /**
+     * GET UNLIMITED LIST
+     * 
+     * @return the unlimitedList
+     */
+    public Map<Integer, ASItem> getUnlimitedList() {
+	return unlimitedList;
+    }
 
-	/**
-	 * @param isAFK
-	 *            the isAFK to set
-	 */
-	public void setAFK(boolean isAFK) {
-		this.isAFK = isAFK;
-	}
+    /**
+     * SET UNLIMITED LIST
+     * 
+     * @param unlimitedList
+     *            the unlimitedList to set
+     */
+    public void setUnlimitedList(Map<Integer, ASItem> unlimitedList) {
+	this.unlimitedList = unlimitedList;
+    }
 
-	/**
-	 * @return the muted
-	 */
-	public boolean isMuted() {
-		return isMuted;
-	}
+    /**
+     * IS GLUED
+     * 
+     * @return the isGlued
+     */
+    public boolean isGlued() {
+	return isGlued;
+    }
 
-	/**
-	 * @param muted
-	 *            the muted to set
-	 */
-	public void setMuted(boolean muted) {
-		this.isMuted = muted;
-	}
+    /**
+     * SET GLUED
+     * 
+     * @param isGlued
+     *            the isGlued to set
+     */
+    public void setGlued(boolean isGlued) {
+	this.isGlued = isGlued;
+    }
 
-	/**
-	 * @return the lastSender
-	 */
-	public String getLastSender() {
-		return lastSender;
-	}
+    /**
+     * GET GLUELOCATION
+     * 
+     * @return the glueLocation
+     */
+    public Location getGlueLocation() {
+	return glueLocation;
+    }
 
-	/**
-	 * @param lastSender
-	 *            the lastSender to set
-	 */
-	public void setLastSender(String lastSender) {
-		this.lastSender = lastSender;
-	}
+    /**
+     * SET GLUELOCATION
+     * 
+     * @param glueLocation
+     *            the glueLocation to set
+     */
+    public void setGlueLocation(Location glueLocation) {
+	this.glueLocation = glueLocation;
+    }
 
-	/**
-	 * @return the invBackUp
-	 */
-	public ItemStack[] getInvBackUp() {
-		return invBackUp;
-	}
+    /**
+     * IS SLAPPED
+     * 
+     * @return the isSlapped
+     */
+    public boolean isSlapped() {
+	return isSlapped;
+    }
 
-	/**
-	 * @param invBackUp
-	 *            the invBackUp to set
-	 */
-	public void setInvBackUp(ItemStack[] invBackUp) {
-		this.invBackUp = invBackUp;
-	}
+    /**
+     * SET SLAPPED
+     * 
+     * @param isSlapped
+     *            the isSlapped to set
+     */
+    public void setSlapped(boolean isSlapped) {
+	this.isSlapped = isSlapped;
+    }
 
-	/**
-	 * UPDATE NICKNAME
-	 * 
-	 * @param playerName
-	 * @param isAFK
-	 */
-	public static void updateNick(String playerName, boolean isAFK, boolean isSlapped) {
-		Player player = ASCore.getPlayer(playerName);
-		if (player == null)
-			return;
+    /**
+     * @return the recipients
+     */
+    public String[] getRecipients() {
+	return Recipients;
+    }
 
-		String nick = player.getName();
-		if (player.getDisplayName() != null) {
-			nick = player.getDisplayName();
-		}
-		nick = nick.replace("[AFK] ", "");
-		nick = nick.replace(" was fished!", "");
-		if (isAFK)
-			nick = "[AFK] " + nick;
-		
-		if(isSlapped)
-			nick = nick + " was fished!";
-		
-		player.setDisplayName(nick);
-	}
+    /**
+     * @param recipients
+     *            the recipients to set
+     */
+    public void setRecipients(String[] recipients) {
+	Recipients = recipients;
+    }
 
-	/**
-	 * GET UNLIMITED LIST
-	 * 
-	 * @return the unlimitedList
-	 */
-	public Map<Integer, ASItem> getUnlimitedList() {
-		return unlimitedList;
-	}
+    /**
+     * @return the isBanned
+     */
+    public boolean isBanned() {
+	return isBanned;
+    }
 
-	/**
-	 * SET UNLIMITED LIST
-	 * 
-	 * @param unlimitedList
-	 *            the unlimitedList to set
-	 */
-	public void setUnlimitedList(Map<Integer, ASItem> unlimitedList) {
-		this.unlimitedList = unlimitedList;
-	}
+    /**
+     * @return the isTempBanned
+     */
+    public boolean isTempBanned() {
+	return isTempBanned;
+    }
 
-	/**
-	 * IS GLUED
-	 * 
-	 * @return the isGlued
-	 */
-	public boolean isGlued() {
-		return isGlued;
-	}
+    /**
+     * @param isTempBanned
+     *            the isTempBanned to set
+     */
+    public void setTempBanned(boolean isTempBanned) {
+	this.isTempBanned = isTempBanned;
+    }
 
-	/**
-	 * SET GLUED
-	 * 
-	 * @param isGlued
-	 *            the isGlued to set
-	 */
-	public void setGlued(boolean isGlued) {
-		this.isGlued = isGlued;
-	}
+    /**
+     * @return the banEndTime
+     */
+    public long getBanEndTime() {
+	return banEndTime;
+    }
 
-	/**
-	 * GET GLUELOCATION
-	 * 
-	 * @return the glueLocation
-	 */
-	public Location getGlueLocation() {
-		return glueLocation;
-	}
+    /**
+     * @param banEndTime
+     *            the banEndTime to set
+     */
+    public void setBanEndTime(long banEndTime) {
+	this.banEndTime = banEndTime;
+    }
 
-	/**
-	 * SET GLUELOCATION
-	 * 
-	 * @param glueLocation
-	 *            the glueLocation to set
-	 */
-	public void setGlueLocation(Location glueLocation) {
-		this.glueLocation = glueLocation;
-	}
-
-	
-	/**
-	 * IS SLAPPED
-	 * @return the isSlapped
-	 */
-	public boolean isSlapped() {
-		return isSlapped;
-	}
-	
-
-	/**
-	 * SET SLAPPED
-	 * @param isSlapped the isSlapped to set
-	 */
-	public void setSlapped(boolean isSlapped) {
-		this.isSlapped = isSlapped;
-	}
+    /**
+     * @param isBanned
+     *            the isBanned to set
+     */
+    public void setBanned(boolean isBanned) {
+	this.isBanned = isBanned;
+    }
 }

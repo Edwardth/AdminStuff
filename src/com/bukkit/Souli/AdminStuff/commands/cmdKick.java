@@ -22,7 +22,6 @@
 package com.bukkit.Souli.AdminStuff.commands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
@@ -30,18 +29,17 @@ import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
-public class cmdGlueHere extends Command {
+public class cmdKick extends Command {
 
-    public cmdGlueHere(String syntax, String arguments, String node,
-	    Server server) {
+    public cmdKick(String syntax, String arguments, String node, Server server) {
 	super(syntax, arguments, node, server);
     }
 
     @Override
     /**
      * Representing the command <br>
-     * /gluehere <Player><br>
-     * Kills the Player and clears the inventory
+     * /kick <Player><br>
+     * Kick a single player
      * 
      * @param player
      *            Called the command
@@ -51,35 +49,17 @@ public class cmdGlueHere extends Command {
     public void execute(String[] args, Player player) {
 	Player target = ASCore.getPlayer(args[0]);
 	if (target != null) {
-	    if (!target.isDead() && target.isOnline()) {
+	    if (target.isOnline()) {
 		// ADD PLAYER, IF NOT FOUND
 		if (!ASPlayerListener.playerMap.containsKey(target.getName())) {
 		    ASPlayerListener.playerMap.put(target.getName(),
 			    new ASPlayer());
 		}
 
-		Location glueLocation = player.getLastTwoTargetBlocks(null, 50)
-			.get(0).getLocation();
-
-		ASPlayer thisPlayer = ASPlayerListener.playerMap.get(target
-			.getName());
-		thisPlayer.setGlued(!thisPlayer.isGlued());
-		if (thisPlayer.isGlued()) {
-		    target.teleport(glueLocation);
-		    thisPlayer.setGlueLocation(glueLocation);
-		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + target.getName() + "' glued!");
-		    target.sendMessage(ChatColor.BLUE + "You are now glued!");
-		} else {
-		    thisPlayer.setGlueLocation(null);
-		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + target.getName() + "' is no longer glued!");
-		    target.sendMessage(ChatColor.BLUE
-			    + "You are no longer glued!");
-		}
-
-		thisPlayer.saveConfig(target.getName(), false, false, false,
-			false, true, false);
+		String message = "You were kicked.";
+		target.kickPlayer(message);
+		player.sendMessage(ChatColor.GRAY + "Player '"
+			+ target.getName() + "' kicked!");
 	    }
 	} else {
 	    player.sendMessage(ChatColor.RED + "Player '" + args[0]

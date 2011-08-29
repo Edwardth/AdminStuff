@@ -81,6 +81,9 @@ public class ASCore extends JavaPlugin {
 		    Event.Type.BLOCK_PLACE, bListener, Event.Priority.Monitor,
 		    this);
 	    getServer().getPluginManager().registerEvent(
+		    Event.Type.PLAYER_CHAT, pListener, Event.Priority.Normal,
+		    this);
+	    getServer().getPluginManager().registerEvent(
 		    Event.Type.PLAYER_INTERACT, pListener,
 		    Event.Priority.Normal, this);
 	    getServer().getPluginManager().registerEvent(
@@ -131,16 +134,22 @@ public class ASCore extends JavaPlugin {
 	if (matchedPlayers != null)
 	    if (matchedPlayers.size() > 0)
 		return matchedPlayers.get(0);
-
-	/*
-	 * for(Player player : ASCore.getMCServer().getOnlinePlayers()) {
-	 * if(player.getDisplayName() != null) {
-	 * if(player.getDisplayName().toLowerCase
-	 * ().contains(name.toLowerCase())) { return player; } } }
-	 */
-
 	return null;
     }
+
+    /**
+     * 
+     * GET PLAYER
+     * 
+     * @param name
+     *            the playername to find
+     * @return the player
+     */
+    public static Player getDirectPlayer(String name) {
+	if (name == null)
+	    return null;
+	return server.getPlayer(name);
+    }    
 
     /**
      * 

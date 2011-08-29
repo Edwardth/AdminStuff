@@ -25,21 +25,21 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
-import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
-public class cmdAFK extends Command {
+public class cmdChatDel extends Command {
 
-    public cmdAFK(String syntax, String arguments, String node, Server server) {
+    public cmdChatDel(String syntax, String arguments, String node,
+	    Server server) {
 	super(syntax, arguments, node, server);
     }
 
     @Override
     /**
      * Representing the command <br>
-     * /afk <br>
-     * Toggle AFK-status
+     * /chat<br>
+     * Delete your recipientlist
      * 
      * @param player
      *            Called the command
@@ -50,27 +50,9 @@ public class cmdAFK extends Command {
 	if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
 	    ASPlayerListener.playerMap.put(player.getName(), new ASPlayer());
 	}
-	ASPlayer thisPlayer = ASPlayerListener.playerMap.get(player.getName());
-	boolean isAFK = !thisPlayer.isAFK();
-	boolean isSlapped = thisPlayer.isSlapped();
 
-	ASPlayerListener.playerMap.get(player.getName()).setAFK(isAFK);
-	ASPlayer.updateNick(player.getName(), isAFK, isSlapped);
-	ASPlayerListener.playerMap.get(player.getName()).saveConfig(
-		player.getName(), false, true, false, false, false, false);
-	
-	String nick = player.getName();
-	if(player.getDisplayName() != null)
-	    nick = player.getDisplayName();
-	
-	nick = nick.replace("[AFK] ", "").replace(" is fished!", "");
-	
-	if (isAFK) {
-	    ASCore.getMCServer().broadcastMessage("* " + nick + " is now AFK.");
-	    player.sendMessage(ChatColor.GRAY + "You are now AFK.");
-	} else {
-	    ASCore.getMCServer().broadcastMessage("* " + nick + " is no longer AFK.");
-	    player.sendMessage(ChatColor.GRAY + "You are no longer AFK.");
-	}
+	// DELETE RECIPIENTLIST
+	ASPlayerListener.playerMap.get(player.getName()).setRecipients(null);
+	player.sendMessage(ChatColor.GRAY + "You are now sending messages everyone!");
     }
 }

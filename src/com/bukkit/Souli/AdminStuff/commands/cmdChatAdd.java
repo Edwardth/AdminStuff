@@ -21,6 +21,8 @@
 
 package com.bukkit.Souli.AdminStuff.commands;
 
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -29,48 +31,53 @@ import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
-public class cmdAFK extends Command {
+public class cmdChatAdd extends ExtendedCommand {
 
-    public cmdAFK(String syntax, String arguments, String node, Server server) {
+    public cmdChatAdd(String syntax, String arguments, String node,
+	    Server server) {
 	super(syntax, arguments, node, server);
     }
 
     @Override
     /**
      * Representing the command <br>
-     * /afk <br>
-     * Toggle AFK-status
+     * /chat <Player 1.. Player n><br>
+     * Reply a player
      * 
      * @param player
      *            Called the command
      * @param split
+     * 	          list of Players
      */
     public void execute(String[] args, Player player) {
 	// ADD PLAYER, IF NOT FOUND
 	if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
 	    ASPlayerListener.playerMap.put(player.getName(), new ASPlayer());
 	}
-	ASPlayer thisPlayer = ASPlayerListener.playerMap.get(player.getName());
-	boolean isAFK = !thisPlayer.isAFK();
-	boolean isSlapped = thisPlayer.isSlapped();
 
-	ASPlayerListener.playerMap.get(player.getName()).setAFK(isAFK);
-	ASPlayer.updateNick(player.getName(), isAFK, isSlapped);
-	ASPlayerListener.playerMap.get(player.getName()).saveConfig(
-		player.getName(), false, true, false, false, false, false);
-	
-	String nick = player.getName();
-	if(player.getDisplayName() != null)
-	    nick = player.getDisplayName();
-	
-	nick = nick.replace("[AFK] ", "").replace(" is fished!", "");
-	
-	if (isAFK) {
-	    ASCore.getMCServer().broadcastMessage("* " + nick + " is now AFK.");
-	    player.sendMessage(ChatColor.GRAY + "You are now AFK.");
-	} else {
-	    ASCore.getMCServer().broadcastMessage("* " + nick + " is no longer AFK.");
-	    player.sendMessage(ChatColor.GRAY + "You are no longer AFK.");
+	// ADD RECIPIENTLIST
+	ArrayList<String> recipientList = new ArrayList<String>();
+	for (String arg : args) {
+	    Player thisPlayer = ASCore.getPlayer(arg);
+	    if (thisPlayer != null) {
+		recipientList.add(thisPlayer.getName());
+	    }
 	}
+
+	if (recipientList.size() < 1) {
+	    player.sendMessage(ChatColor.RED + "No recipient found!");
+	    return;
+	}
+	
+	String list = "";
+	String[] recList = new String[recipientList.size()];
+	for (int i = 0; i < recipientList.size(); i++) {
+	    recList[i] = recipientList.get(i);
+	    list += recipientList.get(i);
+	    if(i < recipientList.size() - 1)
+		list += ", ";
+	}
+	ASPlayerListener.playerMap.get(player.getName()).setRecipients(recList);
+	player.sendMessage(ChatColor.GRAY + "You are now sending messages only to: " + list);
     }
 }

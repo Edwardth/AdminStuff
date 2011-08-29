@@ -25,12 +25,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
-import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
+public class cmdKickAll extends Command {
 
-public class cmdSetHome extends Command {
-
-    public cmdSetHome(String syntax, String arguments, String node,
+    public cmdKickAll(String syntax, String arguments, String node,
 	    Server server) {
 	super(syntax, arguments, node, server);
     }
@@ -38,22 +35,19 @@ public class cmdSetHome extends Command {
     @Override
     /**
      * Representing the command <br>
-     * /sethome <br>
-     * Set homelocation
+     * /kickall<br>
+     * Kick all players
      * 
      * @param player
      *            Called the command
      * @param split
      */
     public void execute(String[] args, Player player) {
-	// ADD PLAYER, IF NOT FOUND
-	if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
-	    ASPlayerListener.playerMap.put(player.getName(), new ASPlayer());
+	Player[] allPlayers = server.getOnlinePlayers();
+	for (Player kPlayer : allPlayers) {
+	    if(!kPlayer.getName().equalsIgnoreCase(player.getName()))
+		kPlayer.kickPlayer("You were kicked!");	    
 	}
-	ASPlayerListener.playerMap.get(player.getName()).setHomeLocation(
-		player.getLocation());
-	ASPlayerListener.playerMap.get(player.getName()).saveConfig(
-		player.getName(), true, false, false, false, false, false);
-	player.sendMessage(ChatColor.GRAY + "Home set.");
+	player.sendMessage(ChatColor.GRAY + "All other players got kicked!");
     }
 }

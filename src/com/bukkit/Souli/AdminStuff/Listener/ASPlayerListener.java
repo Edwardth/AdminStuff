@@ -21,6 +21,7 @@
 
 package com.bukkit.Souli.AdminStuff.Listener;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -31,6 +32,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -44,6 +46,7 @@ import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 import com.bukkit.Souli.AdminStuff.ASSpawn;
 import com.gemo.utils.BlockUtils;
+import com.gemo.utils.UtilPermissions;
 
 public class ASPlayerListener extends PlayerListener {
     public static Map<String, ASPlayer> playerMap = new TreeMap<String, ASPlayer>();
@@ -84,9 +87,30 @@ public class ASPlayerListener extends PlayerListener {
 	    playerMap.put(event.getPlayer().getName(), new ASPlayer());
 	}
 
-	// LOAD USERCONFIG AND UPDATE NICK
+	// LOAD USERCONFIG
 	playerMap.get(event.getPlayer().getName()).loadConfig(
 		event.getPlayer().getName());
+
+	// IS USER TIME BANNED?
+	if (playerMap.get(event.getPlayer().getName()).isTempBanned()) {
+	    long endTime = playerMap.get(event.getPlayer().getName()).getBanEndTime();
+	    if(endTime < System.currentTimeMillis())
+	    {
+		ASPlayerListener.playerMap.get(event.getPlayer().getName()).setTempBanned(false);
+		ASPlayerListener.playerMap.get(event.getPlayer().getName()).setBanEndTime(0);
+		ASPlayerListener.playerMap.get(event.getPlayer().getName()).saveConfig(
+			event.getPlayer().getName(), false, false, false, false, false,
+			true);
+		return;
+	    }
+	    else
+	    {
+		event.getPlayer().kickPlayer("You are temporary banned!");
+		return;
+	    }
+	}
+
+	// UPDATE NICK
 	ASPlayer.updateNick(event.getPlayer().getName(),
 		playerMap.get(event.getPlayer().getName()).isAFK(), playerMap
 			.get(event.getPlayer().getName()).isSlapped());
@@ -125,6 +149,9 @@ public class ASPlayerListener extends PlayerListener {
      */
     @Override
     public void onPlayerRespawn(PlayerRespawnEvent event) {
+	if (!playerMap.containsKey(event.getPlayer().getName())) {
+	    playerMap.put(event.getPlayer().getName(), new ASPlayer());
+	}
 	// TELEPORT TO WORLDSPAWN
 	Location loc = ASSpawn
 		.getSpawn(ASCore.getMCServer().getWorlds().get(0));
@@ -199,4 +226,56 @@ public class ASPlayerListener extends PlayerListener {
 	for (int i = 0; i < chest.getInventory().getSize(); i++)
 	    chest.getInventory().setItem(i, item.clone());
     }
+
+    /**
+     * 
+     * ON PLAYER CHAT
+     * 
+     */
+    @Override
+    public void onPlayerChat(PlayerChatEvent event) {
+	if (!playerMap.containsKey(event.getPlayer().getName())) {
+	    playerMap.put(event.getPlayer().getName(), new ASPlayer());
+	}
+	ASPlayer thisPlayer = playerMap.get(event.getPlayer().getName());
+
+	// PLAYER IS MUTED = ONLY ADMINS/MODS RECEIVE A MESSAGE
+	if (thisPlayer.isMuted()) {
+	    Iterator<Player> it = event.getRecipients().iterator();
+	    while (it.hasNext()) {
+		Player nextPlayer = it.next();
+		if (nextPlayer.getName().equalsIgnoreCase(
+			event.getPlayer().getName())
+			|| UtilPermissions.playerCanUseCommand(nextPlayer,
+				"adminstuff.chat.readmuted")) {
+		    nextPlayer.sendMessage(ChatColor.RED + "[Muted] "
+			    + nextPlayer.getName() + ChatColor.WHITE + ": "
+			    + event.getMessage());
+		}
+	    }
+	    event.setCancelled(true);
+	    return;
+	}
+
+	// PLAYER IS IN CHATMODE
+	if (thisPlayer.getRecipients() != null) {
+	    Iterator<Player> it = event.getRecipients().iterator();
+	    while (it.hasNext()) {
+		Player nextPlayer = it.next();
+		boolean found = false;
+		for (String name : thisPlayer.getRecipients()) {
+		    if (name.equalsIgnoreCase(nextPlayer.getName())
+			    || name.equalsIgnoreCase(event.getPlayer()
+				    .getName())) {
+			found = true;
+			break;
+		    }
+		}
+		if (!found)
+		    it.remove();
+	    }
+	}
+
+    }
+
 }
