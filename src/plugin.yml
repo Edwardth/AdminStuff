@@ -40,6 +40,13 @@ commands:
   kill:
     description: Kill a Player
     usage: /kill <Player>    
+  msg:
+    description: Message a player
+    usage: /msg [Player] [Message]
+    aliases: ['m', 'message']     
+  r:
+    description: Reply to a message
+    usage: /r [Message]
   sethome:
     description: Set your home to the current location
     usage: /sethome

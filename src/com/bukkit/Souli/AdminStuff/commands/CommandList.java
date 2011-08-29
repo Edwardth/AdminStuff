@@ -75,6 +75,16 @@ public class CommandList {
 		new cmdFillChest("/fillchest", "<ItemID or Name>[:SubID]",
 			"commands.admin.fillchest", server),
 
+		// MESSAGE COMMANDS
+		new cmdMessage("/message", "<Player> <Message>",
+			"commands.user.message", server),
+		new cmdMessage("/msg", "<Player> <Message>",
+			"commands.user.message", server),
+		new cmdMessage("/m", "<Player> <Message>",
+			"commands.user.message", server),
+		new cmdReply("/r", "<Message>",
+			"commands.user.reply", server),
+
 		// UNLIMITED COMMANDS
 		new cmdUnlimited("/unlimited", "<ItemID or Name>",
 			"commands.admin.unlimited", server),
@@ -104,9 +114,11 @@ public class CommandList {
 
     public static void initCommandList(Command[] cmds) {
 	for (Command cmd : cmds) {
-	    commandList.put(
-		    cmd.getSyntax() + "_"
-			    + (cmd.getArguments().split("<").length - 1), cmd);
+	    if (cmd instanceof ExtendedCommand)
+		commandList.put(cmd.getSyntax(), (ExtendedCommand) cmd);
+	    else
+		commandList.put(cmd.getSyntax() + "_"
+			+ (cmd.getArguments().split("<").length - 1), cmd);
 	}
     }
 
@@ -122,6 +134,15 @@ public class CommandList {
 			(Player) sender);
 		return;
 	    } else {
+		// SEARCH EXTENDED COMMAND
+		if (commandList.containsKey(label)) {
+		    if (commandList.get(label) instanceof ExtendedCommand) {
+			((ExtendedCommand) commandList.get(label)).run(args,
+				(Player) sender);
+			return;
+		    }
+		}
+
 		// NO COMMAND FOUND
 		((Player) sender).sendMessage(ChatColor.RED
 			+ "Wrong Syntax for command: '" + label + "'");

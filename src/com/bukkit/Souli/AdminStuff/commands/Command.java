@@ -63,12 +63,12 @@ public abstract class Command {
 
     public abstract void execute(String[] args, Player player);
 
-    public final boolean hasRights(Player player) {
+    public boolean hasRights(Player player) {
         return UtilPermissions.playerCanUseCommand(player,
                 "adminstuff." + getNode());
     }
 
-    public final boolean hasCorrectSyntax(String[] args) {
+    public boolean hasCorrectSyntax(String[] args) {
         return args.length == countArguments();
     }
 
@@ -88,7 +88,7 @@ public abstract class Command {
         return node;
     }
 
-    private int countArguments() {
+    protected int countArguments() {
         int counter = 0;
         for (int i = 0; i < arguments.length(); ++i)
             if (arguments.charAt(i) == '<')

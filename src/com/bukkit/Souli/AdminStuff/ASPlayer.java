@@ -40,7 +40,7 @@ public class ASPlayer {
 	private boolean isGlued = false;
 	private boolean isSlapped = false;
 	private Location glueLocation = null;
-	private String lastSender = "";
+	private String lastSender = null;
 	private ItemStack[] invBackUp = new ItemStack[36];
 
 	public ASPlayer() {
