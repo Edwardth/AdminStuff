@@ -12,6 +12,9 @@ commands:
     description: Clears an inventory
     usage: /clearinventory [Player]
     aliases: ['cli']
+  fillchest:
+    description: Fill a chest with a specified item
+    usage: /fillchest <ItemID or Name>[:SubID]      
   flash:
     description: Flash a player or strike a lightning
     usage: /flash [Player]

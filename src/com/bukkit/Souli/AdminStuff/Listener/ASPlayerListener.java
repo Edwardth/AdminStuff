@@ -24,14 +24,21 @@ package com.bukkit.Souli.AdminStuff.Listener;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
@@ -39,61 +46,157 @@ import com.bukkit.Souli.AdminStuff.ASSpawn;
 import com.gemo.utils.BlockUtils;
 
 public class ASPlayerListener extends PlayerListener {
-	public static Map<String, ASPlayer> playerMap = new TreeMap<String, ASPlayer>();
+    public static Map<String, ASPlayer> playerMap = new TreeMap<String, ASPlayer>();
+    public static Map<String, ItemStack> queuedFillChest = new TreeMap<String, ItemStack>();
 
-	@Override
-	public void onPlayerMove(PlayerMoveEvent event)
-	{		
-		if(BlockUtils.LocationEquals(event.getTo(), event.getFrom()))
-			return;
-		
-		// ADD PLAYER, IF NOT FOUND
-		Player player = event.getPlayer();
-		if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
-			ASPlayerListener.playerMap.put(player.getName(), new ASPlayer());
-			return;
-		}
-		
-		// IS PLAYER GLUED = RETURN TO GLUELOCATION
-		if(ASPlayerListener.playerMap.get(player.getName()).isGlued())
-		{
-			event.setTo(ASPlayerListener.playerMap.get(player.getName()).getGlueLocation());
-		}
+    /**
+     * 
+     * ON PLAYER MOVE
+     * 
+     */
+    @Override
+    public void onPlayerMove(PlayerMoveEvent event) {
+	if (BlockUtils.LocationEquals(event.getTo(), event.getFrom()))
+	    return;
+
+	// ADD PLAYER, IF NOT FOUND
+	Player player = event.getPlayer();
+	if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
+	    ASPlayerListener.playerMap.put(player.getName(), new ASPlayer());
+	    return;
 	}
 
-	@Override
-	public void onPlayerJoin(PlayerJoinEvent event) {
-		if (!playerMap.containsKey(event.getPlayer().getName())) {
-			playerMap.put(event.getPlayer().getName(), new ASPlayer());
-		}
-		
-		playerMap.get(event.getPlayer().getName()).loadConfig(event.getPlayer().getName());
-		ASPlayer.updateNick(event.getPlayer().getName(), playerMap.get(event.getPlayer().getName()).isAFK(), playerMap.get(event.getPlayer().getName()).isSlapped());
-		
+	// IS PLAYER GLUED = RETURN TO GLUELOCATION
+	if (ASPlayerListener.playerMap.get(player.getName()).isGlued()) {
+	    event.setTo(ASPlayerListener.playerMap.get(player.getName())
+		    .getGlueLocation());
+	}
+    }
+
+    /**
+     * 
+     * ON PLAYER JOIN
+     * 
+     */
+    @Override
+    public void onPlayerJoin(PlayerJoinEvent event) {
+	if (!playerMap.containsKey(event.getPlayer().getName())) {
+	    playerMap.put(event.getPlayer().getName(), new ASPlayer());
 	}
 
-	@Override
-	public void onPlayerKick(PlayerKickEvent event) {
-		if (event.isCancelled())
-			return;
-		if (playerMap.containsKey(event.getPlayer().getName())) {
-			playerMap.remove(event.getPlayer().getName());
-		}
-	}
+	// LOAD USERCONFIG AND UPDATE NICK
+	playerMap.get(event.getPlayer().getName()).loadConfig(
+		event.getPlayer().getName());
+	ASPlayer.updateNick(event.getPlayer().getName(),
+		playerMap.get(event.getPlayer().getName()).isAFK(), playerMap
+			.get(event.getPlayer().getName()).isSlapped());
+    }
 
-	@Override
-	public void onPlayerQuit(PlayerQuitEvent event) {
-		if (playerMap.containsKey(event.getPlayer().getName())) {
-			playerMap.remove(event.getPlayer().getName());
-		}
+    /**
+     * 
+     * ON PLAYER KICK
+     * 
+     */
+    @Override
+    public void onPlayerKick(PlayerKickEvent event) {
+	if (event.isCancelled())
+	    return;
+	if (playerMap.containsKey(event.getPlayer().getName())) {
+	    playerMap.remove(event.getPlayer().getName());
 	}
+    }
 
-	@Override
-	public void onPlayerRespawn(PlayerRespawnEvent event) {
-		Location loc = ASSpawn.getSpawn(ASCore.getMCServer().getWorlds().get(0));
-		Location nloc = loc.getWorld().getHighestBlockAt(loc).getLocation();
-		nloc.setYaw(loc.getYaw());
-		nloc.setPitch(loc.getPitch());
-		event.setRespawnLocation(nloc);
+    /**
+     * 
+     * ON PLAYER QUIT
+     * 
+     */
+    @Override
+    public void onPlayerQuit(PlayerQuitEvent event) {
+	if (playerMap.containsKey(event.getPlayer().getName())) {
+	    playerMap.remove(event.getPlayer().getName());
 	}
+    }
+
+    /**
+     * 
+     * ON PLAYER RESPAWN
+     * 
+     */
+    @Override
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+	// TELEPORT TO WORLDSPAWN
+	Location loc = ASSpawn
+		.getSpawn(ASCore.getMCServer().getWorlds().get(0));
+	Location nloc = loc.getWorld().getHighestBlockAt(loc).getLocation();
+	nloc.setYaw(loc.getYaw());
+	nloc.setPitch(loc.getPitch());
+	event.setRespawnLocation(nloc);
+    }
+
+    /**
+     * 
+     * ON PLAYER INTERACT
+     * 
+     */
+    @Override
+    public void onPlayerInteract(PlayerInteractEvent event) {
+
+	// ONLY CLICKS ON A BLOCK
+	if (event.getAction() != Action.LEFT_CLICK_BLOCK
+		&& event.getAction() != Action.RIGHT_CLICK_BLOCK)
+	    return;
+
+	// FILL CHEST
+	if (queuedFillChest.containsKey(event.getPlayer().getName())) {
+
+	    // CLICKED ON A CHEST?
+	    if (event.getClickedBlock().getTypeId() != Material.CHEST.getId()) {
+		queuedFillChest.remove(event.getPlayer().getName());
+		event.getPlayer().sendMessage(
+			ChatColor.RED + "Chestfill cancelled.");
+		return;
+	    } else {
+		// CANCEL EVENT
+		event.setUseInteractedBlock(Event.Result.DENY);
+		event.setUseItemInHand(Event.Result.DENY);
+		event.setCancelled(true);
+
+		// FILL CHEST / DOUBLECHEST
+		ItemStack item = queuedFillChest.get(
+			event.getPlayer().getName()).clone();
+		Chest chest = (Chest) event.getClickedBlock().getState();
+		fillChest(chest, item);
+
+		Chest dChest = BlockUtils.isDoubleChest(chest.getBlock());
+		if (dChest != null) {
+		    fillChest(dChest, item);
+		}
+
+		// SEND MESSAGE
+		event.getPlayer().sendMessage(
+			ChatColor.GREEN
+				+ "Chest filled with '"
+				+ Material.getMaterial(item.getTypeId()).name()
+					.toLowerCase() + "'.");
+		queuedFillChest.remove(event.getPlayer().getName());
+	    }
+	    return;
+	}
+    }
+
+    /**
+     * 
+     * FILL CHEST
+     * 
+     * @param chest
+     *            chestblock to be filled
+     * @param item
+     *            item to fill the chest with
+     * 
+     */
+    public void fillChest(Chest chest, ItemStack item) {
+	for (int i = 0; i < chest.getInventory().getSize(); i++)
+	    chest.getInventory().setItem(i, item.clone());
+    }
 }

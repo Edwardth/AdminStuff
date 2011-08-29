@@ -72,6 +72,8 @@ public class CommandList {
 		new cmdInvsee("/invsee", "", "commands.admin.invsee", server),
 		new cmdInvseePlayer("/invsee", "<Player>",
 			"commands.admin.invsee", server),
+		new cmdFillChest("/fillchest", "<ItemID or Name>[:SubID]",
+			"commands.admin.fillchest", server),
 
 		// UNLIMITED COMMANDS
 		new cmdUnlimited("/unlimited", "<ItemID or Name>",

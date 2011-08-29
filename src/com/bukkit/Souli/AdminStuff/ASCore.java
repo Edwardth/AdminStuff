@@ -35,13 +35,13 @@ import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 import com.bukkit.Souli.AdminStuff.commands.CommandList;
 
 public class ASCore extends JavaPlugin {
-	// GLOBAL VARS
+    	/** GLOBAL VARS	*/
 	public static LogUnit log = null;
 	private String pluginName = "";
 	private String version = "";
 	private static Server server = null;
 
-	// LISTENERS
+	/** LISTENERS	*/
 	private ASBlockListener bListener;
 	private ASPlayerListener pListener;
 
@@ -81,6 +81,9 @@ public class ASCore extends JavaPlugin {
 					Event.Type.BLOCK_PLACE, bListener, Event.Priority.Monitor,
 					this);
 			getServer().getPluginManager().registerEvent(
+				Event.Type.PLAYER_INTERACT, pListener, Event.Priority.Normal,
+				this);
+			getServer().getPluginManager().registerEvent(
 					Event.Type.PLAYER_JOIN, pListener, Event.Priority.Monitor,
 					this);
 			getServer().getPluginManager().registerEvent(
@@ -113,7 +116,13 @@ public class ASCore extends JavaPlugin {
 		return true;
 	}
 
-	// GET PLAYER
+	/**
+	 * 
+	 * GET PLAYER
+	 * @param name
+	 * 		the playername to find
+	 * @return the player
+	 */
 	public static Player getPlayer(String name) {
 		List<Player> matchedPlayers = server.matchPlayer(name);
 		if (matchedPlayers != null)
@@ -130,10 +139,21 @@ public class ASCore extends JavaPlugin {
 		return null;
 	}
 
+	/**
+	 * 
+	 * SET MC SERVER
+	 * @param server
+	 * 		the serverinstance
+	 */
 	public static void setMCServer(Server server) {
 		ASCore.server = server;
 	}
 
+	/**
+	 * 
+	 * GET MC SERVER
+	 * @return the serverinstance
+	 */
 	public static Server getMCServer() {
 		return ASCore.server;
 	}

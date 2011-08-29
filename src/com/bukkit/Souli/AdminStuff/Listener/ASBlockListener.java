@@ -27,16 +27,22 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 public class ASBlockListener extends BlockListener {
 
-	@Override
-	public void onBlockPlace(BlockPlaceEvent event) {
-		if(event.isCancelled())
-			return;
-		
-		Player player = event.getPlayer();
-		if(ASPlayerListener.playerMap.get(player.getName()).hasUnlimitedItem(event.getBlockPlaced().getTypeId()))
-		{
-			player.getItemInHand().setAmount(player.getItemInHand().getAmount() + 1);
-		}
+    /**
+     * 
+     * ON BLOCK PLACE
+     * 
+     */
+    @Override
+    public void onBlockPlace(BlockPlaceEvent event) {
+	if (event.isCancelled())
+	    return;
+
+	Player player = event.getPlayer();
+	if (ASPlayerListener.playerMap.get(player.getName()).hasUnlimitedItem(
+		event.getBlockPlaced().getTypeId())) {
+	    player.getItemInHand().setAmount(
+		    player.getItemInHand().getAmount() + 1);
 	}
+    }
 
 }
