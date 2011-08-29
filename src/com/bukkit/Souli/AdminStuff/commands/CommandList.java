@@ -41,6 +41,12 @@ public class CommandList {
 		new cmdGlue("/glue", "<Player>", "commands.admin.glue", server),
 		new cmdGlueHere("/gluehere", "<Player>",
 			"commands.admin.gluehere", server),
+		new cmdFlash("/flash", "", "commands.admin.flash", server),
+		new cmdFlashPlayer("/flash", "<Player>",
+			"commands.admin.flashplayer", server),
+		new cmdFlash("/lightning", "", "commands.admin.flash", server),
+		new cmdFlashPlayer("/lightning", "<Player>",
+			"commands.admin.flashplayer", server),
 
 		// GIVE ITEMS
 		new cmdINoAmount("/i", "<ItemID or Name>[:SubID]",
@@ -59,8 +65,13 @@ public class CommandList {
 			"commands.user.clearinventory", server),
 		new cmdClearInventoryOther("/clearinventory", "<Player>",
 			"commands.admin.clearinventoryother", server),
+		new cmdClearInventory("/cli", "",
+			"commands.user.clearinventory", server),
+		new cmdClearInventoryOther("/cli", "<Player>",
+			"commands.admin.clearinventoryother", server),
 		new cmdInvsee("/invsee", "", "commands.admin.invsee", server),
-		new cmdInvseePlayer("/invsee", "<Player>", "commands.admin.invsee", server),
+		new cmdInvseePlayer("/invsee", "<Player>",
+			"commands.admin.invsee", server),
 
 		// UNLIMITED COMMANDS
 		new cmdUnlimited("/unlimited", "<ItemID or Name>",

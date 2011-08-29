@@ -11,6 +11,11 @@ commands:
   clearinventory:
     description: Clears an inventory
     usage: /clearinventory [Player]
+    aliases: ['cli']
+  flash:
+    description: Flash a player or strike a lightning
+    usage: /flash [Player]
+    aliases: ['lightning']    
   give:
     description: Give items to a specific player
     usage: /give <Player> <ItemID or Name>[:SubID]    

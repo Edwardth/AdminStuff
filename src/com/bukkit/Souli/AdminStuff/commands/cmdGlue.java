@@ -38,7 +38,7 @@ public class cmdGlue extends Command {
     @Override
     /**
      * Representing the command <br>
-     * /kill <Player><br>
+     * /glue <Player><br>
      * Kills the Player and clears the inventory
      * 
      * @param player

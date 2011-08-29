@@ -22,7 +22,6 @@
 package com.bukkit.Souli.AdminStuff.commands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
@@ -30,9 +29,9 @@ import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
-public class cmdGlueHere extends Command {
+public class cmdFlashPlayer extends Command {
 
-    public cmdGlueHere(String syntax, String arguments, String node,
+    public cmdFlashPlayer(String syntax, String arguments, String node,
 	    Server server) {
 	super(syntax, arguments, node, server);
     }
@@ -40,8 +39,8 @@ public class cmdGlueHere extends Command {
     @Override
     /**
      * Representing the command <br>
-     * /gluehere <Player><br>
-     * Kills the Player and clears the inventory
+     * /flash <Player><br>
+     * Flashes a player and kills him
      * 
      * @param player
      *            Called the command
@@ -57,29 +56,13 @@ public class cmdGlueHere extends Command {
 		    ASPlayerListener.playerMap.put(target.getName(),
 			    new ASPlayer());
 		}
-
-		Location glueLocation = player.getLastTwoTargetBlocks(null, 50)
-			.get(0).getLocation();
-
-		ASPlayer thisPlayer = ASPlayerListener.playerMap.get(target
-			.getName());
-		thisPlayer.setGlued(!thisPlayer.isGlued());
-		if (thisPlayer.isGlued()) {
-		    target.teleport(glueLocation);
-		    thisPlayer.setGlueLocation(glueLocation);
-		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + target.getName() + "' glued!");
-		    target.sendMessage(ChatColor.BLUE + "You are now glued!");
-		} else {
-		    thisPlayer.setGlueLocation(null);
-		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + target.getName() + "' is no longer glued!");
-		    target.sendMessage(ChatColor.BLUE
-			    + "You are no longer glued!");
-		}
-
-		thisPlayer.saveConfig(target.getName(), false, false, false,
-			false, true);
+		target.getInventory().clear();
+		target.getWorld().strikeLightning(target.getLocation());
+		target.damage(100);
+		String nick = target.getName();
+		if(target.getDisplayName() != null)
+		    nick = target.getDisplayName();
+		ASCore.getMCServer().broadcastMessage(ChatColor.LIGHT_PURPLE + "Eat my shorts, '" + nick + "'!");		
 	    }
 	} else {
 	    player.sendMessage(ChatColor.RED + "Player '" + args[0]
