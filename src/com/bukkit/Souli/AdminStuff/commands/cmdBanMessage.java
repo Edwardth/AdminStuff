@@ -23,6 +23,7 @@ package com.bukkit.Souli.AdminStuff.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
@@ -48,7 +49,7 @@ public class cmdBanMessage extends ExtendedCommand {
      *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-	Player target = ASCore.getDirectPlayer(args[0]);
+	Player target = ASCore.getPlayer(args[0]);
 	if (target != null) {
 	    if (target.isOnline()) {
 		// ADD PLAYER, IF NOT FOUND
@@ -70,10 +71,14 @@ public class cmdBanMessage extends ExtendedCommand {
 		target.kickPlayer(message);
 		player.sendMessage(ChatColor.GRAY + "Player '"
 			+ target.getName() + "' banned!");
+		
+		((CraftServer) ASCore.getMCServer()).getHandle().a(
+			target.getName());
 	    }
 	} else {
 	    player.sendMessage(ChatColor.GRAY + "Player '"
 			+ args[0] + "' banned!");
+	    ((CraftServer) ASCore.getMCServer()).getHandle().a(args[0]);
 	}
     }
 }

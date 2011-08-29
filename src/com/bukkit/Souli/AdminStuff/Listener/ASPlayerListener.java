@@ -91,7 +91,7 @@ public class ASPlayerListener extends PlayerListener {
 	playerMap.get(event.getPlayer().getName()).loadConfig(
 		event.getPlayer().getName());
 
-	// IS USER TIME BANNED?
+	// IS USER TEMPBANNED?
 	if (playerMap.get(event.getPlayer().getName()).isTempBanned()) {
 	    long endTime = playerMap.get(event.getPlayer().getName()).getBanEndTime();
 	    if(endTime < System.currentTimeMillis())
