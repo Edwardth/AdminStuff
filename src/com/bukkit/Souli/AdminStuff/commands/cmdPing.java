@@ -25,45 +25,23 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
-import com.bukkit.Souli.AdminStuff.ASCore;
-import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
+public class cmdPing extends Command {
 
-public class cmdFlashPlayer extends Command {
-
-    public cmdFlashPlayer(String syntax, String arguments, String node,
-	    Server server) {
+    public cmdPing(String syntax, String arguments, String node, Server server) {
 	super(syntax, arguments, node, server);
     }
 
     @Override
     /**
      * Representing the command <br>
-     * /flash <Player><br>
-     * Flashes a player and kills him
+     * /ping<br>
+     * Ping!
      * 
      * @param player
      *            Called the command
      * @param split
-     *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-	Player target = ASCore.getPlayer(args[0]);
-	if (target != null) {
-	    if (!target.isDead() && target.isOnline()) {
-		// ADD PLAYER, IF NOT FOUND
-		if (!ASPlayerListener.playerMap.containsKey(target.getName())) {
-		    ASPlayerListener.playerMap.put(target.getName(),
-			    new ASPlayer());
-		}
-		target.getInventory().clear();
-		target.getWorld().strikeLightning(target.getLocation());
-		target.damage(100);
-		ASCore.getMCServer().broadcastMessage(ChatColor.LIGHT_PURPLE + "Eat my shorts, '" + ASCore.getPlayerName(target) + "'!");		
-	    }
-	} else {
-	    player.sendMessage(ChatColor.RED + "Player '" + args[0]
-		    + "' not found (or is not online!)");
-	}
+	player.sendMessage(ChatColor.GRAY + "* PONG!");
     }
 }

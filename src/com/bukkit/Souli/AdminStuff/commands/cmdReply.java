@@ -71,8 +71,8 @@ public class cmdReply extends ExtendedCommand {
 		}
 
 		player.sendMessage(ChatColor.GOLD + "[ me -> "
-			+ target.getName() + " ] : " + ChatColor.GRAY + message);
-		target.sendMessage(ChatColor.GOLD + "[ " + player.getName()
+			+ ASCore.getPlayerName(target) + " ] : " + ChatColor.GRAY + message);
+		target.sendMessage(ChatColor.GOLD + "[ " + ASCore.getPlayerName(player)
 			+ " -> me ] : " + ChatColor.GRAY + message);
 
 		ASPlayerListener.playerMap.get(player.getName()).setLastSender(

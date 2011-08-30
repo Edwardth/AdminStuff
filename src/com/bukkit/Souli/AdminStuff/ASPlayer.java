@@ -32,6 +32,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.config.Configuration;
 
+import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
+
 public class ASPlayer {
     private Map<Integer, ASItem> unlimitedList = new HashMap<Integer, ASItem>();
     private Location homeLocation = null;
@@ -45,6 +47,7 @@ public class ASPlayer {
     private Location glueLocation = null;
     private String lastSender = null;
     private String[] Recipients = null;
+    private String nickname = "";
     private ItemStack[] invBackUp = new ItemStack[36];
 
     public ASPlayer() {
@@ -68,6 +71,7 @@ public class ASPlayer {
 	setBanned(config.getBoolean("isBanned", false));
 	setTempBanned(config.getBoolean("isTempBanned", false));
 	setBanEndTime(Long.valueOf(config.getString("banEndTime", "0")));
+	setNickname(config.getString("Nickname", ""));
 	// LOAD GLUE
 	if (isGlued()) {
 	    World world = ASCore.getMCServer().getWorld(
@@ -104,7 +108,7 @@ public class ASPlayer {
      */
     public void saveConfig(String playerName, boolean saveHome,
 	    boolean saveAFK, boolean saveMute, boolean saveUnlimited,
-	    boolean saveGlue, boolean saveBan) {
+	    boolean saveGlue, boolean saveBan, boolean saveNick) {
 	new File("plugins/AdminStuff/userdata/").mkdirs();
 	Configuration config = new Configuration(new File(
 		"plugins/AdminStuff/userdata/" + playerName + ".yml"));
@@ -125,6 +129,10 @@ public class ASPlayer {
 	    config.setProperty("isTempBanned", isTempBanned);
 	    config.setProperty("banEndTime", String.valueOf(getBanEndTime()));
 	}
+	
+	if (saveNick) {
+	    config.setProperty("Nickname", nickname);
+	}	
 
 	if (saveAFK)
 	    config.setProperty("isAFK", isAFK);
@@ -278,9 +286,11 @@ public class ASPlayer {
 	if (player == null)
 	    return;
 
+	ASPlayer thisPlayer = ASPlayerListener.playerMap.get(player.getName());
+	
 	String nick = player.getName();
-	if (player.getDisplayName() != null) {
-	    nick = player.getDisplayName();
+	if (!thisPlayer.getNickname().equalsIgnoreCase("")) {
+	    nick = thisPlayer.getNickname();
 	}
 	nick = nick.replace("[AFK] ", "");
 	nick = nick.replace(" was fished!", "");
@@ -427,5 +437,19 @@ public class ASPlayer {
      */
     public void setBanned(boolean isBanned) {
 	this.isBanned = isBanned;
+    }
+
+    /**
+     * @return the nickname
+     */
+    public String getNickname() {
+        return nickname;
+    }
+
+    /**
+     * @param nickname the nickname to set
+     */
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

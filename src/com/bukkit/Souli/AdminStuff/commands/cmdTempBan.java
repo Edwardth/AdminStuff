@@ -112,12 +112,12 @@ public class cmdTempBan extends Command {
 					+ (mins * 60 * 1000));
 		ASPlayerListener.playerMap.get(target.getName()).saveConfig(
 			target.getName(), false, false, false, false, false,
-			true);
+			true, false);
 		String message = "You were temporary banned for " + args[1]
 			+ ".";
 		target.kickPlayer(message);
 		player.sendMessage(ChatColor.GRAY + "Player '"
-			+ target.getName() + "' temporary banned!");
+			+ ASCore.getPlayerName(target) + "' temporary banned!");
 	    }
 	} else {
 	    player.sendMessage(ChatColor.RED + "Player '" + args[0]

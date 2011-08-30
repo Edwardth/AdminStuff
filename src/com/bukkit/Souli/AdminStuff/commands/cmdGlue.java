@@ -62,18 +62,18 @@ public class cmdGlue extends Command {
 		if (thisPlayer.isGlued()) {
 		    thisPlayer.setGlueLocation(target.getLocation());
 		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + target.getName() + "' glued!");
+			    + ASCore.getPlayerName(target) + "' glued!");
 		    target.sendMessage(ChatColor.BLUE + "You are now glued!");
 		} else {
 		    thisPlayer.setGlueLocation(null);
 		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + target.getName() + "' is no longer glued!");
+			    + ASCore.getPlayerName(target) + "' is no longer glued!");
 		    target.sendMessage(ChatColor.BLUE
 			    + "You are no longer glued!");
 		}
 
 		thisPlayer.saveConfig(target.getName(), false, false, false,
-			false, true, false);
+			false, true, false, false);
 	    }
 	} else {
 	    player.sendMessage(ChatColor.RED + "Player '" + args[0]

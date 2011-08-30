@@ -150,6 +150,25 @@ public class ASCore extends JavaPlugin {
 	    return null;
 	return server.getPlayer(name);
     }    
+    
+    /**
+     * 
+     * GET THE PLAYERS NAME
+     * 
+     * @param player
+     *            the player
+     * @return the players name
+     */
+    public static String getPlayerName(Player player) {
+	if (player == null)
+	    return "PLAYER NOT FOUND";
+	String nick = player.getName();
+	if(player.getDisplayName() != null)
+	    nick = player.getDisplayName();
+	
+	nick = nick.replace("[AFK] " ,"").replace(" was fished!", "");
+	return nick;
+    }       
 
     /**
      * 

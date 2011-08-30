@@ -21,6 +21,8 @@
 
 package com.bukkit.Souli.AdminStuff.commands;
 
+import java.io.File;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.craftbukkit.CraftServer;
@@ -30,18 +32,17 @@ import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
-public class cmdBanMessage extends ExtendedCommand {
+public class cmdUnban extends Command {
 
-    public cmdBanMessage(String syntax, String arguments, String node,
-	    Server server) {
+    public cmdUnban(String syntax, String arguments, String node, Server server) {
 	super(syntax, arguments, node, server);
     }
 
     @Override
     /**
      * Representing the command <br>
-     * /ban<Player> <Message><br>
-     * Ban a single player with a message
+     * /unban <Player><br>
+     * Unban a single player
      * 
      * @param player
      *            Called the command
@@ -49,39 +50,28 @@ public class cmdBanMessage extends ExtendedCommand {
      *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-	Player target = ASCore.getPlayer(args[0]);
-	if (target != null) {
-	    if (target.isOnline()) {
-		// ADD PLAYER, IF NOT FOUND
-		if (!ASPlayerListener.playerMap.containsKey(target.getName())) {
-		    ASPlayerListener.playerMap.put(target.getName(),
-			    new ASPlayer());
-		}
-
-		ASPlayerListener.playerMap.get(target.getName())
-			.setBanned(true);
-		ASPlayerListener.playerMap.get(target.getName()).saveConfig(
-			target.getName(), false, false, false, false, false,
+	File playerFile = new File("plugins/AdminStuff/userdata/" + args[0]
+		+ ".yml");
+	if (playerFile.exists()) {
+	    if (ASPlayerListener.playerMap.containsKey(args[0])) {
+		ASPlayer unbanned = ASPlayerListener.playerMap.get(args[0]);
+		unbanned.setBanned(false);
+		unbanned.setTempBanned(false);
+		unbanned.setBanEndTime(0);
+		unbanned.saveConfig(args[0], false, false, false, false, false,
 			true, false);
-
-		String message = "";
-		for (int i = 1; i < args.length; i++) {
-		    message += args[i] + " ";
-		}
-		if (message.equalsIgnoreCase(""))
-		    message = "You were banned.";
-
-		target.kickPlayer(message);
-		player.sendMessage(ChatColor.GRAY + "Player '"
-			+ ASCore.getPlayerName(target) + "' banned!");
-
-		((CraftServer) ASCore.getMCServer()).getHandle().a(
-			target.getName());
+	    } else {
+		ASPlayer unbanned = new ASPlayer();
+		unbanned.loadConfig(args[0]);
+		unbanned.setBanned(false);
+		unbanned.setTempBanned(false);
+		unbanned.setBanEndTime(0);
+		unbanned.saveConfig(args[0], false, false, false, false, false,
+			true, false);
 	    }
-	} else {
-	    player.sendMessage(ChatColor.GRAY + "Player '" + args[0]
-		    + "' banned!");
-	    ((CraftServer) ASCore.getMCServer()).getHandle().a(args[0]);
 	}
+	player.sendMessage(ChatColor.GRAY + "Player '" + args[0]
+		+ "' unbanned!");
+	((CraftServer) ASCore.getMCServer()).getHandle().b(args[0]);
     }
 }

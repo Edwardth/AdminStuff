@@ -68,8 +68,8 @@ public class cmdMessage extends ExtendedCommand {
 		    message += args[i] + " ";
 		}
 		
-		player.sendMessage(ChatColor.GOLD + "[ me -> " + target.getName() + " ] : " + ChatColor.GRAY + message);
-		target.sendMessage(ChatColor.GOLD + "[ " + player.getName() + " -> me ] : " + ChatColor.GRAY + message);
+		player.sendMessage(ChatColor.GOLD + "[ me -> " + ASCore.getPlayerName(target) + " ] : " + ChatColor.GRAY + message);
+		target.sendMessage(ChatColor.GOLD + "[ " + ASCore.getPlayerName(player) + " -> me ] : " + ChatColor.GRAY + message);
 		
 		ASPlayerListener.playerMap.get(player.getName()).setLastSender(target.getName());
 		ASPlayerListener.playerMap.get(target.getName()).setLastSender(player.getName());

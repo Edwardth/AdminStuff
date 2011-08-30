@@ -59,7 +59,7 @@ public class cmdKick extends Command {
 		String message = "You were kicked.";
 		target.kickPlayer(message);
 		player.sendMessage(ChatColor.GRAY + "Player '"
-			+ target.getName() + "' kicked!");
+			+ ASCore.getPlayerName(target) + "' kicked!");
 	    }
 	} else {
 	    player.sendMessage(ChatColor.RED + "Player '" + args[0]

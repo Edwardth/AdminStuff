@@ -21,6 +21,7 @@
 
 package com.bukkit.Souli.AdminStuff.Listener;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -93,19 +94,20 @@ public class ASPlayerListener extends PlayerListener {
 
 	// IS USER TEMPBANNED?
 	if (playerMap.get(event.getPlayer().getName()).isTempBanned()) {
-	    long endTime = playerMap.get(event.getPlayer().getName()).getBanEndTime();
-	    if(endTime < System.currentTimeMillis())
-	    {
-		ASPlayerListener.playerMap.get(event.getPlayer().getName()).setTempBanned(false);
-		ASPlayerListener.playerMap.get(event.getPlayer().getName()).setBanEndTime(0);
-		ASPlayerListener.playerMap.get(event.getPlayer().getName()).saveConfig(
-			event.getPlayer().getName(), false, false, false, false, false,
-			true);
+	    long endTime = playerMap.get(event.getPlayer().getName())
+		    .getBanEndTime();
+	    if (endTime < System.currentTimeMillis()) {
+		ASPlayerListener.playerMap.get(event.getPlayer().getName())
+			.setTempBanned(false);
+		ASPlayerListener.playerMap.get(event.getPlayer().getName())
+			.setBanEndTime(0);
+		ASPlayerListener.playerMap.get(event.getPlayer().getName())
+			.saveConfig(event.getPlayer().getName(), false, false,
+				false, false, false, true, false);
 		return;
-	    }
-	    else
-	    {
-		event.getPlayer().kickPlayer("You are temporary banned!");
+	    } else {
+		Date newDate = new Date(endTime + 1000) ;
+		event.getPlayer().kickPlayer("You are temporary banned until " + newDate.toString() + "!");
 		return;
 	    }
 	}
@@ -159,6 +161,12 @@ public class ASPlayerListener extends PlayerListener {
 	nloc.setYaw(loc.getYaw());
 	nloc.setPitch(loc.getPitch());
 	event.setRespawnLocation(nloc);
+
+	/*
+	ASPlayer.updateNick(event.getPlayer().getName(),
+		playerMap.get(event.getPlayer().getName()).isAFK(), playerMap
+			.get(event.getPlayer().getName()).isSlapped());
+			*/
     }
 
     /**
@@ -249,8 +257,8 @@ public class ASPlayerListener extends PlayerListener {
 			|| UtilPermissions.playerCanUseCommand(nextPlayer,
 				"adminstuff.chat.readmuted")) {
 		    nextPlayer.sendMessage(ChatColor.RED + "[Muted] "
-			    + nextPlayer.getName() + ChatColor.WHITE + ": "
-			    + event.getMessage());
+			    + ASCore.getPlayerName(nextPlayer)
+			    + ChatColor.WHITE + ": " + event.getMessage());
 		}
 	    }
 	    event.setCancelled(true);
@@ -275,7 +283,6 @@ public class ASPlayerListener extends PlayerListener {
 		    it.remove();
 	    }
 	}
-
     }
 
 }

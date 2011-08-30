@@ -53,7 +53,7 @@ public class cmdSetHome extends Command {
 	ASPlayerListener.playerMap.get(player.getName()).setHomeLocation(
 		player.getLocation());
 	ASPlayerListener.playerMap.get(player.getName()).saveConfig(
-		player.getName(), true, false, false, false, false, false);
+		player.getName(), true, false, false, false, false, false, false);
 	player.sendMessage(ChatColor.GRAY + "Home set.");
     }
 }

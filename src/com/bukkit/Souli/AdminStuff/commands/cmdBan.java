@@ -61,11 +61,11 @@ public class cmdBan extends Command {
 			.setBanned(true);
 		ASPlayerListener.playerMap.get(target.getName()).saveConfig(
 			target.getName(), false, false, false, false, false,
-			true);
+			true, false);
 		String message = "You were banned.";
 		target.kickPlayer(message);
 		player.sendMessage(ChatColor.GRAY + "Player '"
-			+ target.getName() + "' banned!");
+			+ ASCore.getPlayerName(target) + "' banned!");
 
 		((CraftServer) ASCore.getMCServer()).getHandle().a(
 			target.getName());

@@ -87,7 +87,8 @@ public class cmdUnlimited extends Command {
 		}
 
 		ASPlayerListener.playerMap.get(player.getName()).saveConfig(
-			player.getName(), false, false, false, true, false, false);
+			player.getName(), false, false, false, true, false,
+			false, false);
 
 	    } else {
 		player.sendMessage(ChatColor.RED + "Item '" + args[0]

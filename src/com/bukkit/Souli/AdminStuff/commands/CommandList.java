@@ -36,6 +36,8 @@ public class CommandList {
     public CommandList(Server server) {
 	Command[] commands = new Command[] {
 		// USER PUNISH COMMANDS
+		new cmdBurn("/burn", "<Player> <Time in seconds>",
+			"commands.admin.burn", server),
 		new cmdSlap("/slap", "<Player>", "commands.admin.slap", server),
 		new cmdKill("/kill", "<Player>", "commands.admin.kill", server),
 		new cmdGlue("/glue", "<Player>", "commands.admin.glue", server),
@@ -59,15 +61,22 @@ public class CommandList {
 			"commands.admin.kickall", server),
 
 		// BAN COMMANDS
+		new cmdUnban("/unban", "<Player>", "commands.admin.unban",
+			server),
 		new cmdBan("/ban", "<Player>", "commands.admin.ban", server),
 		new cmdBanMessage("/ban", "<Player> <Message>",
 			"commands.admin.ban", server),
-		new cmdTempBan("/tempban", "<Player> <Time>", "commands.admin.tempban", server),
+		new cmdTempBan("/tempban", "<Player> <Time>",
+			"commands.admin.tempban", server),
 
 		// GIVE COMMANDS
 		new cmdINoAmount("/i", "<ItemID or Name>[:SubID]",
 			"commands.admin.i", server),
 		new cmdIAmount("/i", "<ItemID or Name>[:SubID] <Amount>",
+			"commands.admin.i", server),
+		new cmdINoAmount("/item", "<ItemID or Name>[:SubID]",
+			"commands.admin.i", server),
+		new cmdIAmount("/item", "<ItemID or Name>[:SubID] <Amount>",
 			"commands.admin.i", server),
 		new cmdGiveNoAmount("/give",
 			"<Player> <ItemID or Name>[:SubID]",
@@ -92,6 +101,10 @@ public class CommandList {
 			"commands.admin.fillchest", server),
 
 		// MESSAGE COMMANDS
+		new cmdBroadcast("/broadcast", "<Message>",
+			"commands.admin.broadcast", server),
+		new cmdBroadcast("/cast", "<Message>",
+			"commands.admin.broadcast", server),
 		new cmdMutePlayer("/mute", "<Player>", "commands.admin.mute",
 			server),
 		new cmdMessage("/message", "<Player> <Message>",
@@ -101,7 +114,9 @@ public class CommandList {
 		new cmdMessage("/m", "<Player> <Message>",
 			"commands.user.message", server),
 		new cmdReply("/r", "<Message>", "commands.user.reply", server),
-
+		new cmdMe("/me", "<Message>",
+			"commands.admin.me", server),
+			
 		// RECIPIENT COMMANDS
 		new cmdChatAdd("/chat", "<Player1 .. Player n>",
 			"commands.user.chat", server),
@@ -115,10 +130,20 @@ public class CommandList {
 			"commands.admin.unlimited", server),
 
 		// USER COMMANDS
+		new cmdHelp("/help", "", "commands.user.help", server),
+		new cmdHelpPage("/help", "<Page>", "commands.user.help", server),
 		new cmdAFK("/afk", "", "commands.user.afk", server),
 		new cmdHome("/home", "", "commands.user.home", server),
 		new cmdSetHome("/sethome", "", "commands.user.sethome", server),
 		new cmdCompass("/compass", "", "commands.user.compass", server),
+		new cmdNickname("/nickname", "<Nickname>",
+			"commands.admin.nickname", server),
+		new cmdNickname("/nick", "<Nickname>",
+			"commands.admin.nickname", server),
+		new cmdNicknamePlayer("/nickname", "<Nickname> <Player>",
+			"commands.admin.nicknameother", server),
+		new cmdNicknamePlayer("/nick", "<Nickname> <Player>",
+			"commands.admin.nicknameother", server),
 
 		// SPAWN COMMANDS
 		new cmdSpawn("/spawn", "", "commands.admin.spawn", server),
@@ -129,7 +154,10 @@ public class CommandList {
 		new cmdTime("/time", "<day | night>", "commands.admin.time",
 			server),
 		new cmdWeather("/weather", "<sun | rain | storm>",
-			"commands.admin.weather", server), };
+			"commands.admin.weather", server),
+
+		// MISC COMMANDS
+		new cmdPing("/ping", "", "commands.admin.ping", server), };
 
 	initCommandList(commands);
     }

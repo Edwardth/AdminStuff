@@ -26,54 +26,36 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
-import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
-public class cmdMutePlayer extends Command {
+public class cmdBurn extends Command {
 
-    public cmdMutePlayer(String syntax, String arguments, String node,
-	    Server server) {
+    public cmdBurn(String syntax, String arguments, String node, Server server) {
 	super(syntax, arguments, node, server);
     }
 
     @Override
     /**
      * Representing the command <br>
-     * /mute <Player><br>
-     * Flashes a player and kills him
+     * /burn <Player> <Time in seconds><br>
+     * Burn a player for x seconds
      * 
      * @param player
      *            Called the command
      * @param split
      *            split[0] is the targets name
+     *            split[1] is the time in seconds           
      */
     public void execute(String[] args, Player player) {
 	Player target = ASCore.getPlayer(args[0]);
 	if (target != null) {
-	    if (target.isOnline()) {
-		// ADD PLAYER, IF NOT FOUND
-		if (!ASPlayerListener.playerMap.containsKey(target.getName())) {
-		    ASPlayerListener.playerMap.put(target.getName(),
-			    new ASPlayer());
+	    if (!target.isDead() && target.isOnline()) {
+		try {
+		    target.setFireTicks(Integer.valueOf(args[1]) * 20);
+		    player.sendMessage(ChatColor.GRAY + "Burning '" + ASCore.getPlayerName(target) + "' for " + args[1] +  " seconds");
+		} catch (Exception e) {
+		    player.sendMessage(ChatColor.RED + "Wrong syntax!");
+		    player.sendMessage(ChatColor.GRAY + getSyntax() + " " + getArguments());
 		}
-		ASPlayerListener.playerMap.get(target.getName()).setMuted(
-			!ASPlayerListener.playerMap.get(target.getName())
-				.isMuted());
-
-		if (ASPlayerListener.playerMap.get(target.getName()).isMuted()) {
-		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + ASCore.getPlayerName(target) + "' is now muted!");
-		    target.sendMessage(ChatColor.GRAY + "You are now muted!");
-		} else {
-		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + ASCore.getPlayerName(target) + "' is no longer muted!");
-		    target.sendMessage(ChatColor.GRAY
-			    + "You are no longer muted!");
-		}
-
-		ASPlayerListener.playerMap.get(target.getName()).saveConfig(
-			target.getName(), false, false, true, false, false,
-			false, false);
 	    }
 	} else {
 	    player.sendMessage(ChatColor.RED + "Player '" + args[0]

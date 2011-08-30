@@ -27,35 +27,29 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
 
-public class cmdKill extends Command {
+public class cmdBroadcast extends ExtendedCommand {
 
-	public cmdKill(String syntax, String arguments, String node, Server server) {
-		super(syntax, arguments, node, server);
-	}
+    public cmdBroadcast(String syntax, String arguments, String node,
+	    Server server) {
+	super(syntax, arguments, node, server);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /kill <Player><br>
-	 * Kills the Player and clears the inventory
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 *            split[0] is the targets name
-	 */
-	public void execute(String[] args, Player player) {
-		Player target = ASCore.getPlayer(args[0]);
-		if (target != null) {
-			if (!target.isDead() && target.isOnline()) {
-				player.sendMessage(ChatColor.GRAY + "Player '"
-						+ ASCore.getPlayerName(target) + "' killed!");
-				target.getInventory().clear();
-				target.damage(100);
-			}
-		} else {
-			player.sendMessage(ChatColor.RED + "Player '" + args[0]
-					+ "' not found (or is not online!)");
-		}
+    @Override
+    /**
+     * Representing the command <br>
+     * /broadcast <Message><br>
+     * Broadcast a message
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     */
+    public void execute(String[] args, Player player) {
+	String message = "";
+	for (int i = 0; i < args.length; i++) {
+	    message += args[i] + " ";
 	}
+	
+	ASCore.getMCServer().broadcastMessage(ChatColor.RED + " [ Broadcast ] : " + ChatColor.GREEN + message);
+   }
 }

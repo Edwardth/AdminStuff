@@ -56,11 +56,11 @@ public class cmdChatAdd extends ExtendedCommand {
 	}
 
 	// ADD RECIPIENTLIST
-	ArrayList<String> recipientList = new ArrayList<String>();
+	ArrayList<Player> recipientList = new ArrayList<Player>();
 	for (String arg : args) {
 	    Player thisPlayer = ASCore.getPlayer(arg);
 	    if (thisPlayer != null) {
-		recipientList.add(thisPlayer.getName());
+		recipientList.add(thisPlayer);
 	    }
 	}
 
@@ -72,8 +72,8 @@ public class cmdChatAdd extends ExtendedCommand {
 	String list = "";
 	String[] recList = new String[recipientList.size()];
 	for (int i = 0; i < recipientList.size(); i++) {
-	    recList[i] = recipientList.get(i);
-	    list += recipientList.get(i);
+	    recList[i] = recipientList.get(i).getName();
+	    list += ASCore.getPlayerName(recipientList.get(i));
 	    if(i < recipientList.size() - 1)
 		list += ", ";
 	}

@@ -59,16 +59,7 @@ public class cmdSlap extends Command {
 				ASPlayer thisPlayer = ASPlayerListener.playerMap.get(target.getName());
 				thisPlayer.setSlapped(true);
 				
-				String nickTarget = target.getName();
-				if(target.getDisplayName() != null)
-					nickTarget = target.getDisplayName();				
-				nickTarget = nickTarget.replace("[AFK] ", "").replace(" was fished!", "");
-				
-				String nickPlayer = player.getName();
-				if(player.getDisplayName() != null)
-					nickPlayer = player.getDisplayName();				
-				nickPlayer = nickPlayer.replace("[AFK] ", "").replace(" was fished!", "");
-				ASCore.getMCServer().broadcastMessage(ChatColor.BLUE + nickPlayer + " schlägt " + nickTarget + " mit einem kalten Fisch ins Gesicht!");
+				ASCore.getMCServer().broadcastMessage(ChatColor.BLUE + ASCore.getPlayerName(player) + " schlägt " + ASCore.getPlayerName(target) + " mit einem kalten Fisch ins Gesicht!");
 				ASPlayer.updateNick(target.getName(), thisPlayer.isAFK(), thisPlayer.isSlapped());		
 			}
 		}

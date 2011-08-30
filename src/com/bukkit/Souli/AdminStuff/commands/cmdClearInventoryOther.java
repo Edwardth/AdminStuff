@@ -52,7 +52,7 @@ public class cmdClearInventoryOther extends Command {
 			if(!target.isDead() && target.isOnline())
 			{
 				target.getInventory().clear();
-				player.sendMessage(ChatColor.GRAY + "Inventory of '" + target.getName() + "' cleared!");
+				player.sendMessage(ChatColor.GRAY + "Inventory of '" + ASCore.getPlayerName(target) + "' cleared!");
 				target.sendMessage(ChatColor.GRAY + "Your inventory got cleared!");
 			}
 		}

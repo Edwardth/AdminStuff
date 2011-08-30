@@ -57,19 +57,13 @@ public class cmdAFK extends Command {
 	ASPlayerListener.playerMap.get(player.getName()).setAFK(isAFK);
 	ASPlayer.updateNick(player.getName(), isAFK, isSlapped);
 	ASPlayerListener.playerMap.get(player.getName()).saveConfig(
-		player.getName(), false, true, false, false, false, false);
-	
-	String nick = player.getName();
-	if(player.getDisplayName() != null)
-	    nick = player.getDisplayName();
-	
-	nick = nick.replace("[AFK] ", "").replace(" is fished!", "");
+		player.getName(), false, true, false, false, false, false, false);
 	
 	if (isAFK) {
-	    ASCore.getMCServer().broadcastMessage("* " + nick + " is now AFK.");
+	    ASCore.getMCServer().broadcastMessage("* " + ASCore.getPlayerName(player) + " is now AFK.");
 	    player.sendMessage(ChatColor.GRAY + "You are now AFK.");
 	} else {
-	    ASCore.getMCServer().broadcastMessage("* " + nick + " is no longer AFK.");
+	    ASCore.getMCServer().broadcastMessage("* " + ASCore.getPlayerName(player) + " is no longer AFK.");
 	    player.sendMessage(ChatColor.GRAY + "You are no longer AFK.");
 	}
     }
