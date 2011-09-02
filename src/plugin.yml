@@ -78,6 +78,10 @@ commands:
     description: Kill a Player
     usage: /kill <Player>  
     permission: adminstuff.commands.admin.kill  
+  kit:
+    description: Give yourself a kit
+    usage: /kit <Name>  
+    permission: adminstuff.commands.admin.kit 
   kick:
     description: Kick a player
     usage: /kick <Player> [Message]
@@ -86,6 +90,10 @@ commands:
     description: Kick all players
     usage: /kickall <Player> [Message]  
     permission: adminstuff.commands.admin.kickall  
+  listkits:
+    description: List the available kits
+    usage: /listkits 
+    permission: adminstuff.commands.admin.listkits    
   me:
     description: Shout out your mood
     usage: /me <Message>

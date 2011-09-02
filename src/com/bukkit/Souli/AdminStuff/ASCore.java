@@ -21,15 +21,20 @@
 
 package com.bukkit.Souli.AdminStuff;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-
+import org.bukkit.util.config.Configuration;
 import com.bukkit.Souli.AdminStuff.Listener.ASBlockListener;
 import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 import com.bukkit.Souli.AdminStuff.commands.CommandList;
@@ -44,6 +49,8 @@ public class ASCore extends JavaPlugin {
     /** LISTENERS */
     private ASBlockListener bListener;
     private ASPlayerListener pListener;
+    
+    public static HashMap<String, ASKit> kitList = new HashMap<String, ASKit>();
 
     /**
      * ON DISABLE
@@ -101,6 +108,9 @@ public class ASCore extends JavaPlugin {
 	    getServer().getPluginManager().registerEvent(
 		    Event.Type.PLAYER_QUIT, pListener, Event.Priority.Monitor,
 		    this);
+
+	    loadConfig();
+
 	} catch (Exception e) {
 	    log.printError("ERROR while enabling " + pluginName + "!", e);
 	}
@@ -117,6 +127,56 @@ public class ASCore extends JavaPlugin {
 	    String label, String[] args) {
 	CommandList.handleCommand(sender, label, args);
 	return true;
+    }
+
+    /**
+     * LOAD CONFIG
+     */
+    @SuppressWarnings("unchecked")
+    public void loadConfig() {
+	new File("plugins/AdminStuff/").mkdirs();
+	Configuration config = new Configuration(new File(
+		"plugins/AdminStuff/config.yml"));
+	config.load();
+
+	Map<String, ArrayList<String>> nodeList = (Map<String, ArrayList<String>>) config
+		.getProperty("kits");
+
+	for (Map.Entry<String, ArrayList<String>> entry : nodeList.entrySet()) {
+  	    ASKit thisKit = new ASKit();	        
+	    for (String part : entry.getValue()) {
+		try {		    
+		    String[] split = part.split(" ");
+		    
+		    int TypeID 	= 0;
+		    byte Data   = 0;
+		    int Amount	= 1;
+		    
+		    String[] itemSplit = split[0].split(":");		    
+		    if(split.length > 1)
+		    {
+			Amount = Integer.valueOf(split[1]);
+		    }
+		    
+		    TypeID = Integer.valueOf(itemSplit[0]);
+		    if(itemSplit.length > 1)
+		    {
+			Data = Byte.valueOf(itemSplit[1]);
+		    }
+		    
+		    if(ASItem.isValid(TypeID, Data))			
+		    {
+			ItemStack item = new ItemStack(TypeID);
+			item.setAmount(Amount);
+			item.setDurability(Data);
+			thisKit.addItem(item);
+		    }
+		} catch (Exception e) {
+		}
+	    }
+	    kitList.put(entry.getKey().toLowerCase(), thisKit);
+	}
+
     }
 
     /**
@@ -149,8 +209,8 @@ public class ASCore extends JavaPlugin {
 	if (name == null)
 	    return null;
 	return server.getPlayer(name);
-    }    
-    
+    }
+
     /**
      * 
      * GET THE PLAYERS NAME
@@ -163,12 +223,12 @@ public class ASCore extends JavaPlugin {
 	if (player == null)
 	    return "PLAYER NOT FOUND";
 	String nick = player.getName();
-	if(player.getDisplayName() != null)
+	if (player.getDisplayName() != null)
 	    nick = player.getDisplayName();
-	
-	nick = nick.replace("[AFK] " ,"").replace(" was fished!", "");
+
+	nick = nick.replace("[AFK] ", "").replace(" was fished!", "");
 	return nick;
-    }       
+    }
 
     /**
      * 

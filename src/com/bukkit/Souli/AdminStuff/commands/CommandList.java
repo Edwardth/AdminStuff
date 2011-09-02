@@ -85,6 +85,12 @@ public class CommandList {
 			"<Player> <ItemID or Name>[:SubID] <Amount>",
 			"commands.admin.give", server),
 
+		// KIT COMMAND
+		new cmdKit("/kit", "<Name>", "commands.admin.usekit",
+			server),
+		new cmdListKits("/listkits", "", "commands.admin.listkits",
+			server),
+
 		// INVENTORY COMMANDS
 		new cmdClearInventory("/clearinventory", "",
 			"commands.user.clearinventory", server),
