@@ -29,6 +29,7 @@ import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.config.Configuration;
 
@@ -36,13 +37,13 @@ import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class ASPlayer {
     private Map<Integer, ASItem> unlimitedList = new HashMap<Integer, ASItem>();
-    private Location homeLocation = null;
     private boolean isAFK = false;
     private boolean isMuted = false;
     private boolean isGlued = false;
     private boolean isSlapped = false;
     private boolean isBanned = false;
     private boolean isTempBanned = false;
+    private boolean hideChat = false;
     private long banEndTime = 0;
     private Location glueLocation = null;
     private String lastSender = null;
@@ -52,7 +53,39 @@ public class ASPlayer {
 
     public ASPlayer() {
     }
-
+    
+    /**
+     * IS RECIPIENT
+     */
+    public boolean isRecipient(String playerName)
+    {
+	if(Recipients == null)
+	    return false;
+    
+	for(String name : Recipients)
+	{
+	    if(name.equalsIgnoreCase(playerName))
+		return true;
+	}
+	return false;
+    }
+    
+    /**
+     * SAVE INVENTORY
+     * 
+     * @param toSave
+     *            Inventory to save
+     */
+    public void saveInventory(Inventory toSave) {
+	invBackUp = new ItemStack[36];
+	// SAVE INVENTORY
+	for (int i = 0; i < toSave.getSize(); i++) {
+	    if (toSave.getItem(i) != null && toSave.getItem(i).getTypeId() > 0) {
+		getInvBackUp()[i] = toSave.getItem(i).clone();
+	    }
+	}
+    }
+       
     /**
      * LOAD PLAYERCONFIG
      * 
@@ -88,51 +121,27 @@ public class ASPlayer {
 	} else {
 	    glueLocation = null;
 	}
-
-	// LOAD HOME
-	World world = ASCore.getMCServer().getWorld(
-		config.getString("home.Worldname", ""));
-	if (world != null) {
-	    homeLocation = new Location(world, config.getDouble("home.X", 0),
-		    config.getDouble("home.Y", 127d), config.getDouble(
-			    "home.Z", 0), Float.valueOf(""
-			    + config.getDouble("home.Yaw", 0d)),
-		    Float.valueOf("" + config.getDouble("home.Pitch", 0d)));
-	} else {
-	    homeLocation = null;
-	}
     }
 
     /**
      * SAVE PLAYERDATA TO A FILE
      */
-    public void saveConfig(String playerName, boolean saveHome,
-	    boolean saveAFK, boolean saveMute, boolean saveUnlimited,
-	    boolean saveGlue, boolean saveBan, boolean saveNick) {
+    public void saveConfig(String playerName, boolean saveAFK,
+	    boolean saveMute, boolean saveUnlimited, boolean saveGlue,
+	    boolean saveBan, boolean saveNick) {
 	new File("plugins/AdminStuff/userdata/").mkdirs();
 	Configuration config = new Configuration(new File(
 		"plugins/AdminStuff/userdata/" + playerName + ".yml"));
 	config.load();
-	if (saveHome) {
-	    if (homeLocation != null) {
-		config.setProperty("home.X", homeLocation.getX());
-		config.setProperty("home.Y", homeLocation.getY());
-		config.setProperty("home.Z", homeLocation.getZ());
-		config.setProperty("home.Pitch", homeLocation.getPitch());
-		config.setProperty("home.Yaw", homeLocation.getYaw());
-		config.setProperty("home.Worldname", homeLocation.getWorld()
-			.getName());
-	    }
-	}
 	if (saveBan) {
 	    config.setProperty("isBanned", isBanned);
 	    config.setProperty("isTempBanned", isTempBanned);
 	    config.setProperty("banEndTime", String.valueOf(getBanEndTime()));
 	}
-	
+
 	if (saveNick) {
 	    config.setProperty("Nickname", nickname);
-	}	
+	}
 
 	if (saveAFK)
 	    config.setProperty("isAFK", isAFK);
@@ -187,31 +196,6 @@ public class ASPlayer {
      */
     public boolean hasUnlimitedItem(int TypeID) {
 	return unlimitedList.containsKey(TypeID);
-    }
-
-    /**
-     * HASHOMELOCATION
-     * 
-     * @return true, if home is set
-     */
-    public boolean hasHomeLocation() {
-	return getHomeLocation() != null;
-    }
-
-    /**
-     * SET HOMELOCATION
-     */
-    public void setHomeLocation(Location newHome) {
-	this.homeLocation = newHome;
-    }
-
-    /**
-     * GET HOMELOCATION
-     * 
-     * @return the HomeLocation
-     */
-    public Location getHomeLocation() {
-	return this.homeLocation;
     }
 
     /**
@@ -287,7 +271,7 @@ public class ASPlayer {
 	    return;
 
 	ASPlayer thisPlayer = ASPlayerListener.playerMap.get(player.getName());
-	
+
 	String nick = player.getName();
 	if (!thisPlayer.getNickname().equalsIgnoreCase("")) {
 	    nick = thisPlayer.getNickname();
@@ -443,13 +427,28 @@ public class ASPlayer {
      * @return the nickname
      */
     public String getNickname() {
-        return nickname;
+	return nickname;
     }
 
     /**
-     * @param nickname the nickname to set
+     * @param nickname
+     *            the nickname to set
      */
     public void setNickname(String nickname) {
-        this.nickname = nickname;
+	this.nickname = nickname;
+    }
+
+    /**
+     * @return the hideChat
+     */
+    public boolean isHideChat() {
+        return hideChat;
+    }
+
+    /**
+     * @param hideChat the hideChat to set
+     */
+    public void setHideChat(boolean hideChat) {
+        this.hideChat = hideChat;
     }
 }

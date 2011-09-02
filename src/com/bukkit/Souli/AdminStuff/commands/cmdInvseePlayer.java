@@ -61,17 +61,25 @@ public class cmdInvseePlayer extends Command {
 		}
 		ASPlayer thisPlayer = ASPlayerListener.playerMap.get(player
 			.getName());
+
+		// SAVE INVENTORY
+		thisPlayer.saveInventory(player.getInventory());
+
 		// CLEAR INVENTORY
 		player.getInventory().clear();
-		// SAVE INVENTORY
 
-		for (int i = 0; i < player.getInventory().getSize(); i++) {
-		    thisPlayer.getInvBackUp()[i] = target.getInventory()
-			    .getItem(i).clone();
+		// OVERWRITE INVENTORY WITH OTHER INVENTORY
+		for (int i = 0; i < target.getInventory().getSize(); i++) {
+		    if (target.getInventory().getItem(i) != null
+			    && target.getInventory().getItem(i).getTypeId() > 0) {
+			player.getInventory().setItem(i,
+				target.getInventory().getItem(i).clone());
+		    }
 		}
+
 		player.sendMessage(ChatColor.GRAY
-			+ "Showing you the inventory of '" + ASCore.getPlayerName(target)
-			+ "'!");
+			+ "Showing you the inventory of '"
+			+ ASCore.getPlayerName(target) + "'!");
 	    }
 	} else {
 	    player.sendMessage(ChatColor.RED + "Player '" + args[0]

@@ -114,9 +114,10 @@ public class CommandList {
 		new cmdMessage("/m", "<Player> <Message>",
 			"commands.user.message", server),
 		new cmdReply("/r", "<Message>", "commands.user.reply", server),
-		new cmdMe("/me", "<Message>",
-			"commands.admin.me", server),
-			
+		new cmdMe("/me", "<Message>", "commands.admin.me", server),
+		new cmdHideChat("/hidechat", "", "commands.admin.hidechat",
+			server),
+
 		// RECIPIENT COMMANDS
 		new cmdChatAdd("/chat", "<Player1 .. Player n>",
 			"commands.user.chat", server),
@@ -133,8 +134,6 @@ public class CommandList {
 		new cmdHelp("/help", "", "commands.user.help", server),
 		new cmdHelpPage("/help", "<Page>", "commands.user.help", server),
 		new cmdAFK("/afk", "", "commands.user.afk", server),
-		new cmdHome("/home", "", "commands.user.home", server),
-		new cmdSetHome("/sethome", "", "commands.user.sethome", server),
 		new cmdCompass("/compass", "", "commands.user.compass", server),
 		new cmdNickname("/nickname", "<Nickname>",
 			"commands.admin.nickname", server),

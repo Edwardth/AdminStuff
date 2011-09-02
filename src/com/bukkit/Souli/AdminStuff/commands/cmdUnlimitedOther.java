@@ -104,7 +104,7 @@ public class cmdUnlimitedOther extends Command {
 				    + matName + "'.");
 			}
 			ASPlayerListener.playerMap.get(target.getName())
-				.saveConfig(target.getName(), false, false,
+				.saveConfig(target.getName(), false,
 					false, true, false, false, false);
 
 		    } else {

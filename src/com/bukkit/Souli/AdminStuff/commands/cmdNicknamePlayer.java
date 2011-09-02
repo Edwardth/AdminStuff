@@ -65,7 +65,7 @@ public class cmdNicknamePlayer extends Command {
 		target.sendMessage(ChatColor.GRAY + "Your nickname is now '"
 			+ args[0] + "'.");
 		ASPlayerListener.playerMap.get(target.getName()).saveConfig(
-			target.getName(), false, false, false, false, false,
+			target.getName(), false, false, false, false,
 			false, true);
 		ASPlayer.updateNick(target.getName(),
 			ASPlayerListener.playerMap.get(target.getName()).isAFK(),

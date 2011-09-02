@@ -61,6 +61,10 @@ commands:
     description: Teleport to home
     usage: /home
     permission: adminstuff.commands.user.home
+  hideChat:
+    description: Hide the Chat
+    usage: /hidechat
+    permission: adminstuff.commands.admin.hidechat    
   i:
     description: Give yourself items
     usage: /i <ItemID or Name>[:SubID]

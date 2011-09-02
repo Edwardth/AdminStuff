@@ -72,7 +72,7 @@ public class cmdMutePlayer extends Command {
 		}
 
 		ASPlayerListener.playerMap.get(target.getName()).saveConfig(
-			target.getName(), false, false, true, false, false,
+			target.getName(), false, true, false, false,
 			false, false);
 	    }
 	} else {

@@ -28,18 +28,17 @@ import org.bukkit.entity.Player;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
-public class cmdSetHome extends Command {
+public class cmdHideChat extends Command {
 
-    public cmdSetHome(String syntax, String arguments, String node,
-	    Server server) {
+    public cmdHideChat(String syntax, String arguments, String node, Server server) {
 	super(syntax, arguments, node, server);
     }
 
     @Override
     /**
      * Representing the command <br>
-     * /sethome <br>
-     * Set homelocation
+     * /hidechat <br>
+     * Toggle HideChat-Status
      * 
      * @param player
      *            Called the command
@@ -50,10 +49,15 @@ public class cmdSetHome extends Command {
 	if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
 	    ASPlayerListener.playerMap.put(player.getName(), new ASPlayer());
 	}
-	ASPlayerListener.playerMap.get(player.getName()).setHomeLocation(
-		player.getLocation());
-	ASPlayerListener.playerMap.get(player.getName()).saveConfig(
-		player.getName(), true, false, false, false, false, false, false);
-	player.sendMessage(ChatColor.GRAY + "Home set.");
+	ASPlayer thisPlayer = ASPlayerListener.playerMap.get(player.getName());
+	boolean hide = !thisPlayer.isHideChat();
+
+	ASPlayerListener.playerMap.get(player.getName()).setHideChat(hide);
+	
+	if (hide) {
+	    player.sendMessage(ChatColor.GRAY + "The chat is now hidden.");
+	} else {
+	    player.sendMessage(ChatColor.GRAY + "The chat is no longer hidden.");
+	}
     }
 }

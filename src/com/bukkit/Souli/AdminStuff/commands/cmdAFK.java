@@ -57,7 +57,7 @@ public class cmdAFK extends Command {
 	ASPlayerListener.playerMap.get(player.getName()).setAFK(isAFK);
 	ASPlayer.updateNick(player.getName(), isAFK, isSlapped);
 	ASPlayerListener.playerMap.get(player.getName()).saveConfig(
-		player.getName(), false, true, false, false, false, false, false);
+		player.getName(), true, false, false, false, false, false);
 	
 	if (isAFK) {
 	    ASCore.getMCServer().broadcastMessage("* " + ASCore.getPlayerName(player) + " is now AFK.");

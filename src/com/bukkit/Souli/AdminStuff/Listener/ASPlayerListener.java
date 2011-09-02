@@ -103,11 +103,13 @@ public class ASPlayerListener extends PlayerListener {
 			.setBanEndTime(0);
 		ASPlayerListener.playerMap.get(event.getPlayer().getName())
 			.saveConfig(event.getPlayer().getName(), false, false,
-				false, false, false, true, false);
+				false, false, true, false);
 		return;
 	    } else {
-		Date newDate = new Date(endTime + 1000) ;
-		event.getPlayer().kickPlayer("You are temporary banned until " + newDate.toString() + "!");
+		Date newDate = new Date(endTime + 1000);
+		event.getPlayer().kickPlayer(
+			"You are temporary banned until " + newDate.toString()
+				+ "!");
 		return;
 	    }
 	}
@@ -163,10 +165,10 @@ public class ASPlayerListener extends PlayerListener {
 	event.setRespawnLocation(nloc);
 
 	/*
-	ASPlayer.updateNick(event.getPlayer().getName(),
-		playerMap.get(event.getPlayer().getName()).isAFK(), playerMap
-			.get(event.getPlayer().getName()).isSlapped());
-			*/
+	 * ASPlayer.updateNick(event.getPlayer().getName(),
+	 * playerMap.get(event.getPlayer().getName()).isAFK(), playerMap
+	 * .get(event.getPlayer().getName()).isSlapped());
+	 */
     }
 
     /**
@@ -253,15 +255,14 @@ public class ASPlayerListener extends PlayerListener {
 	    while (it.hasNext()) {
 		Player nextPlayer = it.next();
 		if (nextPlayer.getName().equalsIgnoreCase(
-			event.getPlayer().getName())
-			|| UtilPermissions.playerCanUseCommand(nextPlayer,
-				"adminstuff.chat.readmuted")) {
-		    nextPlayer.sendMessage(ChatColor.RED + "[Muted] "
-			    + ASCore.getPlayerName(nextPlayer)
-			    + ChatColor.WHITE + ": " + event.getMessage());
+			event.getPlayer().getName()))
+		    continue;
+		
+		if (!UtilPermissions.playerCanUseCommand(nextPlayer,
+			"adminstuff.chat.read.muted")) {
+		    it.remove();
 		}
 	    }
-	    event.setCancelled(true);
 	    return;
 	}
 
@@ -271,15 +272,40 @@ public class ASPlayerListener extends PlayerListener {
 	    while (it.hasNext()) {
 		Player nextPlayer = it.next();
 		boolean found = false;
-		for (String name : thisPlayer.getRecipients()) {
-		    if (name.equalsIgnoreCase(nextPlayer.getName())
-			    || name.equalsIgnoreCase(event.getPlayer()
-				    .getName())) {
-			found = true;
-			break;
+		if (UtilPermissions.playerCanUseCommand(nextPlayer,
+			"adminstuff.chat.read.all")) {
+		    found = true;
+		}
+		if (!found) {
+		    for (String name : thisPlayer.getRecipients()) {
+			if (name.equalsIgnoreCase(nextPlayer.getName())
+				|| nextPlayer.getName().equalsIgnoreCase(
+					event.getPlayer().getName())) {
+			    found = true;
+			    break;
+			}
 		    }
 		}
 		if (!found)
+		    it.remove();
+	    }
+	    return;
+	}
+
+	// CHAT IS HIDDEN = ONLY RECEIVE MESSAGES FROM OTHER PLAYERS
+	Iterator<Player> it = event.getRecipients().iterator();
+	while (it.hasNext()) {
+	    Player nextPlayer = it.next();
+	    if (nextPlayer.getName().equalsIgnoreCase(
+		    event.getPlayer().getName()))
+		continue;
+
+	    ASPlayer actPlayer = playerMap.get(nextPlayer.getName());
+	    if (actPlayer != null) {
+		if (!actPlayer.isHideChat())
+		    continue;
+
+		if (!actPlayer.isRecipient(event.getPlayer().getName()))
 		    it.remove();
 	    }
 	}

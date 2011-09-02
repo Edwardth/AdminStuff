@@ -87,7 +87,7 @@ public class cmdUnlimited extends Command {
 		}
 
 		ASPlayerListener.playerMap.get(player.getName()).saveConfig(
-			player.getName(), false, false, false, true, false,
+			player.getName(), false, false, true, false,
 			false, false);
 
 	    } else {

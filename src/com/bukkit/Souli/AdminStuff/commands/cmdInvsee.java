@@ -52,9 +52,9 @@ public class cmdInvsee extends Command {
 	// CLEAR INVENTORY
 	player.getInventory().clear();
 	// RESTORE INVENTORY
-	for (int i = 0; i < player.getInventory().getSize(); i++) {
-	    player.getInventory().setItem(i,
-		    thisPlayer.getInvBackUp()[i].clone());
+	for (int i = 0; i < thisPlayer.getInvBackUp().length; i++) {
+	    if (thisPlayer.getInvBackUp()[i] != null && thisPlayer.getInvBackUp()[i].getTypeId() > 0)
+		player.getInventory().setItem(i, thisPlayer.getInvBackUp()[i].clone());
 	}
 	player.sendMessage(ChatColor.GRAY + "Restoring your inventory!");
 

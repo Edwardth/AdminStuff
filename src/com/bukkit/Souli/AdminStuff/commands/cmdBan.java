@@ -60,7 +60,7 @@ public class cmdBan extends Command {
 		ASPlayerListener.playerMap.get(target.getName())
 			.setBanned(true);
 		ASPlayerListener.playerMap.get(target.getName()).saveConfig(
-			target.getName(), false, false, false, false, false,
+			target.getName(), false, false, false, false,
 			true, false);
 		String message = "You were banned.";
 		target.kickPlayer(message);

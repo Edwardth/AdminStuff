@@ -78,7 +78,7 @@ public class cmdGlueHere extends Command {
 			    + "You are no longer glued!");
 		}
 
-		thisPlayer.saveConfig(target.getName(), false, false, false,
+		thisPlayer.saveConfig(target.getName(), false, false,
 			false, true, false, false);
 	    }
 	} else {

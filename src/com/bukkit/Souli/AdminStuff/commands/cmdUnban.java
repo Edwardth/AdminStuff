@@ -58,7 +58,7 @@ public class cmdUnban extends Command {
 		unbanned.setBanned(false);
 		unbanned.setTempBanned(false);
 		unbanned.setBanEndTime(0);
-		unbanned.saveConfig(args[0], false, false, false, false, false,
+		unbanned.saveConfig(args[0], false, false, false, false,
 			true, false);
 	    } else {
 		ASPlayer unbanned = new ASPlayer();
@@ -66,7 +66,7 @@ public class cmdUnban extends Command {
 		unbanned.setBanned(false);
 		unbanned.setTempBanned(false);
 		unbanned.setBanEndTime(0);
-		unbanned.saveConfig(args[0], false, false, false, false, false,
+		unbanned.saveConfig(args[0], false, false, false, false,
 			true, false);
 	    }
 	}

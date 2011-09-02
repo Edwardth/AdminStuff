@@ -111,7 +111,7 @@ public class cmdTempBan extends Command {
 					+ (hours * 60 * 60 * 1000)
 					+ (mins * 60 * 1000));
 		ASPlayerListener.playerMap.get(target.getName()).saveConfig(
-			target.getName(), false, false, false, false, false,
+			target.getName(), false, false, false, false,
 			true, false);
 		String message = "You were temporary banned for " + args[1]
 			+ ".";
