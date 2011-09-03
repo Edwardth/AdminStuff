@@ -175,8 +175,7 @@ public class ASCore extends JavaPlugin {
 		}
 	    }
 	    kitList.put(entry.getKey().toLowerCase(), thisKit);
-	}
-
+	    }
     }
 
     /**

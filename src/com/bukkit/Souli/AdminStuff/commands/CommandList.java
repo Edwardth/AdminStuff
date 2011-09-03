@@ -150,11 +150,6 @@ public class CommandList {
 		new cmdNicknamePlayer("/nick", "<Nickname> <Player>",
 			"commands.admin.nicknameother", server),
 
-		// SPAWN COMMANDS
-		new cmdSpawn("/spawn", "", "commands.admin.spawn", server),
-		new cmdSetSpawn("/setspawn", "", "commands.admin.setspawn",
-			server),
-
 		// TIME & WEATHER COMMAND
 		new cmdTime("/time", "<day | night>", "commands.admin.time",
 			server),
