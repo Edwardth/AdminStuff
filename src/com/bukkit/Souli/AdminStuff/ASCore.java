@@ -118,7 +118,6 @@ public class ASCore extends JavaPlugin {
 	    loadConfig();
 	    error = false;
 	} catch (Exception e) {
-	    e.printStackTrace();
 	    error = true;
 	    log.printError("ERROR while enabling " + pluginName + "!", e);
 	}

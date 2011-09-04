@@ -70,6 +70,6 @@ public class LogUnit {
 	 */
 	public void printError(String info, Exception e) {
 		log.log(Level.SEVERE, "[ " + pluginName + " ] : " + info);
-		log.log(Level.SEVERE, e.getMessage());
+		e.printStackTrace();
 	}
 }
