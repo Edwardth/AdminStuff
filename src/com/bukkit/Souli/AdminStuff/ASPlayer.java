@@ -276,8 +276,7 @@ public class ASPlayer {
 	if (!thisPlayer.getNickname().equalsIgnoreCase("")) {
 	    nick = thisPlayer.getNickname();
 	}
-	nick = nick.replace("[AFK] ", "");
-	nick = nick.replace(" was fished!", "");
+	nick = nick.replace("[AFK] ", "").replace(" was fished!", "");
 	if (isAFK)
 	    nick = "[AFK] " + nick;
 

@@ -249,20 +249,27 @@ public class ASPlayerListener extends PlayerListener {
 	}
 	ASPlayer thisPlayer = playerMap.get(event.getPlayer().getName());
 
+	String nick = ASCore.getPlayerName(event.getPlayer());
+
 	// PLAYER IS MUTED = ONLY ADMINS/MODS RECEIVE A MESSAGE
 	if (thisPlayer.isMuted()) {
 	    Iterator<Player> it = event.getRecipients().iterator();
 	    while (it.hasNext()) {
 		Player nextPlayer = it.next();
 		if (nextPlayer.getName().equalsIgnoreCase(
-			event.getPlayer().getName()))
+			event.getPlayer().getName())) {
+		    nextPlayer.sendMessage(ChatColor.RED + "[Muted] " + nick
+			    + ChatColor.WHITE + ": " + event.getMessage());
 		    continue;
-		
-		if (!UtilPermissions.playerCanUseCommand(nextPlayer,
+		}
+
+		if (UtilPermissions.playerCanUseCommand(nextPlayer,
 			"adminstuff.chat.read.muted")) {
-		    it.remove();
+		    nextPlayer.sendMessage(ChatColor.RED + "[Muted] " + nick
+			    + ChatColor.WHITE + ": " + event.getMessage());
 		}
 	    }
+	    event.setCancelled(true);
 	    return;
 	}
 
@@ -274,6 +281,8 @@ public class ASPlayerListener extends PlayerListener {
 		boolean found = false;
 		if (UtilPermissions.playerCanUseCommand(nextPlayer,
 			"adminstuff.chat.read.all")) {
+		    nextPlayer.sendMessage(ChatColor.DARK_GREEN + nick
+			    + ChatColor.WHITE + ": " + event.getMessage());
 		    found = true;
 		}
 		if (!found) {
@@ -281,20 +290,21 @@ public class ASPlayerListener extends PlayerListener {
 			if (name.equalsIgnoreCase(nextPlayer.getName())
 				|| nextPlayer.getName().equalsIgnoreCase(
 					event.getPlayer().getName())) {
-			    found = true;
+			    nextPlayer.sendMessage(ChatColor.DARK_GREEN + nick
+				    + ChatColor.WHITE + ": "
+				    + event.getMessage());
 			    break;
 			}
 		    }
 		}
-		if (!found)
-		    it.remove();
 	    }
+	    event.setCancelled(true);
 	    return;
 	}
 
-	// CHAT IS HIDDEN = ONLY RECEIVE MESSAGES FROM OTHER PLAYERS
+	// CHAT IS HIDDEN = ONLY RECEIVE MESSAGES FROM OTHER PREDEFINED PLAYERS
 	Iterator<Player> it = event.getRecipients().iterator();
-	while (it.hasNext()) {
+	while(it.hasNext()) {
 	    Player nextPlayer = it.next();
 	    if (nextPlayer.getName().equalsIgnoreCase(
 		    event.getPlayer().getName()))
@@ -302,11 +312,11 @@ public class ASPlayerListener extends PlayerListener {
 
 	    ASPlayer actPlayer = playerMap.get(nextPlayer.getName());
 	    if (actPlayer != null) {
-		if (!actPlayer.isHideChat())
-		    continue;
-
-		if (!actPlayer.isRecipient(event.getPlayer().getName()))
-		    it.remove();
+		if (actPlayer.isHideChat()) {
+		    if (!actPlayer.isRecipient(event.getPlayer().getName())) {
+			it.remove();
+		    }
+		}
 	    }
 	}
     }

@@ -63,12 +63,9 @@ public class cmdMutePlayer extends Command {
 		if (ASPlayerListener.playerMap.get(target.getName()).isMuted()) {
 		    player.sendMessage(ChatColor.GRAY + "Player '"
 			    + ASCore.getPlayerName(target) + "' is now muted!");
-		    target.sendMessage(ChatColor.GRAY + "You are now muted!");
-		} else {
+		    } else {
 		    player.sendMessage(ChatColor.GRAY + "Player '"
 			    + ASCore.getPlayerName(target) + "' is no longer muted!");
-		    target.sendMessage(ChatColor.GRAY
-			    + "You are no longer muted!");
 		}
 
 		ASPlayerListener.playerMap.get(target.getName()).saveConfig(

@@ -49,7 +49,7 @@ public class cmdNicknamePlayer extends Command {
      *            split[1] is the playername
      */
     public void execute(String[] args, Player player) {
-	Player target = ASCore.getPlayer(args[0]);
+	Player target = ASCore.getPlayer(args[1]);
 	if (target != null) {
 	    if (target.isOnline()) {
 		// ADD PLAYER, IF NOT FOUND
@@ -57,7 +57,7 @@ public class cmdNicknamePlayer extends Command {
 		    ASPlayerListener.playerMap.put(target.getName(),
 			    new ASPlayer());
 		}
-
+		
 		ASPlayerListener.playerMap.get(target.getName()).setNickname(
 			args[0]);
 		player.sendMessage(ChatColor.GRAY + "The nickname of '" + target.getName() + "' is now '"
@@ -71,7 +71,7 @@ public class cmdNicknamePlayer extends Command {
 			ASPlayerListener.playerMap.get(target.getName()).isAFK(),
 			ASPlayerListener.playerMap.get(target.getName()).isSlapped());		
 	    } else {
-		player.sendMessage(ChatColor.RED + "Player '" + args[0]
+		player.sendMessage(ChatColor.RED + "Player '" + args[1]
 			+ "' not found (or is not online!)");
 	    }
 	}
