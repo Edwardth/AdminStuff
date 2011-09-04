@@ -44,6 +44,7 @@ public class ASPlayer {
     private boolean isBanned = false;
     private boolean isTempBanned = false;
     private boolean hideChat = false;
+    private boolean isGod = false;
     private long banEndTime = 0;
     private Location glueLocation = null;
     private String lastSender = null;
@@ -97,7 +98,7 @@ public class ASPlayer {
 		"plugins/AdminStuff/userdata/" + playerName + ".yml"));
 
 	config.load();
-
+	setGod(config.getBoolean("isGod", false));
 	setGlued(config.getBoolean("glue.isGlued", false));
 	setAFK(config.getBoolean("isAFK", false));
 	setMuted(config.getBoolean("isMuted", false));
@@ -128,7 +129,7 @@ public class ASPlayer {
      */
     public void saveConfig(String playerName, boolean saveAFK,
 	    boolean saveMute, boolean saveUnlimited, boolean saveGlue,
-	    boolean saveBan, boolean saveNick) {
+	    boolean saveBan, boolean saveNick, boolean saveGod) {
 	new File("plugins/AdminStuff/userdata/").mkdirs();
 	Configuration config = new Configuration(new File(
 		"plugins/AdminStuff/userdata/" + playerName + ".yml"));
@@ -168,6 +169,11 @@ public class ASPlayer {
 			.getName());
 	    }
 	}
+	
+	if (saveGod) {
+	    config.setProperty("isGod", isGod);
+	}
+	
 	config.save();
     }
 
@@ -449,5 +455,19 @@ public class ASPlayer {
      */
     public void setHideChat(boolean hideChat) {
         this.hideChat = hideChat;
+    }
+
+    /**
+     * @return the isGod
+     */
+    public boolean isGod() {
+        return isGod;
+    }
+
+    /**
+     * @param isGod the isGod to set
+     */
+    public void setGod(boolean isGod) {
+        this.isGod = isGod;
     }
 }

@@ -70,7 +70,7 @@ public class cmdMutePlayer extends Command {
 
 		ASPlayerListener.playerMap.get(target.getName()).saveConfig(
 			target.getName(), false, true, false, false,
-			false, false);
+			false, false, false);
 	    }
 	} else {
 	    player.sendMessage(ChatColor.RED + "Player '" + args[0]

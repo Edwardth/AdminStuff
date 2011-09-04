@@ -59,7 +59,7 @@ public class cmdUnban extends Command {
 		unbanned.setTempBanned(false);
 		unbanned.setBanEndTime(0);
 		unbanned.saveConfig(args[0], false, false, false, false,
-			true, false);
+			true, false, false);
 	    } else {
 		ASPlayer unbanned = new ASPlayer();
 		unbanned.loadConfig(args[0]);
@@ -67,7 +67,7 @@ public class cmdUnban extends Command {
 		unbanned.setTempBanned(false);
 		unbanned.setBanEndTime(0);
 		unbanned.saveConfig(args[0], false, false, false, false,
-			true, false);
+			true, false, false);
 	    }
 	}
 	player.sendMessage(ChatColor.GRAY + "Player '" + args[0]

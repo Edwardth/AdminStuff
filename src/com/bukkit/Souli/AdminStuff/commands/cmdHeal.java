@@ -25,42 +25,24 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
-import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
+public class cmdHeal extends Command {
 
-public class cmdNickname extends Command {
-
-    public cmdNickname(String syntax, String arguments, String node,
-	    Server server) {
+    public cmdHeal(String syntax, String arguments, String node, Server server) {
 	super(syntax, arguments, node, server);
     }
 
     @Override
     /**
      * Representing the command <br>
-     * /nickname <Name> <br>
-     * Set the nickname
+     * /heal <br>
+     * Heal yourself
      * 
      * @param player
      *            Called the command
      * @param split
-     * 		  split[0] is the nickname
      */
     public void execute(String[] args, Player player) {
-	// ADD PLAYER, IF NOT FOUND
-	if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
-	    ASPlayerListener.playerMap.put(player.getName(), new ASPlayer());
-	}
-
-	ASPlayerListener.playerMap.get(player.getName()).setNickname(args[0]);
-	player.sendMessage(ChatColor.GRAY + "Your nickname is now '" + args[0]
-		+ "'.");
-	ASPlayerListener.playerMap.get(player.getName()).saveConfig(
-		player.getName(), false, false, false, false, false,
-		true, false);
-
-	ASPlayer.updateNick(player.getName(),
-		ASPlayerListener.playerMap.get(player.getName()).isAFK(),
-		ASPlayerListener.playerMap.get(player.getName()).isSlapped());
+	player.setHealth(20);
+	player.sendMessage(ChatColor.GRAY + "Healed yourself.");
     }
 }

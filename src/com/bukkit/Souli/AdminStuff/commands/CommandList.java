@@ -86,10 +86,15 @@ public class CommandList {
 			"commands.admin.give", server),
 
 		// KIT COMMAND
-		new cmdKit("/kit", "<Name>", "commands.admin.usekit",
-			server),
+		new cmdKit("/kit", "<Name>", "commands.admin.usekit", server),
 		new cmdListKits("/listkits", "", "commands.admin.listkits",
 			server),
+
+		// GOD & HEAL COMMANDS
+		new cmdGod("/god", "", "commands.admin.god", server),
+		new cmdGodPlayer("/god", "<Name>", "commands.admin.god", server),
+		new cmdHeal("/heal", "", "commands.admin.heal", server),
+		new cmdHealPlayer("/heal", "<Name>", "commands.admin.heal", server),
 
 		// INVENTORY COMMANDS
 		new cmdClearInventory("/clearinventory", "",

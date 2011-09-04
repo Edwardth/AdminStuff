@@ -36,6 +36,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 import com.bukkit.Souli.AdminStuff.Listener.ASBlockListener;
+import com.bukkit.Souli.AdminStuff.Listener.ASEntityListener;
 import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 import com.bukkit.Souli.AdminStuff.commands.CommandList;
 
@@ -48,6 +49,7 @@ public class ASCore extends JavaPlugin {
 
     /** LISTENERS */
     private ASBlockListener bListener;
+    private ASEntityListener eListener;
     private ASPlayerListener pListener;
     
     public static HashMap<String, ASKit> kitList = new HashMap<String, ASKit>();
@@ -75,6 +77,7 @@ public class ASCore extends JavaPlugin {
 	    ASSpawn.loadAllSpawns();
 
 	    bListener = new ASBlockListener();
+	    eListener = new ASEntityListener();
 	    pListener = new ASPlayerListener();
 	    new CommandList(getServer());
 
@@ -86,6 +89,9 @@ public class ASCore extends JavaPlugin {
 	    }
 	    getServer().getPluginManager().registerEvent(
 		    Event.Type.BLOCK_PLACE, bListener, Event.Priority.Monitor,
+		    this);
+	    getServer().getPluginManager().registerEvent(
+		    Event.Type.ENTITY_DAMAGE, eListener, Event.Priority.Normal,
 		    this);
 	    getServer().getPluginManager().registerEvent(
 		    Event.Type.PLAYER_CHAT, pListener, Event.Priority.Normal,
@@ -110,8 +116,10 @@ public class ASCore extends JavaPlugin {
 		    this);
 
 	    loadConfig();
-
+	    error = false;
 	} catch (Exception e) {
+	    e.printStackTrace();
+	    error = true;
 	    log.printError("ERROR while enabling " + pluginName + "!", e);
 	}
 

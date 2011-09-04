@@ -53,6 +53,14 @@ commands:
     description: Glue a Player at a specific location
     usage: /gluehere <Player> 
     permission: adminstuff.commands.admin.gluehere
+  god:
+    description: Make yourself a god
+    usage: /god [Player]
+    permission: adminstuff.commands.admin.god   
+  heal:
+    description: Heal a player
+    usage: /heal [Player]
+    permission: adminstuff.commands.admin.heal  
   help:
     description: Show the help
     usage: /help [Page]

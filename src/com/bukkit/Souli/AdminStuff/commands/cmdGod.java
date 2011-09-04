@@ -25,21 +25,20 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
-import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
-public class cmdAFK extends Command {
+public class cmdGod extends Command {
 
-    public cmdAFK(String syntax, String arguments, String node, Server server) {
+    public cmdGod(String syntax, String arguments, String node, Server server) {
 	super(syntax, arguments, node, server);
     }
 
     @Override
     /**
      * Representing the command <br>
-     * /afk <br>
-     * Toggle AFK-status
+     * /god <br>
+     * Toggle God-status
      * 
      * @param player
      *            Called the command
@@ -51,23 +50,13 @@ public class cmdAFK extends Command {
 	    ASPlayerListener.playerMap.put(player.getName(), new ASPlayer());
 	}
 	ASPlayer thisPlayer = ASPlayerListener.playerMap.get(player.getName());
-	boolean isAFK = !thisPlayer.isAFK();
-	boolean isSlapped = thisPlayer.isSlapped();
-
-	ASPlayerListener.playerMap.get(player.getName()).setAFK(isAFK);
-	ASPlayer.updateNick(player.getName(), isAFK, isSlapped);
-	ASPlayerListener.playerMap.get(player.getName()).saveConfig(
-		player.getName(), true, false, false, false, false, false,
-		false);
-
-	if (isAFK) {
-	    ASCore.getMCServer().broadcastMessage(
-		    "* " + ASCore.getPlayerName(player) + " is now AFK.");
-	    player.sendMessage(ChatColor.GRAY + "You are now AFK.");
+	boolean isGod = !thisPlayer.isGod();
+	ASPlayerListener.playerMap.get(player.getName()).setGod(isGod);
+	ASPlayerListener.playerMap.get(player.getName()).saveConfig(player.getName(), false, false, false, false, false, false, true);
+	if (isGod) {
+	    player.sendMessage(ChatColor.GRAY + "Godmode enabled.");
 	} else {
-	    ASCore.getMCServer().broadcastMessage(
-		    "* " + ASCore.getPlayerName(player) + " is no longer AFK.");
-	    player.sendMessage(ChatColor.GRAY + "You are no longer AFK.");
+	   player.sendMessage(ChatColor.GRAY + "Godmode disabled.");
 	}
     }
 }

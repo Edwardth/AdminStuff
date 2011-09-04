@@ -22,17 +22,14 @@
 package com.bukkit.Souli.AdminStuff.commands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
-import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
-public class cmdGlueHere extends Command {
+public class cmdHealPlayer extends Command {
 
-    public cmdGlueHere(String syntax, String arguments, String node,
+    public cmdHealPlayer(String syntax, String arguments, String node,
 	    Server server) {
 	super(syntax, arguments, node, server);
     }
@@ -40,8 +37,8 @@ public class cmdGlueHere extends Command {
     @Override
     /**
      * Representing the command <br>
-     * /gluehere <Player><br>
-     * Kills the Player and clears the inventory
+     * /heal <Player><br>
+     * Heal a player
      * 
      * @param player
      *            Called the command
@@ -52,34 +49,9 @@ public class cmdGlueHere extends Command {
 	Player target = ASCore.getPlayer(args[0]);
 	if (target != null) {
 	    if (!target.isDead() && target.isOnline()) {
-		// ADD PLAYER, IF NOT FOUND
-		if (!ASPlayerListener.playerMap.containsKey(target.getName())) {
-		    ASPlayerListener.playerMap.put(target.getName(),
-			    new ASPlayer());
-		}
-
-		Location glueLocation = player.getLastTwoTargetBlocks(null, 50)
-			.get(0).getLocation();
-
-		ASPlayer thisPlayer = ASPlayerListener.playerMap.get(target
-			.getName());
-		thisPlayer.setGlued(!thisPlayer.isGlued());
-		if (thisPlayer.isGlued()) {
-		    target.teleport(glueLocation);
-		    thisPlayer.setGlueLocation(glueLocation);
-		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + ASCore.getPlayerName(target) + "' glued!");
-		    target.sendMessage(ChatColor.BLUE + "You are now glued!");
-		} else {
-		    thisPlayer.setGlueLocation(null);
-		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + ASCore.getPlayerName(target) + "' is no longer glued!");
-		    target.sendMessage(ChatColor.BLUE
-			    + "You are no longer glued!");
-		}
-
-		thisPlayer.saveConfig(target.getName(), false, false,
-			false, true, false, false, false);
+		target.setHealth(20);
+		player.sendMessage(ChatColor.GRAY + "Healed '" + ASCore.getPlayerName(target) + "'.");
+		target.sendMessage(ChatColor.GRAY + "Healed by '" + ASCore.getPlayerName(player) + "'.");
 	    }
 	} else {
 	    player.sendMessage(ChatColor.RED + "Player '" + args[0]

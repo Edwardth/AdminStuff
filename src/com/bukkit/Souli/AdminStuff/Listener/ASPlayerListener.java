@@ -103,7 +103,7 @@ public class ASPlayerListener extends PlayerListener {
 			.setBanEndTime(0);
 		ASPlayerListener.playerMap.get(event.getPlayer().getName())
 			.saveConfig(event.getPlayer().getName(), false, false,
-				false, false, true, false);
+				false, false, true, false, false);
 		return;
 	    } else {
 		Date newDate = new Date(endTime + 1000);

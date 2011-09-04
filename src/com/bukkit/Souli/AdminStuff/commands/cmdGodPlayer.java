@@ -22,7 +22,6 @@
 package com.bukkit.Souli.AdminStuff.commands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
@@ -30,9 +29,9 @@ import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
-public class cmdGlueHere extends Command {
+public class cmdGodPlayer extends Command {
 
-    public cmdGlueHere(String syntax, String arguments, String node,
+    public cmdGodPlayer(String syntax, String arguments, String node,
 	    Server server) {
 	super(syntax, arguments, node, server);
     }
@@ -40,8 +39,8 @@ public class cmdGlueHere extends Command {
     @Override
     /**
      * Representing the command <br>
-     * /gluehere <Player><br>
-     * Kills the Player and clears the inventory
+     * /god <Player><br>
+     * Toogle God-Status of a player
      * 
      * @param player
      *            Called the command
@@ -54,32 +53,19 @@ public class cmdGlueHere extends Command {
 	    if (!target.isDead() && target.isOnline()) {
 		// ADD PLAYER, IF NOT FOUND
 		if (!ASPlayerListener.playerMap.containsKey(target.getName())) {
-		    ASPlayerListener.playerMap.put(target.getName(),
-			    new ASPlayer());
+		    ASPlayerListener.playerMap.put(target.getName(), new ASPlayer());
 		}
-
-		Location glueLocation = player.getLastTwoTargetBlocks(null, 50)
-			.get(0).getLocation();
-
-		ASPlayer thisPlayer = ASPlayerListener.playerMap.get(target
-			.getName());
-		thisPlayer.setGlued(!thisPlayer.isGlued());
-		if (thisPlayer.isGlued()) {
-		    target.teleport(glueLocation);
-		    thisPlayer.setGlueLocation(glueLocation);
-		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + ASCore.getPlayerName(target) + "' glued!");
-		    target.sendMessage(ChatColor.BLUE + "You are now glued!");
+		ASPlayer thisPlayer = ASPlayerListener.playerMap.get(target.getName());
+		boolean isGod = !thisPlayer.isGod();
+		ASPlayerListener.playerMap.get(target.getName()).setGod(isGod);
+		ASPlayerListener.playerMap.get(target.getName()).saveConfig(target.getName(), false, false, false, false, false, false, true);
+		if (isGod) {
+		    player.sendMessage(ChatColor.GRAY + "'" + ASCore.getPlayerName(target) +  "' is now a god.");
+		    target.sendMessage(ChatColor.GRAY + "Godmode enabled.");
 		} else {
-		    thisPlayer.setGlueLocation(null);
-		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + ASCore.getPlayerName(target) + "' is no longer glued!");
-		    target.sendMessage(ChatColor.BLUE
-			    + "You are no longer glued!");
+		    player.sendMessage(ChatColor.GRAY + "'" + ASCore.getPlayerName(target) +  "' is no longer a god.");
+		    target.sendMessage(ChatColor.GRAY + "Godmode disabled.");
 		}
-
-		thisPlayer.saveConfig(target.getName(), false, false,
-			false, true, false, false, false);
 	    }
 	} else {
 	    player.sendMessage(ChatColor.RED + "Player '" + args[0]

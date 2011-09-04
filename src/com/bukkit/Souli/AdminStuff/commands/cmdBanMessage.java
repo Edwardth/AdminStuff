@@ -62,7 +62,7 @@ public class cmdBanMessage extends ExtendedCommand {
 			.setBanned(true);
 		ASPlayerListener.playerMap.get(target.getName()).saveConfig(
 			target.getName(), false, false, false, false,
-			true, false);
+			true, false, false);
 
 		String message = "";
 		for (int i = 1; i < args.length; i++) {

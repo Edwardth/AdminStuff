@@ -61,7 +61,7 @@ public class cmdBan extends Command {
 			.setBanned(true);
 		ASPlayerListener.playerMap.get(target.getName()).saveConfig(
 			target.getName(), false, false, false, false,
-			true, false);
+			true, false, false);
 		String message = "You were banned.";
 		target.kickPlayer(message);
 		player.sendMessage(ChatColor.GRAY + "Player '"

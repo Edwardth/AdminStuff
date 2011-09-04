@@ -57,23 +57,25 @@ public class cmdNicknamePlayer extends Command {
 		    ASPlayerListener.playerMap.put(target.getName(),
 			    new ASPlayer());
 		}
-		
+
 		ASPlayerListener.playerMap.get(target.getName()).setNickname(
 			args[0]);
-		player.sendMessage(ChatColor.GRAY + "The nickname of '" + target.getName() + "' is now '"
-			+ args[0] + "'.");
+		player.sendMessage(ChatColor.GRAY + "The nickname of '"
+			+ target.getName() + "' is now '" + args[0] + "'.");
 		target.sendMessage(ChatColor.GRAY + "Your nickname is now '"
 			+ args[0] + "'.");
 		ASPlayerListener.playerMap.get(target.getName()).saveConfig(
-			target.getName(), false, false, false, false,
-			false, true);
+			target.getName(), false, false, false, false, false,
+			true, false);
 		ASPlayer.updateNick(target.getName(),
-			ASPlayerListener.playerMap.get(target.getName()).isAFK(),
-			ASPlayerListener.playerMap.get(target.getName()).isSlapped());		
-	    } else {
-		player.sendMessage(ChatColor.RED + "Player '" + args[1]
-			+ "' not found (or is not online!)");
+			ASPlayerListener.playerMap.get(target.getName())
+				.isAFK(),
+			ASPlayerListener.playerMap.get(target.getName())
+				.isSlapped());
 	    }
+	} else {
+	    player.sendMessage(ChatColor.RED + "Player '" + args[1]
+		    + "' not found (or is not online!)");
 	}
     }
 }
