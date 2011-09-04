@@ -149,6 +149,9 @@ public class ASCore extends JavaPlugin {
 	Map<String, ArrayList<String>> nodeList = (Map<String, ArrayList<String>>) config
 		.getProperty("kits");
 
+	if(nodeList == null)
+	    return;
+	
 	for (Map.Entry<String, ArrayList<String>> entry : nodeList.entrySet()) {
   	    ASKit thisKit = new ASKit();	        
 	    for (String part : entry.getValue()) {
