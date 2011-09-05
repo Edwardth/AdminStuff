@@ -26,8 +26,6 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
-import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdMe extends ExtendedCommand {
 
@@ -52,10 +50,7 @@ public class cmdMe extends ExtendedCommand {
 	}
 
 	// ADD PLAYER, IF NOT FOUND
-	if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
-	    ASPlayerListener.playerMap.put(player.getName(), new ASPlayer());
-	}
-
+	ASCore.getOrCreateASPlayer(player);
 	ASCore.getMCServer().broadcastMessage(
 		ChatColor.WHITE + " * " + ASCore.getPlayerName(player) + " " + message );
     }

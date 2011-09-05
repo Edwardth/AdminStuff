@@ -29,7 +29,6 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdChatAdd extends ExtendedCommand {
 
@@ -51,9 +50,7 @@ public class cmdChatAdd extends ExtendedCommand {
      */
     public void execute(String[] args, Player player) {
 	// ADD PLAYER, IF NOT FOUND
-	if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
-	    ASPlayerListener.playerMap.put(player.getName(), new ASPlayer());
-	}
+	ASPlayer thisASPlayer = ASCore.getOrCreateASPlayer(player);
 
 	// ADD RECIPIENTLIST
 	ArrayList<Player> recipientList = new ArrayList<Player>();
@@ -77,7 +74,7 @@ public class cmdChatAdd extends ExtendedCommand {
 	    if(i < recipientList.size() - 1)
 		list += ", ";
 	}
-	ASPlayerListener.playerMap.get(player.getName()).setRecipients(recList);
+	thisASPlayer.setRecipients(recList);
 	player.sendMessage(ChatColor.GRAY + "You are now sending messages only to: " + list);
     }
 }

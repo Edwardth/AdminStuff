@@ -25,12 +25,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
+import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdHideChat extends Command {
 
-    public cmdHideChat(String syntax, String arguments, String node, Server server) {
+    public cmdHideChat(String syntax, String arguments, String node,
+	    Server server) {
 	super(syntax, arguments, node, server);
     }
 
@@ -46,14 +47,10 @@ public class cmdHideChat extends Command {
      */
     public void execute(String[] args, Player player) {
 	// ADD PLAYER, IF NOT FOUND
-	if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
-	    ASPlayerListener.playerMap.put(player.getName(), new ASPlayer());
-	}
-	ASPlayer thisPlayer = ASPlayerListener.playerMap.get(player.getName());
+	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
 	boolean hide = !thisPlayer.isHideChat();
+	thisPlayer.setHideChat(hide);
 
-	ASPlayerListener.playerMap.get(player.getName()).setHideChat(hide);
-	
 	if (hide) {
 	    player.sendMessage(ChatColor.GRAY + "The chat is now hidden.");
 	} else {

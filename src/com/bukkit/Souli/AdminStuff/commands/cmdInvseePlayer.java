@@ -27,7 +27,6 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdInvseePlayer extends Command {
 
@@ -55,12 +54,7 @@ public class cmdInvseePlayer extends Command {
 	    }
 	    if (!target.isDead() && target.isOnline()) {
 		// ADD PLAYER, IF NOT FOUND
-		if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
-		    ASPlayerListener.playerMap.put(player.getName(),
-			    new ASPlayer());
-		}
-		ASPlayer thisPlayer = ASPlayerListener.playerMap.get(player
-			.getName());
+		ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
 
 		// SAVE INVENTORY
 		thisPlayer.saveInventory(player.getInventory());

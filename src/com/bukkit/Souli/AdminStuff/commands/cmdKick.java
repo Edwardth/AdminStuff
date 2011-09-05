@@ -26,8 +26,6 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
-import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdKick extends Command {
 
@@ -51,10 +49,7 @@ public class cmdKick extends Command {
 	if (target != null) {
 	    if (target.isOnline()) {
 		// ADD PLAYER, IF NOT FOUND
-		if (!ASPlayerListener.playerMap.containsKey(target.getName())) {
-		    ASPlayerListener.playerMap.put(target.getName(),
-			    new ASPlayer());
-		}
+		ASCore.getOrCreateASPlayer(target);
 
 		String message = "You were kicked.";
 		target.kickPlayer(message);

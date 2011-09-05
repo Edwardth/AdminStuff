@@ -94,7 +94,8 @@ public class CommandList {
 		new cmdGod("/god", "", "commands.admin.god", server),
 		new cmdGodPlayer("/god", "<Name>", "commands.admin.god", server),
 		new cmdHeal("/heal", "", "commands.admin.heal", server),
-		new cmdHealPlayer("/heal", "<Name>", "commands.admin.heal", server),
+		new cmdHealPlayer("/heal", "<Name>", "commands.admin.heal",
+			server),
 
 		// INVENTORY COMMANDS
 		new cmdClearInventory("/clearinventory", "",
@@ -110,6 +111,7 @@ public class CommandList {
 			"commands.admin.invsee", server),
 		new cmdFillChest("/fillchest", "<ItemID or Name>[:SubID]",
 			"commands.admin.fillchest", server),
+		new cmdStack("/stack", "", "commands.user.stack", server),
 
 		// MESSAGE COMMANDS
 		new cmdBroadcast("/broadcast", "<Message>",

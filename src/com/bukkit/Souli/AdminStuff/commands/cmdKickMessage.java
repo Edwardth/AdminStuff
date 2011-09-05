@@ -26,8 +26,6 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
-import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdKickMessage extends ExtendedCommand {
 
@@ -52,10 +50,7 @@ public class cmdKickMessage extends ExtendedCommand {
 	if (target != null) {
 	    if (target.isOnline()) {
 		// ADD PLAYER, IF NOT FOUND
-		if (!ASPlayerListener.playerMap.containsKey(target.getName())) {
-		    ASPlayerListener.playerMap.put(target.getName(),
-			    new ASPlayer());
-		}
+		ASCore.getOrCreateASPlayer(target);
 
 		String message = "";
 		for (int i = 1; i < args.length; i++) {

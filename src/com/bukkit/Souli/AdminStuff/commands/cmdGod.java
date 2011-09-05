@@ -25,8 +25,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
+import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdGod extends Command {
 
@@ -46,13 +46,10 @@ public class cmdGod extends Command {
      */
     public void execute(String[] args, Player player) {
 	// ADD PLAYER, IF NOT FOUND
-	if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
-	    ASPlayerListener.playerMap.put(player.getName(), new ASPlayer());
-	}
-	ASPlayer thisPlayer = ASPlayerListener.playerMap.get(player.getName());
+	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
 	boolean isGod = !thisPlayer.isGod();
-	ASPlayerListener.playerMap.get(player.getName()).setGod(isGod);
-	ASPlayerListener.playerMap.get(player.getName()).saveConfig(player.getName(), false, false, false, false, false, false, true);
+	thisPlayer.setGod(isGod);
+	thisPlayer.saveConfig(false, false, false, false, false, false, true);
 	if (isGod) {
 	    player.sendMessage(ChatColor.GRAY + "Godmode enabled.");
 	} else {

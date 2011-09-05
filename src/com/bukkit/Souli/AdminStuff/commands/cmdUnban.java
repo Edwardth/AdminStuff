@@ -30,7 +30,6 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdUnban extends Command {
 
@@ -50,25 +49,14 @@ public class cmdUnban extends Command {
      *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-	File playerFile = new File("plugins/AdminStuff/userdata/" + args[0]
-		+ ".yml");
+	File playerFile = new File("plugins/AdminStuff/userdata/"
+		+ args[0].toLowerCase() + ".yml");
 	if (playerFile.exists()) {
-	    if (ASPlayerListener.playerMap.containsKey(args[0])) {
-		ASPlayer unbanned = ASPlayerListener.playerMap.get(args[0]);
-		unbanned.setBanned(false);
-		unbanned.setTempBanned(false);
-		unbanned.setBanEndTime(0);
-		unbanned.saveConfig(args[0], false, false, false, false,
-			true, false, false);
-	    } else {
-		ASPlayer unbanned = new ASPlayer();
-		unbanned.loadConfig(args[0]);
-		unbanned.setBanned(false);
-		unbanned.setTempBanned(false);
-		unbanned.setBanEndTime(0);
-		unbanned.saveConfig(args[0], false, false, false, false,
-			true, false, false);
-	    }
+	    ASPlayer unbanned = ASCore.getOrCreateASPlayer(args[0]);
+	    unbanned.setBanned(false);
+	    unbanned.setTempBanned(false);
+	    unbanned.setBanEndTime(0);
+	    unbanned.saveConfig(false, false, false, false, true, false, false);
 	}
 	player.sendMessage(ChatColor.GRAY + "Player '" + args[0]
 		+ "' unbanned!");

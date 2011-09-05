@@ -24,10 +24,7 @@ package com.bukkit.Souli.AdminStuff.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
-
 import com.bukkit.Souli.AdminStuff.ASCore;
-import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdFlashPlayer extends Command {
 
@@ -51,11 +48,6 @@ public class cmdFlashPlayer extends Command {
 	Player target = ASCore.getPlayer(args[0]);
 	if (target != null) {
 	    if (!target.isDead() && target.isOnline()) {
-		// ADD PLAYER, IF NOT FOUND
-		if (!ASPlayerListener.playerMap.containsKey(target.getName())) {
-		    ASPlayerListener.playerMap.put(target.getName(),
-			    new ASPlayer());
-		}
 		target.getInventory().clear();
 		target.getWorld().strikeLightning(target.getLocation());
 		target.damage(100);

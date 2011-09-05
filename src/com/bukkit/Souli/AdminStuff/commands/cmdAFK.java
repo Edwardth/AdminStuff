@@ -27,7 +27,6 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdAFK extends Command {
 
@@ -47,18 +46,12 @@ public class cmdAFK extends Command {
      */
     public void execute(String[] args, Player player) {
 	// ADD PLAYER, IF NOT FOUND
-	if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
-	    ASPlayerListener.playerMap.put(player.getName(), new ASPlayer());
-	}
-	ASPlayer thisPlayer = ASPlayerListener.playerMap.get(player.getName());
+	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
 	boolean isAFK = !thisPlayer.isAFK();
-	boolean isSlapped = thisPlayer.isSlapped();
 
-	ASPlayerListener.playerMap.get(player.getName()).setAFK(isAFK);
-	ASPlayer.updateNick(player.getName(), isAFK, isSlapped);
-	ASPlayerListener.playerMap.get(player.getName()).saveConfig(
-		player.getName(), true, false, false, false, false, false,
-		false);
+	thisPlayer.setAFK(isAFK);
+	thisPlayer.saveConfig(true, false, false, false, false, false, false);
+	thisPlayer.updateNick();
 
 	if (isAFK) {
 	    ASCore.getMCServer().broadcastMessage(

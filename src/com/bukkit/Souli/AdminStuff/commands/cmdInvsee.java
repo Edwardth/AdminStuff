@@ -25,8 +25,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
+import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdInvsee extends Command {
 
@@ -45,10 +45,7 @@ public class cmdInvsee extends Command {
      * @param split
      */
     public void execute(String[] args, Player player) {
-	if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
-	    ASPlayerListener.playerMap.put(player.getName(), new ASPlayer());
-	}
-	ASPlayer thisPlayer = ASPlayerListener.playerMap.get(player.getName());
+	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
 	// CLEAR INVENTORY
 	player.getInventory().clear();
 	// RESTORE INVENTORY

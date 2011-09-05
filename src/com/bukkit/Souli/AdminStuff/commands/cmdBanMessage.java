@@ -28,7 +28,6 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdBanMessage extends ExtendedCommand {
 
@@ -53,16 +52,11 @@ public class cmdBanMessage extends ExtendedCommand {
 	if (target != null) {
 	    if (target.isOnline()) {
 		// ADD PLAYER, IF NOT FOUND
-		if (!ASPlayerListener.playerMap.containsKey(target.getName())) {
-		    ASPlayerListener.playerMap.put(target.getName(),
-			    new ASPlayer());
-		}
+		ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
 
-		ASPlayerListener.playerMap.get(target.getName())
-			.setBanned(true);
-		ASPlayerListener.playerMap.get(target.getName()).saveConfig(
-			target.getName(), false, false, false, false,
-			true, false, false);
+		thisTarget.setBanned(true);
+		thisTarget.saveConfig(false, false, false, false, true, false,
+			false);
 
 		String message = "";
 		for (int i = 1; i < args.length; i++) {

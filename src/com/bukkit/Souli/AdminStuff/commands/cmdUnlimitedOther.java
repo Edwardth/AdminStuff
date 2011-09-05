@@ -29,7 +29,6 @@ import org.bukkit.entity.Player;
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASItem;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 import com.gemo.utils.BlockUtils;
 
 public class cmdUnlimitedOther extends Command {
@@ -60,21 +59,17 @@ public class cmdUnlimitedOther extends Command {
 		    String ID = ASItem.getIDPart(args[0]);
 		    if (ASItem.isValid(ID, (byte) 0)) {
 			// ADD PLAYER, IF NOT FOUND
-			if (!ASPlayerListener.playerMap.containsKey(player
-				.getName())) {
-			    ASPlayerListener.playerMap.put(player.getName(),
-				    new ASPlayer());
-			}
+			ASPlayer thisTarget = ASCore
+				.getOrCreateASPlayer(target);
 
 			boolean result = false;
 			if (ASItem.isInteger(ID))
-			    result = ASPlayerListener.playerMap.get(
-				    player.getName()).toggleUnlimitedItem(
-				    Integer.valueOf(ID));
+			    result = thisTarget.toggleUnlimitedItem(Integer
+				    .valueOf(ID));
 			else
-			    result = ASPlayerListener.playerMap.get(
-				    player.getName()).toggleUnlimitedItem(
-				    ASItem.matList.get(ID.toLowerCase()));
+			    result = thisTarget
+				    .toggleUnlimitedItem(ASItem.matList.get(ID
+					    .toLowerCase()));
 
 			String matName = ID;
 			if (ASItem.isInteger(ID))
@@ -103,9 +98,8 @@ public class cmdUnlimitedOther extends Command {
 				    + "You do no longer have unlimited amount of '"
 				    + matName + "'.");
 			}
-			ASPlayerListener.playerMap.get(target.getName())
-				.saveConfig(target.getName(), false, false,
-					true, false, false, false, false);
+			thisTarget.saveConfig(false, false, true, false, false,
+				false, false);
 
 		    } else {
 			player.sendMessage(ChatColor.RED + "Item '" + args[0]

@@ -25,8 +25,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
+import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdChatDel extends Command {
 
@@ -47,12 +47,11 @@ public class cmdChatDel extends Command {
      */
     public void execute(String[] args, Player player) {
 	// ADD PLAYER, IF NOT FOUND
-	if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
-	    ASPlayerListener.playerMap.put(player.getName(), new ASPlayer());
-	}
+	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
 
 	// DELETE RECIPIENTLIST
-	ASPlayerListener.playerMap.get(player.getName()).setRecipients(null);
-	player.sendMessage(ChatColor.GRAY + "You are now sending messages everyone!");
+	thisPlayer.setRecipients(null);
+	player.sendMessage(ChatColor.GRAY
+		+ "You are now sending messages everyone!");
     }
 }

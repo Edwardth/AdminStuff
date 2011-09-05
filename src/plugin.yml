@@ -128,6 +128,10 @@ commands:
     description: Slap a player
     usage: /slap <Player>
     permission: adminstuff.commands.admin.slap
+  stack:
+    description: Stack your inventory
+    usage: /stack
+    permission: adminstuff.commands.user.stack
   tempban:
     description: Temporary ban a player
     usage: /tempban <Player> <Time>  

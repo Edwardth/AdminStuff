@@ -27,7 +27,6 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdReply extends ExtendedCommand {
 
@@ -47,23 +46,16 @@ public class cmdReply extends ExtendedCommand {
      */
     public void execute(String[] args, Player player) {
 	// ADD PLAYER, IF NOT FOUND
-	if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
-	    ASPlayerListener.playerMap.put(player.getName(), new ASPlayer());
-	}
-	
-	if(ASPlayerListener.playerMap.get(player.getName()).getLastSender() == null)
-	{
+	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+	if (thisPlayer.getLastSender() == null) {
 	    return;
 	}
-	
-	Player target = ASCore.getPlayer(ASPlayerListener.playerMap.get(player.getName()).getLastSender());
+
+	Player target = ASCore.getPlayer(thisPlayer.getLastSender());
 	if (target != null) {
 	    if (target.isOnline()) {
 		// ADD PLAYER, IF NOT FOUND
-		if (!ASPlayerListener.playerMap.containsKey(target.getName())) {
-		    ASPlayerListener.playerMap.put(target.getName(),
-			    new ASPlayer());
-		}
+		ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
 
 		String message = "";
 		for (int i = 0; i < args.length; i++) {
@@ -71,17 +63,18 @@ public class cmdReply extends ExtendedCommand {
 		}
 
 		player.sendMessage(ChatColor.GOLD + "[ me -> "
-			+ ASCore.getPlayerName(target) + " ] : " + ChatColor.GRAY + message);
-		target.sendMessage(ChatColor.GOLD + "[ " + ASCore.getPlayerName(player)
-			+ " -> me ] : " + ChatColor.GRAY + message);
+			+ ASCore.getPlayerName(target) + " ] : "
+			+ ChatColor.GRAY + message);
+		target.sendMessage(ChatColor.GOLD + "[ "
+			+ ASCore.getPlayerName(player) + " -> me ] : "
+			+ ChatColor.GRAY + message);
 
-		ASPlayerListener.playerMap.get(player.getName()).setLastSender(
-			target.getName());
-		ASPlayerListener.playerMap.get(target.getName()).setLastSender(
-			player.getName());
+		thisPlayer.setLastSender(target.getName());
+		thisTarget.setLastSender(player.getName());
 	    }
 	} else {
-	    player.sendMessage(ChatColor.RED + "Player '" + ASPlayerListener.playerMap.get(player.getName()).getLastSender()
+	    player.sendMessage(ChatColor.RED + "Player '"
+		    + thisPlayer.getLastSender()
 		    + "' not found (or is not online!)");
 	}
     }

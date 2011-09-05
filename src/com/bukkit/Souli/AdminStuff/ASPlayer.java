@@ -24,6 +24,7 @@ package com.bukkit.Souli.AdminStuff;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Location;
@@ -33,10 +34,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.config.Configuration;
 
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
-
 public class ASPlayer {
     private Map<Integer, ASItem> unlimitedList = new HashMap<Integer, ASItem>();
+    private String playerName = "";
     private boolean isAFK = false;
     private boolean isMuted = false;
     private boolean isGlued = false;
@@ -52,25 +52,30 @@ public class ASPlayer {
     private String nickname = "";
     private ItemStack[] invBackUp = new ItemStack[36];
 
-    public ASPlayer() {
+    public ASPlayer(String playerName) {
+	this.playerName = playerName;
+	this.loadConfig();
     }
-    
+
+    public ASPlayer(Player player) {
+	this.playerName = player.getName();
+	this.loadConfig();
+    }
+
     /**
      * IS RECIPIENT
      */
-    public boolean isRecipient(String playerName)
-    {
-	if(Recipients == null)
+    public boolean isRecipient(String playerName) {
+	if (Recipients == null)
 	    return false;
-    
-	for(String name : Recipients)
-	{
-	    if(name.equalsIgnoreCase(playerName))
+
+	for (String name : Recipients) {
+	    if (name.equalsIgnoreCase(playerName))
 		return true;
 	}
 	return false;
     }
-    
+
     /**
      * SAVE INVENTORY
      * 
@@ -86,16 +91,16 @@ public class ASPlayer {
 	    }
 	}
     }
-       
+
     /**
      * LOAD PLAYERCONFIG
      * 
      * @param playerName
      */
-    public void loadConfig(String playerName) {
+    public void loadConfig() {
 	new File("plugins/AdminStuff/userdata/").mkdirs();
 	Configuration config = new Configuration(new File(
-		"plugins/AdminStuff/userdata/" + playerName + ".yml"));
+		"plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml"));
 
 	config.load();
 	setGod(config.getBoolean("isGod", false));
@@ -106,6 +111,17 @@ public class ASPlayer {
 	setTempBanned(config.getBoolean("isTempBanned", false));
 	setBanEndTime(Long.valueOf(config.getString("banEndTime", "0")));
 	setNickname(config.getString("Nickname", ""));
+	
+	
+	// LOAD INFINITE ITEMS
+	List<Integer> newList = new ArrayList<Integer>();	
+	newList = config.getIntList("unlimited",  new ArrayList<Integer>());
+	for(int ItemID : newList)
+	{
+	    if(ASItem.isValid(ItemID))
+		this.toggleUnlimitedItem(ItemID);
+	}
+	
 	// LOAD GLUE
 	if (isGlued()) {
 	    World world = ASCore.getMCServer().getWorld(
@@ -127,12 +143,12 @@ public class ASPlayer {
     /**
      * SAVE PLAYERDATA TO A FILE
      */
-    public void saveConfig(String playerName, boolean saveAFK,
-	    boolean saveMute, boolean saveUnlimited, boolean saveGlue,
-	    boolean saveBan, boolean saveNick, boolean saveGod) {
+    public void saveConfig(boolean saveAFK, boolean saveMute,
+	    boolean saveUnlimited, boolean saveGlue, boolean saveBan,
+	    boolean saveNick, boolean saveGod) {
 	new File("plugins/AdminStuff/userdata/").mkdirs();
 	Configuration config = new Configuration(new File(
-		"plugins/AdminStuff/userdata/" + playerName + ".yml"));
+		"plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml"));
 	config.load();
 	if (saveBan) {
 	    config.setProperty("isBanned", isBanned);
@@ -151,7 +167,7 @@ public class ASPlayer {
 	    config.setProperty("isMuted", isMuted);
 
 	if (saveUnlimited) {
-	    ArrayList<Integer> list = new ArrayList<Integer>();
+	    List<Integer> list = new ArrayList<Integer>();
 	    for (int val : unlimitedList.keySet())
 		list.add(val);
 	    config.setProperty("unlimited", list);
@@ -169,11 +185,11 @@ public class ASPlayer {
 			.getName());
 	    }
 	}
-	
+
 	if (saveGod) {
 	    config.setProperty("isGod", isGod);
 	}
-	
+
 	config.save();
     }
 
@@ -270,17 +286,14 @@ public class ASPlayer {
      * @param playerName
      * @param isAFK
      */
-    public static void updateNick(String playerName, boolean isAFK,
-	    boolean isSlapped) {
+    public void updateNick() {
 	Player player = ASCore.getPlayer(playerName);
 	if (player == null)
 	    return;
 
-	ASPlayer thisPlayer = ASPlayerListener.playerMap.get(player.getName());
-
-	String nick = player.getName();
-	if (!thisPlayer.getNickname().equalsIgnoreCase("")) {
-	    nick = thisPlayer.getNickname();
+	String nick = ASCore.getPlayerName(player);
+	if (!getNickname().equalsIgnoreCase("")) {
+	    nick = getNickname();
 	}
 	nick = nick.replace("[AFK] ", "").replace(" was fished!", "");
 	if (isAFK)
@@ -447,27 +460,29 @@ public class ASPlayer {
      * @return the hideChat
      */
     public boolean isHideChat() {
-        return hideChat;
+	return hideChat;
     }
 
     /**
-     * @param hideChat the hideChat to set
+     * @param hideChat
+     *            the hideChat to set
      */
     public void setHideChat(boolean hideChat) {
-        this.hideChat = hideChat;
+	this.hideChat = hideChat;
     }
 
     /**
      * @return the isGod
      */
     public boolean isGod() {
-        return isGod;
+	return isGod;
     }
 
     /**
-     * @param isGod the isGod to set
+     * @param isGod
+     *            the isGod to set
      */
     public void setGod(boolean isGod) {
-        this.isGod = isGod;
+	this.isGod = isGod;
     }
 }

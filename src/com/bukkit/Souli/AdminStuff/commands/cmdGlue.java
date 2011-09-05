@@ -27,7 +27,6 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdGlue extends Command {
 
@@ -51,13 +50,7 @@ public class cmdGlue extends Command {
 	if (target != null) {
 	    if (!target.isDead() && target.isOnline()) {
 		// ADD PLAYER, IF NOT FOUND
-		if (!ASPlayerListener.playerMap.containsKey(target.getName())) {
-		    ASPlayerListener.playerMap.put(target.getName(),
-			    new ASPlayer());
-		}
-
-		ASPlayer thisPlayer = ASPlayerListener.playerMap.get(target
-			.getName());
+		ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(target);
 		thisPlayer.setGlued(!thisPlayer.isGlued());
 		if (thisPlayer.isGlued()) {
 		    thisPlayer.setGlueLocation(target.getLocation());
@@ -72,7 +65,7 @@ public class cmdGlue extends Command {
 			    + "You are no longer glued!");
 		}
 
-		thisPlayer.saveConfig(target.getName(), false, false,
+		thisPlayer.saveConfig(false, false,
 			false, true, false, false, false);
 	    }
 	} else {

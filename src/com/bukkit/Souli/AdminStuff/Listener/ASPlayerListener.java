@@ -50,7 +50,7 @@ import com.gemo.utils.BlockUtils;
 import com.gemo.utils.UtilPermissions;
 
 public class ASPlayerListener extends PlayerListener {
-    public static Map<String, ASPlayer> playerMap = new TreeMap<String, ASPlayer>();
+    private static Map<String, ASPlayer> playerMap = new TreeMap<String, ASPlayer>();
     public static Map<String, ItemStack> queuedFillChest = new TreeMap<String, ItemStack>();
 
     /**
@@ -64,16 +64,11 @@ public class ASPlayerListener extends PlayerListener {
 	    return;
 
 	// ADD PLAYER, IF NOT FOUND
-	Player player = event.getPlayer();
-	if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
-	    ASPlayerListener.playerMap.put(player.getName(), new ASPlayer());
-	    return;
-	}
+	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(event.getPlayer());
 
 	// IS PLAYER GLUED = RETURN TO GLUELOCATION
-	if (ASPlayerListener.playerMap.get(player.getName()).isGlued()) {
-	    event.setTo(ASPlayerListener.playerMap.get(player.getName())
-		    .getGlueLocation());
+	if (thisPlayer.isGlued() && thisPlayer.getGlueLocation() != null) {
+	    event.setTo(thisPlayer.getGlueLocation());
 	}
     }
 
@@ -84,26 +79,16 @@ public class ASPlayerListener extends PlayerListener {
      */
     @Override
     public void onPlayerJoin(PlayerJoinEvent event) {
-	if (!playerMap.containsKey(event.getPlayer().getName())) {
-	    playerMap.put(event.getPlayer().getName(), new ASPlayer());
-	}
-
-	// LOAD USERCONFIG
-	playerMap.get(event.getPlayer().getName()).loadConfig(
-		event.getPlayer().getName());
+	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(event.getPlayer());
 
 	// IS USER TEMPBANNED?
-	if (playerMap.get(event.getPlayer().getName()).isTempBanned()) {
-	    long endTime = playerMap.get(event.getPlayer().getName())
-		    .getBanEndTime();
+	if (thisPlayer.isTempBanned()) {
+	    long endTime = thisPlayer.getBanEndTime();
 	    if (endTime < System.currentTimeMillis()) {
-		ASPlayerListener.playerMap.get(event.getPlayer().getName())
-			.setTempBanned(false);
-		ASPlayerListener.playerMap.get(event.getPlayer().getName())
-			.setBanEndTime(0);
-		ASPlayerListener.playerMap.get(event.getPlayer().getName())
-			.saveConfig(event.getPlayer().getName(), false, false,
-				false, false, true, false, false);
+		thisPlayer.setTempBanned(false);
+		thisPlayer.setBanEndTime(0);
+		thisPlayer.saveConfig(false, false, false, false, true, false,
+			false);
 		return;
 	    } else {
 		Date newDate = new Date(endTime + 1000);
@@ -115,9 +100,7 @@ public class ASPlayerListener extends PlayerListener {
 	}
 
 	// UPDATE NICK
-	ASPlayer.updateNick(event.getPlayer().getName(),
-		playerMap.get(event.getPlayer().getName()).isAFK(), playerMap
-			.get(event.getPlayer().getName()).isSlapped());
+	thisPlayer.updateNick();
     }
 
     /**
@@ -129,9 +112,7 @@ public class ASPlayerListener extends PlayerListener {
     public void onPlayerKick(PlayerKickEvent event) {
 	if (event.isCancelled())
 	    return;
-	if (playerMap.containsKey(event.getPlayer().getName())) {
-	    playerMap.remove(event.getPlayer().getName());
-	}
+	playerMap.remove(event.getPlayer().getName().toLowerCase());
     }
 
     /**
@@ -141,9 +122,7 @@ public class ASPlayerListener extends PlayerListener {
      */
     @Override
     public void onPlayerQuit(PlayerQuitEvent event) {
-	if (playerMap.containsKey(event.getPlayer().getName())) {
-	    playerMap.remove(event.getPlayer().getName());
-	}
+	playerMap.remove(event.getPlayer().getName().toLowerCase());
     }
 
     /**
@@ -153,9 +132,6 @@ public class ASPlayerListener extends PlayerListener {
      */
     @Override
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-	if (!playerMap.containsKey(event.getPlayer().getName())) {
-	    playerMap.put(event.getPlayer().getName(), new ASPlayer());
-	}
 	// TELEPORT TO WORLDSPAWN
 	Location loc = ASSpawn
 		.getSpawn(ASCore.getMCServer().getWorlds().get(0));
@@ -244,11 +220,7 @@ public class ASPlayerListener extends PlayerListener {
      */
     @Override
     public void onPlayerChat(PlayerChatEvent event) {
-	if (!playerMap.containsKey(event.getPlayer().getName())) {
-	    playerMap.put(event.getPlayer().getName(), new ASPlayer());
-	}
-	ASPlayer thisPlayer = playerMap.get(event.getPlayer().getName());
-
+	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(event.getPlayer());
 	String nick = ASCore.getPlayerName(event.getPlayer());
 
 	// PLAYER IS MUTED = ONLY ADMINS/MODS RECEIVE A MESSAGE
@@ -304,7 +276,7 @@ public class ASPlayerListener extends PlayerListener {
 
 	// CHAT IS HIDDEN = ONLY RECEIVE MESSAGES FROM OTHER PREDEFINED PLAYERS
 	Iterator<Player> it = event.getRecipients().iterator();
-	while(it.hasNext()) {
+	while (it.hasNext()) {
 	    Player nextPlayer = it.next();
 	    if (nextPlayer.getName().equalsIgnoreCase(
 		    event.getPlayer().getName()))
@@ -319,6 +291,21 @@ public class ASPlayerListener extends PlayerListener {
 		}
 	    }
 	}
+    }
+
+    /**
+     * @return the playerMap
+     */
+    public static Map<String, ASPlayer> getPlayerMap() {
+	return playerMap;
+    }
+
+    /**
+     * @param playerMap
+     *            the playerMap to set
+     */
+    public static void setPlayerMap(Map<String, ASPlayer> playerMap) {
+	ASPlayerListener.playerMap = playerMap;
     }
 
 }

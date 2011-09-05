@@ -54,7 +54,7 @@ public class cmdINoAmount extends Command {
 		if (ASItem.isValid(ID, Data)) {			
 			ItemStack item = ASItem.getItemStack(ID, Data, amount);
 			player.getInventory().addItem(item);
-			player.sendMessage(ChatColor.YELLOW + "Giving you " + amount + " of " + Material.getMaterial(item.getTypeId()) + ((Data > 0) ? (":" + Data) : ""));
+			player.sendMessage(ChatColor.GRAY + "Giving you " + amount + " of " + Material.getMaterial(item.getTypeId()) + ((Data > 0) ? (":" + Data) : ""));
 		} else {
 			player.sendMessage(ChatColor.RED + "Item '" + args[0]
 					+ "' not found!");

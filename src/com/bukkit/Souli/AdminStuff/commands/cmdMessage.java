@@ -27,7 +27,6 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdMessage extends ExtendedCommand {
 
@@ -52,15 +51,8 @@ public class cmdMessage extends ExtendedCommand {
 	if (target != null) {
 	    if (target.isOnline()) {
 		// ADD PLAYER, IF NOT FOUND
-		if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
-		    ASPlayerListener.playerMap.put(player.getName(),
-			    new ASPlayer());
-		}
-		// ADD PLAYER, IF NOT FOUND
-		if (!ASPlayerListener.playerMap.containsKey(target.getName())) {
-		    ASPlayerListener.playerMap.put(target.getName(),
-			    new ASPlayer());
-		}
+		ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+		ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
 		
 		String message = "";
 		for(int i = 1; i < args.length; i++)
@@ -71,8 +63,8 @@ public class cmdMessage extends ExtendedCommand {
 		player.sendMessage(ChatColor.GOLD + "[ me -> " + ASCore.getPlayerName(target) + " ] : " + ChatColor.GRAY + message);
 		target.sendMessage(ChatColor.GOLD + "[ " + ASCore.getPlayerName(player) + " -> me ] : " + ChatColor.GRAY + message);
 		
-		ASPlayerListener.playerMap.get(player.getName()).setLastSender(target.getName());
-		ASPlayerListener.playerMap.get(target.getName()).setLastSender(player.getName());
+		thisPlayer.setLastSender(target.getName());
+		thisTarget.setLastSender(player.getName());
 	    }
 	} else {
 	    player.sendMessage(ChatColor.RED + "Player '" + args[0]

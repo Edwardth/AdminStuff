@@ -82,10 +82,7 @@ public class ASCore extends JavaPlugin {
 	    new CommandList(getServer());
 
 	    for (Player player : getServer().getOnlinePlayers()) {
-		ASPlayerListener.playerMap
-			.put(player.getName(), new ASPlayer());
-		ASPlayerListener.playerMap.get(player.getName()).loadConfig(
-			player.getName());
+		ASCore.getOrCreateASPlayer(player);
 	    }
 	    getServer().getPluginManager().registerEvent(
 		    Event.Type.BLOCK_PLACE, bListener, Event.Priority.Monitor,
@@ -258,5 +255,21 @@ public class ASCore extends JavaPlugin {
      */
     public static Server getMCServer() {
 	return ASCore.server;
+    }
+    
+    public static ASPlayer getOrCreateASPlayer(Player player)
+    {
+	return getOrCreateASPlayer(player.getName());
+    }
+    
+    public static ASPlayer getOrCreateASPlayer(String playerName)
+    {
+	ASPlayer result = ASPlayerListener.getPlayerMap().get(playerName.toLowerCase());	
+	if(result == null)
+	{
+	    result = new ASPlayer(playerName);
+	    ASPlayerListener.getPlayerMap().put(playerName.toLowerCase(), result);
+	}
+	return result;
     }
 }

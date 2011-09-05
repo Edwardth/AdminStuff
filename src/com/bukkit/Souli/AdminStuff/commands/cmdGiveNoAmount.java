@@ -58,10 +58,10 @@ public class cmdGiveNoAmount extends Command {
 	    if (ASItem.isValid(ID, Data)) {
 		ItemStack item = ASItem.getItemStack(ID, Data, amount);
 		target.getInventory().addItem(item);
-		player.sendMessage(ChatColor.YELLOW + "Giving '" + ASCore.getPlayerName(target) + "' " + amount
+		player.sendMessage(ChatColor.GRAY + "Giving '" + ASCore.getPlayerName(target) + "' " + amount
 			+ " of " + Material.getMaterial(item.getTypeId())
 			+ ((Data > 0) ? (":" + Data) : ""));
-		target.sendMessage(ChatColor.YELLOW + "Giving you " + amount
+		target.sendMessage(ChatColor.GRAY + "Giving you " + amount
 			+ " of " + Material.getMaterial(item.getTypeId())
 			+ ((Data > 0) ? (":" + Data) : ""));
 	    } else {

@@ -27,7 +27,6 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdMutePlayer extends Command {
 
@@ -52,25 +51,20 @@ public class cmdMutePlayer extends Command {
 	if (target != null) {
 	    if (target.isOnline()) {
 		// ADD PLAYER, IF NOT FOUND
-		if (!ASPlayerListener.playerMap.containsKey(target.getName())) {
-		    ASPlayerListener.playerMap.put(target.getName(),
-			    new ASPlayer());
-		}
-		ASPlayerListener.playerMap.get(target.getName()).setMuted(
-			!ASPlayerListener.playerMap.get(target.getName())
-				.isMuted());
+		ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
+		thisTarget.setMuted(!thisTarget.isMuted());
 
-		if (ASPlayerListener.playerMap.get(target.getName()).isMuted()) {
+		if (thisTarget.isMuted()) {
 		    player.sendMessage(ChatColor.GRAY + "Player '"
 			    + ASCore.getPlayerName(target) + "' is now muted!");
-		    } else {
+		} else {
 		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + ASCore.getPlayerName(target) + "' is no longer muted!");
+			    + ASCore.getPlayerName(target)
+			    + "' is no longer muted!");
 		}
 
-		ASPlayerListener.playerMap.get(target.getName()).saveConfig(
-			target.getName(), false, true, false, false,
-			false, false, false);
+		thisTarget.saveConfig(false, true, false, false, false, false,
+			false);
 	    }
 	} else {
 	    player.sendMessage(ChatColor.RED + "Player '" + args[0]

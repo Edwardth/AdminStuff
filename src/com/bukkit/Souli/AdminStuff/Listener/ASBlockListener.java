@@ -25,6 +25,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
+import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASPlayer;
+
 public class ASBlockListener extends BlockListener {
 
     /**
@@ -38,7 +41,8 @@ public class ASBlockListener extends BlockListener {
 	    return;
 
 	Player player = event.getPlayer();
-	if (ASPlayerListener.playerMap.get(player.getName()).hasUnlimitedItem(
+	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+	if (thisPlayer.hasUnlimitedItem(
 		event.getBlockPlaced().getTypeId())) {
 	    player.getItemInHand().setAmount(
 		    player.getItemInHand().getAmount() + 1);

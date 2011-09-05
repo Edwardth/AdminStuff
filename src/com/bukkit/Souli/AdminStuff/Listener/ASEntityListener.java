@@ -24,6 +24,8 @@ package com.bukkit.Souli.AdminStuff.Listener;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityListener;
+
+import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class ASEntityListener extends EntityListener {
@@ -43,13 +45,10 @@ public class ASEntityListener extends EntityListener {
 
 	// ADD PLAYER, IF NOT FOUND
 	Player player = (Player) event.getEntity();
-	if (!ASPlayerListener.playerMap.containsKey(player.getName())) {
-	    ASPlayerListener.playerMap.put(player.getName(), new ASPlayer());
-	    return;
-	}
+	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
 
-	// IS PLAYER GLUED = RETURN TO GLUELOCATION
-	if (ASPlayerListener.playerMap.get(player.getName()).isGod()) {
+	// IS PLAYER GOD = NO DAMAGE
+	if (thisPlayer.isGod()) {
 	    event.setDamage(0);
 	    event.setCancelled(true);
 	    return;
