@@ -26,6 +26,8 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.bukkit.Souli.AdminStuff.ASItem;
+
 public class cmdStack extends Command {
 
     public cmdStack(String syntax, String arguments, String node, Server server) {
@@ -53,14 +55,11 @@ public class cmdStack extends Command {
 	    }
 	}
 
-	// CLEAR INVENTORY
-	player.getInventory().clear();
-
 	// STACK ITEMS
 	for (int i = 0; i < old.length; i++) {
 	    if (old[i] != null) {
 		if (old[i].getTypeId() > 0) {
-		    int restOpen = old[i].getMaxStackSize()
+		    int restOpen = ASItem.getMaxStackSize(old[i].getType())
 			    - old[i].getAmount();
 		    if(restOpen < 0)
 			restOpen = 0;
@@ -88,12 +87,15 @@ public class cmdStack extends Command {
 		}
 	    }
 	}
+	
+	// CLEAR INVENTORY
+	player.getInventory().clear();
 
 	// REWRITE ITEMS
 	for (int i = 0; i < old.length; i++) {
 	    if (old[i] != null) {
 		if (old[i].getTypeId() > 0) {
-		    player.getInventory().addItem(old[i]);
+		    player.getInventory().setItem(i, old[i]);
 		}
 	    }
 	}
