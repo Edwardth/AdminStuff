@@ -45,61 +45,56 @@ public class cmdStack extends Command {
      * @param split
      */
     public void execute(String[] args, Player player) {
-	ItemStack[] old = new ItemStack[36];
-	// SAVE INVENTORY
-	for (int i = 0; i < player.getInventory().getSize(); i++) {
-	    if (player.getInventory().getItem(i) != null) {
-		if (player.getInventory().getItem(i).getTypeId() > 0) {
-		    old[i] = player.getInventory().getItem(i).clone();
-		}
+	ItemStack[] items = player.getInventory().getContents();
+	int len = items.length;
+
+	int affected = 0;
+
+	for (int i = 0; i < len; i++) {
+	    ItemStack item = items[i];
+
+	    if ((item == null) || (item.getAmount() <= 0)
+		    || ASItem.getMaxStackSize(item.getType()) == 1) {
+		continue;
 	    }
-	}
 
-	// STACK ITEMS
-	for (int i = 0; i < old.length; i++) {
-	    if (old[i] != null) {
-		if (old[i].getTypeId() > 0) {
-		    int restOpen = ASItem.getMaxStackSize(old[i].getType())
-			    - old[i].getAmount();
-		    if(restOpen < 0)
-			restOpen = 0;
+	    if ((item.getTypeId() >= 325) && (item.getTypeId() <= 327)) {
+		continue;
+	    }
+	    if (item.getAmount() < 64) {
+		int needed = 64 - item.getAmount();
 
-		    for (int j = i + 1; j < old.length; j++) {
-			if (old[j] != null) {
-			    if (old[j].getTypeId() > 0) {
-				if (old[i].getTypeId() == old[j].getTypeId()
-					&& old[i].getDurability() == old[j]
-						.getDurability()) {
-				    int canPlace = Math.min(restOpen,
-					    old[j].getAmount());
-				    old[i].setAmount(old[i].getAmount()
-					    + canPlace);
+		for (int j = i + 1; j < len; j++) {
+		    ItemStack item2 = items[j];
 
-				    if (old[j].getAmount() - canPlace > 0)
-					old[j].setAmount(old[j].getAmount()
-						- canPlace);
-				    else
-					old[j] = null;
-				}
-			    }
-			}
+		    if ((item2 == null) || (item2.getAmount() <= 0)
+			    || ASItem.getMaxStackSize(item.getType()) == 1) {
+			continue;
 		    }
-		}
-	    }
-	}
-	
-	// CLEAR INVENTORY
-	player.getInventory().clear();
 
-	// REWRITE ITEMS
-	for (int i = 0; i < old.length; i++) {
-	    if (old[i] != null) {
-		if (old[i].getTypeId() > 0) {
-		    player.getInventory().setItem(i, old[i]);
+		    if (item2.getTypeId() != item.getTypeId() || item.getDurability() != item2.getDurability()) {
+			continue;
+		    }
+		    if (item2.getAmount() > needed) {
+			item.setAmount(64);
+			item2.setAmount(item2.getAmount() - needed);
+			break;
+		    }
+
+		    items[j] = null;
+		    item.setAmount(item.getAmount() + item2.getAmount());
+		    needed = 64 - item.getAmount();
+
+		    affected++;
 		}
 	    }
+
 	}
-	
+
+	if (affected > 0) {
+	    player.getInventory().setContents(items);
+	}
+
 	player.sendMessage(ChatColor.GRAY + "Items stacked.");
     }
 }
