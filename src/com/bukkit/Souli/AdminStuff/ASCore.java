@@ -21,12 +21,15 @@
 
 package com.bukkit.Souli.AdminStuff;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -41,6 +44,7 @@ import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 import com.bukkit.Souli.AdminStuff.commands.CommandList;
 
 public class ASCore extends JavaPlugin {
+
     /** GLOBAL VARS */
     public static LogUnit log = null;
     private String pluginName = "";
@@ -51,8 +55,36 @@ public class ASCore extends JavaPlugin {
     private ASBlockListener bListener;
     private ASEntityListener eListener;
     private ASPlayerListener pListener;
-    
+
     public static HashMap<String, ASKit> kitList = new HashMap<String, ASKit>();
+    public static HashMap<String, Integer> bannedPlayers = new HashMap<String, Integer>();
+
+    public static void loadBannedPlayers() {
+	File file = new File("banned-players.txt");
+	BufferedReader reader = null;
+
+	try {
+	    reader = new BufferedReader(new FileReader(file));
+	    String text = null;
+
+	    // repeat until all lines is read
+	    while ((text = reader.readLine()) != null) {
+		bannedPlayers.put(text.replace(" ", "").replace("\r\n", "").toLowerCase(), 0);
+	    }
+	} catch (FileNotFoundException e) {
+	    e.printStackTrace();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	} finally {
+	    try {
+		if (reader != null) {
+		    reader.close();
+		}
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
+	}
+    }
 
     /**
      * ON DISABLE
@@ -74,6 +106,7 @@ public class ASCore extends JavaPlugin {
 
 	boolean error = false;
 	try {
+	    loadBannedPlayers();
 	    ASSpawn.loadAllSpawns();
 
 	    bListener = new ASBlockListener();
@@ -146,33 +179,30 @@ public class ASCore extends JavaPlugin {
 	Map<String, ArrayList<String>> nodeList = (Map<String, ArrayList<String>>) config
 		.getProperty("kits");
 
-	if(nodeList == null)
+	if (nodeList == null)
 	    return;
-	
+
 	for (Map.Entry<String, ArrayList<String>> entry : nodeList.entrySet()) {
-  	    ASKit thisKit = new ASKit();	        
+	    ASKit thisKit = new ASKit();
 	    for (String part : entry.getValue()) {
-		try {		    
+		try {
 		    String[] split = part.split(" ");
-		    
-		    int TypeID 	= 0;
-		    byte Data   = 0;
-		    int Amount	= 1;
-		    
-		    String[] itemSplit = split[0].split(":");		    
-		    if(split.length > 1)
-		    {
+
+		    int TypeID = 0;
+		    byte Data = 0;
+		    int Amount = 1;
+
+		    String[] itemSplit = split[0].split(":");
+		    if (split.length > 1) {
 			Amount = Integer.valueOf(split[1]);
 		    }
-		    
+
 		    TypeID = Integer.valueOf(itemSplit[0]);
-		    if(itemSplit.length > 1)
-		    {
+		    if (itemSplit.length > 1) {
 			Data = Byte.valueOf(itemSplit[1]);
 		    }
-		    
-		    if(ASItem.isValid(TypeID, Data))			
-		    {
+
+		    if (ASItem.isValid(TypeID, Data)) {
 			ItemStack item = new ItemStack(TypeID);
 			item.setAmount(Amount);
 			item.setDurability(Data);
@@ -182,7 +212,7 @@ public class ASCore extends JavaPlugin {
 		}
 	    }
 	    kitList.put(entry.getKey().toLowerCase(), thisKit);
-	    }
+	}
     }
 
     /**
@@ -256,19 +286,18 @@ public class ASCore extends JavaPlugin {
     public static Server getMCServer() {
 	return ASCore.server;
     }
-    
-    public static ASPlayer getOrCreateASPlayer(Player player)
-    {
+
+    public static ASPlayer getOrCreateASPlayer(Player player) {
 	return getOrCreateASPlayer(player.getName());
     }
-    
-    public static ASPlayer getOrCreateASPlayer(String playerName)
-    {
-	ASPlayer result = ASPlayerListener.getPlayerMap().get(playerName.toLowerCase());	
-	if(result == null)
-	{
+
+    public static ASPlayer getOrCreateASPlayer(String playerName) {
+	ASPlayer result = ASPlayerListener.getPlayerMap().get(
+		playerName.toLowerCase());
+	if (result == null) {
 	    result = new ASPlayer(playerName);
-	    ASPlayerListener.getPlayerMap().put(playerName.toLowerCase(), result);
+	    ASPlayerListener.getPlayerMap().put(playerName.toLowerCase(),
+		    result);
 	}
 	return result;
     }

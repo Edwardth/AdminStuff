@@ -81,6 +81,18 @@ public class ASPlayerListener extends PlayerListener {
     public void onPlayerJoin(PlayerJoinEvent event) {
 	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(event.getPlayer());
 
+	// IS USER BANNED IN TXT?
+	if (ASCore.bannedPlayers.containsKey(event.getPlayer().getName().toLowerCase())) {
+	    event.getPlayer().kickPlayer("You are banned!");
+	    return;
+	}
+
+	// IS USER BANNED?
+	if (thisPlayer.isBanned()) {
+	    event.getPlayer().kickPlayer("You are banned!");
+	    return;
+	}
+
 	// IS USER TEMPBANNED?
 	if (thisPlayer.isTempBanned()) {
 	    long endTime = thisPlayer.getBanEndTime();
