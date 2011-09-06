@@ -35,6 +35,7 @@ public class cmdInvseePlayer extends Command {
 	super(syntax, arguments, node, server);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     /**
      * Representing the command <br>
@@ -70,7 +71,7 @@ public class cmdInvseePlayer extends Command {
 				target.getInventory().getItem(i).clone());
 		    }
 		}
-
+		player.updateInventory();		
 		player.sendMessage(ChatColor.GRAY
 			+ "Showing you the inventory of '"
 			+ ASCore.getPlayerName(target) + "'!");

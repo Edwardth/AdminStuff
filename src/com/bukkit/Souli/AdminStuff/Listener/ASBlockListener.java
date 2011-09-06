@@ -35,6 +35,7 @@ public class ASBlockListener extends BlockListener {
      * ON BLOCK PLACE
      * 
      */
+    @SuppressWarnings("deprecation")
     @Override
     public void onBlockPlace(BlockPlaceEvent event) {
 	if (event.isCancelled())
@@ -46,6 +47,7 @@ public class ASBlockListener extends BlockListener {
 		event.getBlockPlaced().getTypeId())) {
 	    player.getItemInHand().setAmount(
 		    player.getItemInHand().getAmount() + 1);
+	    player.updateInventory();
 	}
     }
 

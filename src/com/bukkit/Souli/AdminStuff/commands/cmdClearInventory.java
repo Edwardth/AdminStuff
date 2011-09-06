@@ -32,6 +32,7 @@ public class cmdClearInventory extends Command {
 		super(syntax, arguments, node, server);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	/**
 	 * Representing the command <br>
@@ -44,6 +45,7 @@ public class cmdClearInventory extends Command {
 	 */
 	public void execute(String[] args, Player player) {
 		player.getInventory().clear();
+		player.updateInventory();
 		player.sendMessage(ChatColor.GRAY + "Inventory cleared!");
 	}
 }

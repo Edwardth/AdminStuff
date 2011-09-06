@@ -34,6 +34,7 @@ public class cmdClearInventoryOther extends Command {
 		super(syntax, arguments, node, server);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	/**
 	 * Representing the command <br>
@@ -52,6 +53,7 @@ public class cmdClearInventoryOther extends Command {
 			if(!target.isDead() && target.isOnline())
 			{
 				target.getInventory().clear();
+				target.updateInventory();
 				player.sendMessage(ChatColor.GRAY + "Inventory of '" + ASCore.getPlayerName(target) + "' cleared!");
 				target.sendMessage(ChatColor.GRAY + "Your inventory got cleared!");
 			}

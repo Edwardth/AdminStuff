@@ -37,6 +37,7 @@ public class cmdGiveNoAmount extends Command {
 	super(syntax, arguments, node, server);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     /**
      * Representing the command <br>
@@ -58,6 +59,7 @@ public class cmdGiveNoAmount extends Command {
 	    if (ASItem.isValid(ID, Data)) {
 		ItemStack item = ASItem.getItemStack(ID, Data, amount);
 		target.getInventory().addItem(item);
+		player.updateInventory();
 		player.sendMessage(ChatColor.GRAY + "Giving '" + ASCore.getPlayerName(target) + "' " + amount
 			+ " of " + Material.getMaterial(item.getTypeId())
 			+ ((Data > 0) ? (":" + Data) : ""));

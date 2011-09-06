@@ -34,6 +34,7 @@ public class cmdInvsee extends Command {
 	super(syntax, arguments, node, server);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     /**
      * Representing the command <br>
@@ -53,6 +54,7 @@ public class cmdInvsee extends Command {
 	    if (thisPlayer.getInvBackUp()[i] != null && thisPlayer.getInvBackUp()[i].getTypeId() > 0)
 		player.getInventory().setItem(i, thisPlayer.getInvBackUp()[i].clone());
 	}
+	player.updateInventory();
 	player.sendMessage(ChatColor.GRAY + "Restoring your inventory!");
 
     }

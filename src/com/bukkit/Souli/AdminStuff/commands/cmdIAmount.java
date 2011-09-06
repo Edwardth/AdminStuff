@@ -31,46 +31,48 @@ import com.bukkit.Souli.AdminStuff.ASItem;
 
 public class cmdIAmount extends Command {
 
-	public cmdIAmount(String syntax, String arguments, String node,
-			Server server) {
-		super(syntax, arguments, node, server);
-	}
+    public cmdIAmount(String syntax, String arguments, String node,
+	    Server server) {
+	super(syntax, arguments, node, server);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /i <ItemID or Name>[:SubID] <Amount> <br>
-	 * This gives the player a specified itemstack
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 *            split[0] is the item name
-	 *            split[1] is the itemamount
-	 */
-	public void execute(String[] args, Player player) {
-		try {
-			String ID = ASItem.getIDPart(args[0]);
-			int amount = Integer.valueOf(args[1]);
-			if (amount < 0)
-				amount = 1;
-			byte Data = ASItem.getDataPart(args[0]);
-			if (ASItem.isValid(ID, Data)) {
-				ItemStack item = ASItem.getItemStack(ID, Data, amount);
-				player.getInventory().addItem(item);
-				player.sendMessage(ChatColor.GRAY + "Giving you " + amount
-						+ " of " + Material.getMaterial(item.getTypeId())
-						+ ((Data > 0) ? (":" + Data) : ""));
-			} else {
-				player.sendMessage(ChatColor.RED + "Item '" + args[0]
-						+ "' not found!");
-				player.sendMessage(ChatColor.GRAY + this.getSyntax() + " "
-						+ this.getArguments());
-			}
-		} catch (Exception e) {
-			player.sendMessage(ChatColor.RED + "Wrong Syntax!");
-			player.sendMessage(ChatColor.GRAY + this.getSyntax() + " "
-					+ this.getArguments());
-		}
+    @SuppressWarnings("deprecation")
+    @Override
+    /**
+     * Representing the command <br>
+     * /i <ItemID or Name>[:SubID] <Amount> <br>
+     * This gives the player a specified itemstack
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     *            split[0] is the item name
+     *            split[1] is the itemamount
+     */
+    public void execute(String[] args, Player player) {
+	try {
+	    String ID = ASItem.getIDPart(args[0]);
+	    int amount = Integer.valueOf(args[1]);
+	    if (amount < 0)
+		amount = 1;
+	    byte Data = ASItem.getDataPart(args[0]);
+	    if (ASItem.isValid(ID, Data)) {
+		ItemStack item = ASItem.getItemStack(ID, Data, amount);
+		player.getInventory().addItem(item);
+		player.updateInventory();
+		player.sendMessage(ChatColor.GRAY + "Giving you " + amount
+			+ " of " + Material.getMaterial(item.getTypeId())
+			+ ((Data > 0) ? (":" + Data) : ""));
+	    } else {
+		player.sendMessage(ChatColor.RED + "Item '" + args[0]
+			+ "' not found!");
+		player.sendMessage(ChatColor.GRAY + this.getSyntax() + " "
+			+ this.getArguments());
+	    }
+	} catch (Exception e) {
+	    player.sendMessage(ChatColor.RED + "Wrong Syntax!");
+	    player.sendMessage(ChatColor.GRAY + this.getSyntax() + " "
+		    + this.getArguments());
 	}
+    }
 }
