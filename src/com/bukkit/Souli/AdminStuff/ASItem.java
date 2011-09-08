@@ -171,20 +171,13 @@ public class ASItem {
         if (Data < 0 || Data > 15)
             return false;
 
-        if (mat.getId() == Material.WOOL.getId()
-                || mat.getId() == Material.INK_SACK.getId()) {
+        if (mat.getId() == Material.WOOL.getId() || mat.getId() == Material.INK_SACK.getId()) {
             return true;
-        } else if (mat.getId() == Material.LOG.getId()
-                || mat.getId() == Material.LEAVES.getId()
-                || mat.getId() == Material.JUKEBOX.getId()
-                || mat.getId() == Material.SAPLING.getId()
-                || mat.getId() == Material.LONG_GRASS.getId()
-                || mat.getId() == Material.DEAD_BUSH.getId()) {
+        } else if (mat.getId() == Material.LOG.getId() || mat.getId() == Material.LEAVES.getId() || mat.getId() == Material.JUKEBOX.getId() || mat.getId() == Material.SAPLING.getId() || mat.getId() == Material.LONG_GRASS.getId() || mat.getId() == Material.DEAD_BUSH.getId()) {
             if (Data > 2)
                 return false;
             return true;
-        } else if (mat.getId() == Material.DOUBLE_STEP.getId()
-                || mat.getId() == Material.STEP.getId()) {
+        } else if (mat.getId() == Material.DOUBLE_STEP.getId() || mat.getId() == Material.STEP.getId()) {
             if (Data > 3)
                 return false;
             return true;
@@ -203,15 +196,7 @@ public class ASItem {
     }
 
     public static int getMaxStackSize(Material mat) {
-        if (mat.getId() == Material.CAKE.getId()
-                || mat.getId() == Material.LAVA_BUCKET.getId()
-                || mat.getId() == Material.WATER_BUCKET.getId()
-                || mat.getId() == Material.MILK_BUCKET.getId()
-                || mat.getId() == Material.BUCKET.getId()
-                || mat.getId() == Material.MAP.getId()
-                || (mat.getId() >= 267 && mat.getId() <= 286)
-                || (mat.getId() >= 290 && mat.getId() <= 294)
-                || (mat.getId() >= 298 && mat.getId() <= 317))
+        if (mat.getId() == Material.CAKE.getId() || mat.getId() == Material.LAVA_BUCKET.getId() || mat.getId() == Material.WATER_BUCKET.getId() || mat.getId() == Material.MILK_BUCKET.getId() || mat.getId() == Material.BUCKET.getId() || mat.getId() == Material.MAP.getId() || (mat.getId() >= 267 && mat.getId() <= 286) || (mat.getId() >= 290 && mat.getId() <= 294) || (mat.getId() >= 298 && mat.getId() <= 317))
             return 1;
 
         return 64;

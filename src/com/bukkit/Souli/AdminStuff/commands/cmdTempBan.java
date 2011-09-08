@@ -96,29 +96,21 @@ public class cmdTempBan extends Command {
         }
 
         thisTarget.setTempBanned(true);
-        thisTarget.setBanEndTime(System.currentTimeMillis()
-                + (days * 24 * 60 * 60 * 1000) + (hours * 60 * 60 * 1000)
-                + (mins * 60 * 1000));
+        thisTarget.setBanEndTime(System.currentTimeMillis() + (days * 24 * 60 * 60 * 1000) + (hours * 60 * 60 * 1000) + (mins * 60 * 1000));
         thisTarget.saveConfig(false, false, false, false, true, false, false);
         String message = "You were temporary banned for " + args[1] + ".";
 
         if (target != null) {
             target.kickPlayer(message);
-            player.sendMessage(ChatColor.GRAY + "Player '"
-                    + ASCore.getPlayerName(target) + "' temporary banned!");
+            player.sendMessage(ChatColor.GRAY + "Player '" + ASCore.getPlayerName(target) + "' temporary banned!");
         } else {
-            player.sendMessage(ChatColor.GRAY + "Player '" + args[0]
-                    + "' temporary banned!");
+            player.sendMessage(ChatColor.GRAY + "Player '" + args[0] + "' temporary banned!");
         }
     }
 
     private static int getPreIndex(String string, int Index) {
         for (int j = Index; j > 0; j--) {
-            if (string.charAt(j) != '0' && string.charAt(j) != '1'
-                    && string.charAt(j) != '2' && string.charAt(j) != '3'
-                    && string.charAt(j) != '4' && string.charAt(j) != '5'
-                    && string.charAt(j) != '6' && string.charAt(j) != '7'
-                    && string.charAt(j) != '8' && string.charAt(j) != '9')
+            if (string.charAt(j) != '0' && string.charAt(j) != '1' && string.charAt(j) != '2' && string.charAt(j) != '3' && string.charAt(j) != '4' && string.charAt(j) != '5' && string.charAt(j) != '6' && string.charAt(j) != '7' && string.charAt(j) != '8' && string.charAt(j) != '9')
                 return j - 1;
         }
         return 0;

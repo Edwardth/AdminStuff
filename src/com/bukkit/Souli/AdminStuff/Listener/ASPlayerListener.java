@@ -222,8 +222,7 @@ public class ASPlayerListener extends PlayerListener {
             Iterator<Player> it = event.getRecipients().iterator();
             while (it.hasNext()) {
                 Player nextPlayer = it.next();
-                if (nextPlayer.getName().equalsIgnoreCase(
-                        event.getPlayer().getName())) {
+                if (nextPlayer.getName().equalsIgnoreCase(event.getPlayer().getName())) {
                     nextPlayer.sendMessage(ChatColor.RED + "[Muted] " + nick + ChatColor.WHITE + ": " + event.getMessage());
                     continue;
                 }

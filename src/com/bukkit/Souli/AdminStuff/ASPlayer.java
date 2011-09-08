@@ -113,8 +113,7 @@ public class ASPlayer {
         // LOAD INFINITE ITEMS
         List<Integer> newList = new ArrayList<Integer>();
         newList = config.getIntList("unlimited", new ArrayList<Integer>());
-        for (int ItemID : newList)
-        {
+        for (int ItemID : newList) {
             if (ASItem.isValid(ItemID))
                 this.toggleUnlimitedItem(ItemID);
         }
@@ -123,12 +122,7 @@ public class ASPlayer {
         if (isGlued()) {
             World world = ASCore.getMCServer().getWorld(config.getString("glue.Worldname", null));
             if (world != null) {
-                glueLocation = new Location(world,
-                        config.getInt("glue.X", 0),
-                        config.getInt("glue.Y", 127),
-                        config.getInt("glue.Z", 0),
-                        config.getInt("glue.Yaw", 0),
-                        config.getInt("glue.Pitch", 0));
+                glueLocation = new Location(world, config.getInt("glue.X", 0), config.getInt("glue.Y", 127), config.getInt("glue.Z", 0), config.getInt("glue.Yaw", 0), config.getInt("glue.Pitch", 0));
             } else {
                 glueLocation = null;
             }

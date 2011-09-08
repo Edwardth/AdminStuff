@@ -104,8 +104,7 @@ public class ASCore extends JavaPlugin {
         ASCore.saveBannedPlayers();
     }
 
-    public static void saveBannedPlayers()
-    {
+    public static void saveBannedPlayers() {
         File file = new File("banned-adminstuff-players.txt");
         if (file.exists())
             file.delete();

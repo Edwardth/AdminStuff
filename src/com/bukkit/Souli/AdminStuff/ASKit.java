@@ -23,8 +23,7 @@ import java.util.HashMap;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class ASKit
-{
+public class ASKit {
     public HashMap<String, ItemStack> kitList = new HashMap<String, ItemStack>();
 
     public void giveKit(Player player) {

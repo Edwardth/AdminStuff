@@ -40,8 +40,7 @@ public class cmdHelpPage extends Command {
     private static final String PERMISSION = "permission";
     private static final String PERMISSIONS = "permissions";
 
-    public cmdHelpPage(String syntax, String arguments, String node, Server server)
-    {
+    public cmdHelpPage(String syntax, String arguments, String node, Server server) {
         super(syntax, arguments, node, server);
     }
 
@@ -84,8 +83,7 @@ public class cmdHelpPage extends Command {
                 if (UtilPermissions.playerCanUseCommand(player, "adminstuff.commands.help." + desc.getName().toLowerCase())) {
                     final HashMap<String, HashMap<String, Object>> cmds = (HashMap<String, HashMap<String, Object>>) desc.getCommands();
 
-                    for (Entry<String, HashMap<String, Object>> k : cmds
-                            .entrySet()) {
+                    for (Entry<String, HashMap<String, Object>> k : cmds.entrySet()) {
                         final HashMap<String, Object> value = k.getValue();
                         if (value.containsKey(PERMISSION) && value.get(PERMISSION) instanceof String && !(value.get(PERMISSION).equals(""))) {
                             if (UtilPermissions.playerCanUseCommand(player, (String) value.get(PERMISSION))) {

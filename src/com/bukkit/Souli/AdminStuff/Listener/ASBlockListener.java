@@ -44,8 +44,7 @@ public class ASBlockListener extends BlockListener {
         Player player = event.getPlayer();
         ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
         if (thisPlayer.hasUnlimitedItem(event.getBlockPlaced().getTypeId())) {
-            player.getItemInHand().setAmount(
-                    player.getItemInHand().getAmount() + 1);
+            player.getItemInHand().setAmount(player.getItemInHand().getAmount() + 1);
             player.updateInventory();
         }
     }

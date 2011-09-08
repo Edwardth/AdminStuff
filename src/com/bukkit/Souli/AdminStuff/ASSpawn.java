@@ -109,12 +109,7 @@ public class ASSpawn {
         if (world == null)
             world = ASCore.getMCServer().getWorlds().get(0);
 
-        Location loc = new Location(world,
-                config.getInt("X", 0),
-                config.getInt("Y", 127),
-                config.getInt("Z", 0),
-                config.getInt("Yaw", 0),
-                config.getInt("Pitch", 0));
+        Location loc = new Location(world, config.getInt("X", 0), config.getInt("Y", 127), config.getInt("Z", 0), config.getInt("Yaw", 0), config.getInt("Pitch", 0));
 
         spawns.put(worldName, loc);
     }

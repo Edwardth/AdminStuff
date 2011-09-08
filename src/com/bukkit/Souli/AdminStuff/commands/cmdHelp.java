@@ -60,8 +60,7 @@ public class cmdHelp extends Command {
         int start = (page - 1) * 9;
         int pages = lines.size() / 9 + (lines.size() % 9 > 0 ? 1 : 0);
 
-        player.sendMessage(ChatColor.AQUA + "---------[ LIST OF COMMANDS "
-                + page + "/" + pages + "] ---------");
+        player.sendMessage(ChatColor.AQUA + "---------[ LIST OF COMMANDS " + page + "/" + pages + "] ---------");
         for (int i = start; (i < lines.size()) && (i < start + 9); i++) {
             player.sendMessage((String) lines.get(i));
         }

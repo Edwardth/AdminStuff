@@ -54,8 +54,7 @@ public class cmdMessage extends ExtendedCommand {
                 ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
 
                 String message = "";
-                for (int i = 1; i < args.length; i++)
-                {
+                for (int i = 1; i < args.length; i++) {
                     message += args[i] + " ";
                 }
 
