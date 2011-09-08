@@ -28,7 +28,7 @@ import org.bukkit.entity.Player;
 public class cmdTime extends Command {
 
     public cmdTime(String syntax, String arguments, String node, Server server) {
-	super(syntax, arguments, node, server);
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -43,21 +43,16 @@ public class cmdTime extends Command {
      *            split[0] is the time
      */
     public void execute(String[] args, Player player) {
-	if (args[0].equalsIgnoreCase("day")) {
-	    player.getWorld().setTime(0);
-	    player.sendMessage(ChatColor.GRAY
-		    + "Time in your world changed to '" + args[0].toLowerCase()
-		    + "'!");
-	    return;
-	} else if (args[0].equalsIgnoreCase("night")) {
-	    player.getWorld().setTime(13000);
-	    player.sendMessage(ChatColor.GRAY
-		    + "Time in your world changed to '" + args[0].toLowerCase()
-		    + "'!");
-	    return;
-	}
-	player.sendMessage(ChatColor.RED + "Wrong syntax!");
-	player.sendMessage(ChatColor.GRAY + this.getSyntax() + " "
-		+ this.getArguments());
+        if (args[0].equalsIgnoreCase("day")) {
+            player.getWorld().setTime(0);
+            player.sendMessage(ChatColor.GRAY + "Time in your world changed to '" + args[0].toLowerCase() + "'!");
+            return;
+        } else if (args[0].equalsIgnoreCase("night")) {
+            player.getWorld().setTime(13000);
+            player.sendMessage(ChatColor.GRAY + "Time in your world changed to '" + args[0].toLowerCase() + "'!");
+            return;
+        }
+        player.sendMessage(ChatColor.RED + "Wrong syntax!");
+        player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
     }
 }

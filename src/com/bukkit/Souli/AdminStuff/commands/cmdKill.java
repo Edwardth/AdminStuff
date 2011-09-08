@@ -29,33 +29,31 @@ import com.bukkit.Souli.AdminStuff.ASCore;
 
 public class cmdKill extends Command {
 
-	public cmdKill(String syntax, String arguments, String node, Server server) {
-		super(syntax, arguments, node, server);
-	}
+    public cmdKill(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /kill <Player><br>
-	 * Kills the Player and clears the inventory
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 *            split[0] is the targets name
-	 */
-	public void execute(String[] args, Player player) {
-		Player target = ASCore.getPlayer(args[0]);
-		if (target != null) {
-			if (!target.isDead() && target.isOnline()) {
-				player.sendMessage(ChatColor.GRAY + "Player '"
-						+ ASCore.getPlayerName(target) + "' killed!");
-				target.getInventory().clear();
-				target.damage(100);
-			}
-		} else {
-			player.sendMessage(ChatColor.RED + "Player '" + args[0]
-					+ "' not found (or is not online!)");
-		}
-	}
+    @Override
+    /**
+     * Representing the command <br>
+     * /kill <Player><br>
+     * Kills the Player and clears the inventory
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     *            split[0] is the targets name
+     */
+    public void execute(String[] args, Player player) {
+        Player target = ASCore.getPlayer(args[0]);
+        if (target != null) {
+            if (!target.isDead() && target.isOnline()) {
+                player.sendMessage(ChatColor.GRAY + "Player '" + ASCore.getPlayerName(target) + "' killed!");
+                target.getInventory().clear();
+                target.damage(100);
+            }
+        } else {
+            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+        }
+    }
 }

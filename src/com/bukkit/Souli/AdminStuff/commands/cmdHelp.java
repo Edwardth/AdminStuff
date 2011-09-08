@@ -41,7 +41,7 @@ public class cmdHelp extends Command {
     private static final String PERMISSIONS = "permissions";
 
     public cmdHelp(String syntax, String arguments, String node, Server server) {
-	super(syntax, arguments, node, server);
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -55,109 +55,75 @@ public class cmdHelp extends Command {
      * @param split
      */
     public void execute(String[] args, Player player) {
-	int page = 1;
-	List<String> lines = getHelpLines(player);
-	int start = (page - 1) * 9;
-	int pages = lines.size() / 9 + (lines.size() % 9 > 0 ? 1 : 0);
+        int page = 1;
+        List<String> lines = getHelpLines(player);
+        int start = (page - 1) * 9;
+        int pages = lines.size() / 9 + (lines.size() % 9 > 0 ? 1 : 0);
 
-	player.sendMessage(ChatColor.AQUA + "---------[ LIST OF COMMANDS "
-		+ page + "/" + pages + "] ---------");
-	for (int i = start; (i < lines.size()) && (i < start + 9); i++) {
-	    player.sendMessage((String) lines.get(i));
-	}
+        player.sendMessage(ChatColor.AQUA + "---------[ LIST OF COMMANDS "
+                + page + "/" + pages + "] ---------");
+        for (int i = start; (i < lines.size()) && (i < start + 9); i++) {
+            player.sendMessage((String) lines.get(i));
+        }
     }
 
     @SuppressWarnings("unchecked")
     public List<String> getHelpLines(Player player) {
-	List<String> retval = new ArrayList<String>();
-	boolean reported = false;
-	String pluginName = "";
-	for (Plugin p : ASCore.getMCServer().getPluginManager().getPlugins()) {
-	    try {
-		PluginDescriptionFile desc = p.getDescription();
-		if (UtilPermissions.playerCanUseCommand(player, "adminstuff.commands.help." + desc.getName().toLowerCase())) {
-		    final HashMap<String, HashMap<String, Object>> cmds = (HashMap<String, HashMap<String, Object>>) desc
-			    .getCommands();
+        List<String> retval = new ArrayList<String>();
+        boolean reported = false;
+        String pluginName = "";
+        for (Plugin p : ASCore.getMCServer().getPluginManager().getPlugins()) {
+            try {
+                PluginDescriptionFile desc = p.getDescription();
+                if (UtilPermissions.playerCanUseCommand(player, "adminstuff.commands.help." + desc.getName().toLowerCase())) {
+                    final HashMap<String, HashMap<String, Object>> cmds = (HashMap<String, HashMap<String, Object>>) desc.getCommands();
 
-		    for (Entry<String, HashMap<String, Object>> k : cmds
-			    .entrySet()) {
-			final HashMap<String, Object> value = k.getValue();
-			if (value.containsKey(PERMISSION)
-				&& value.get(PERMISSION) instanceof String
-				&& !(value.get(PERMISSION).equals(""))) {
-			    if (UtilPermissions.playerCanUseCommand(player,
-				    (String) value.get(PERMISSION))) {
-				retval.add(ChatColor.RED + k.getKey()
-					+ ChatColor.GRAY + ": "
-					+ value.get(DESCRIPTION));
-			    }
-			} else if (value.containsKey(PERMISSION)
-				&& value.get(PERMISSION) instanceof List
-				&& !((List<Object>) value.get(PERMISSION))
-					.isEmpty()) {
-			    boolean enabled = false;
-			    for (Object o : (List<Object>) value
-				    .get(PERMISSION)) {
-				if (o instanceof String
-					&& UtilPermissions.playerCanUseCommand(
-						player, (String) o)) {
-				    enabled = true;
-				    break;
-				}
-			    }
-			    if (enabled) {
-				retval.add(ChatColor.RED + k.getKey()
-					+ ChatColor.GRAY + ": "
-					+ value.get(DESCRIPTION));
-			    }
-			} else if (value.containsKey(PERMISSIONS)
-				&& value.get(PERMISSIONS) instanceof String
-				&& !(value.get(PERMISSIONS).equals(""))) {
-			    if (UtilPermissions.playerCanUseCommand(player,
-				    (String) value.get(PERMISSIONS))) {
-				retval.add(ChatColor.RED + k.getKey()
-					+ ChatColor.GRAY + ": "
-					+ value.get(DESCRIPTION));
-			    }
-			} else if (value.containsKey(PERMISSIONS)
-				&& value.get(PERMISSIONS) instanceof List
-				&& !((List<Object>) value.get(PERMISSIONS))
-					.isEmpty()) {
-			    boolean enabled = false;
-			    for (Object o : (List<Object>) value
-				    .get(PERMISSIONS)) {
-				if (o instanceof String
-					&& UtilPermissions.playerCanUseCommand(
-						player, (String) o)) {
-				    enabled = true;
-				    break;
-				}
-			    }
-			    if (enabled) {
-				retval.add(ChatColor.RED + k.getKey()
-					+ ChatColor.GRAY + ": "
-					+ value.get(DESCRIPTION));
-			    }
-			} else if (UtilPermissions.playerCanUseCommand(player,
-				"adminstuff.user.help." + pluginName)) {
-			    retval.add(ChatColor.RED + k.getKey()
-				    + ChatColor.GRAY + ": "
-				    + value.get(DESCRIPTION));
-			}
-		    }
-		}
-	    } catch (NullPointerException ex) {
-	    } catch (Exception ex) {
-		if (!reported) {
-		    ASCore.log.printWarning("Error getting help for:"
-			    + pluginName);
-		    ex.printStackTrace();
-		}
-
-		reported = true;
-	    }
-	}
-
-	return retval;
+                    for (Entry<String, HashMap<String, Object>> k : cmds.entrySet()) {
+                        final HashMap<String, Object> value = k.getValue();
+                        if (value.containsKey(PERMISSION) && value.get(PERMISSION) instanceof String && !(value.get(PERMISSION).equals(""))) {
+                            if (UtilPermissions.playerCanUseCommand(player, (String) value.get(PERMISSION))) {
+                                retval.add(ChatColor.RED + k.getKey() + ChatColor.GRAY + ": " + value.get(DESCRIPTION));
+                            }
+                        } else if (value.containsKey(PERMISSION) && value.get(PERMISSION) instanceof List && !((List<Object>) value.get(PERMISSION)).isEmpty()) {
+                            boolean enabled = false;
+                            for (Object o : (List<Object>) value.get(PERMISSION)) {
+                                if (o instanceof String && UtilPermissions.playerCanUseCommand(player, (String) o)) {
+                                    enabled = true;
+                                    break;
+                                }
+                            }
+                            if (enabled) {
+                                retval.add(ChatColor.RED + k.getKey() + ChatColor.GRAY + ": " + value.get(DESCRIPTION));
+                            }
+                        } else if (value.containsKey(PERMISSIONS) && value.get(PERMISSIONS) instanceof String && !(value.get(PERMISSIONS).equals(""))) {
+                            if (UtilPermissions.playerCanUseCommand(player, (String) value.get(PERMISSIONS))) {
+                                retval.add(ChatColor.RED + k.getKey() + ChatColor.GRAY + ": " + value.get(DESCRIPTION));
+                            }
+                        } else if (value.containsKey(PERMISSIONS) && value.get(PERMISSIONS) instanceof List && !((List<Object>) value.get(PERMISSIONS)).isEmpty()) {
+                            boolean enabled = false;
+                            for (Object o : (List<Object>) value.get(PERMISSIONS)) {
+                                if (o instanceof String && UtilPermissions.playerCanUseCommand(player, (String) o)) {
+                                    enabled = true;
+                                    break;
+                                }
+                            }
+                            if (enabled) {
+                                retval.add(ChatColor.RED + k.getKey() + ChatColor.GRAY + ": " + value.get(DESCRIPTION));
+                            }
+                        } else if (UtilPermissions.playerCanUseCommand(player, "adminstuff.user.help." + pluginName)) {
+                            retval.add(ChatColor.RED + k.getKey() + ChatColor.GRAY + ": " + value.get(DESCRIPTION));
+                        }
+                    }
+                }
+            } catch (NullPointerException ex) {
+            } catch (Exception ex) {
+                if (!reported) {
+                    ASCore.log.printWarning("Error getting help for:" + pluginName);
+                    ex.printStackTrace();
+                }
+                reported = true;
+            }
+        }
+        return retval;
     }
 }

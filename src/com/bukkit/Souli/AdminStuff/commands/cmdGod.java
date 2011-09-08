@@ -31,7 +31,7 @@ import com.bukkit.Souli.AdminStuff.ASPlayer;
 public class cmdGod extends Command {
 
     public cmdGod(String syntax, String arguments, String node, Server server) {
-	super(syntax, arguments, node, server);
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -45,15 +45,15 @@ public class cmdGod extends Command {
      * @param split
      */
     public void execute(String[] args, Player player) {
-	// ADD PLAYER, IF NOT FOUND
-	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
-	boolean isGod = !thisPlayer.isGod();
-	thisPlayer.setGod(isGod);
-	thisPlayer.saveConfig(false, false, false, false, false, false, true);
-	if (isGod) {
-	    player.sendMessage(ChatColor.GRAY + "Godmode enabled.");
-	} else {
-	   player.sendMessage(ChatColor.GRAY + "Godmode disabled.");
-	}
+        // ADD PLAYER, IF NOT FOUND
+        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+        boolean isGod = !thisPlayer.isGod();
+        thisPlayer.setGod(isGod);
+        thisPlayer.saveConfig(false, false, false, false, false, false, true);
+        if (isGod) {
+            player.sendMessage(ChatColor.GRAY + "Godmode enabled.");
+        } else {
+            player.sendMessage(ChatColor.GRAY + "Godmode disabled.");
+        }
     }
 }

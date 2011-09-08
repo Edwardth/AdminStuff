@@ -29,9 +29,8 @@ import com.bukkit.Souli.AdminStuff.ASCore;
 
 public class cmdClearInventoryOther extends Command {
 
-    public cmdClearInventoryOther(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdClearInventoryOther(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @SuppressWarnings("deprecation")
@@ -47,19 +46,16 @@ public class cmdClearInventoryOther extends Command {
      *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-	Player target = ASCore.getPlayer(args[0]);
-	if (target != null) {
-	    if (!target.isDead() && target.isOnline()) {
-		target.getInventory().clear();
-		target.updateInventory();
-		player.sendMessage(ChatColor.GRAY + "Inventory of '"
-			+ ASCore.getPlayerName(target) + "' cleared!");
-		target.sendMessage(ChatColor.GRAY
-			+ "Your inventory got cleared!");
-	    }
-	} else {
-	    player.sendMessage(ChatColor.RED + "Player '" + args[0]
-		    + "' not found (or is not online!)");
-	}
+        Player target = ASCore.getPlayer(args[0]);
+        if (target != null) {
+            if (!target.isDead() && target.isOnline()) {
+                target.getInventory().clear();
+                target.updateInventory();
+                player.sendMessage(ChatColor.GRAY + "Inventory of '" + ASCore.getPlayerName(target) + "' cleared!");
+                target.sendMessage(ChatColor.GRAY + "Your inventory got cleared!");
+            }
+        } else {
+            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+        }
     }
 }

@@ -30,7 +30,7 @@ import com.bukkit.Souli.AdminStuff.ASCore;
 public class cmdBurn extends Command {
 
     public cmdBurn(String syntax, String arguments, String node, Server server) {
-	super(syntax, arguments, node, server);
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -46,20 +46,19 @@ public class cmdBurn extends Command {
      *            split[1] is the time in seconds           
      */
     public void execute(String[] args, Player player) {
-	Player target = ASCore.getPlayer(args[0]);
-	if (target != null) {
-	    if (!target.isDead() && target.isOnline()) {
-		try {
-		    target.setFireTicks(Integer.valueOf(args[1]) * 20);
-		    player.sendMessage(ChatColor.GRAY + "Burning '" + ASCore.getPlayerName(target) + "' for " + args[1] +  " seconds");
-		} catch (Exception e) {
-		    player.sendMessage(ChatColor.RED + "Wrong syntax!");
-		    player.sendMessage(ChatColor.GRAY + getSyntax() + " " + getArguments());
-		}
-	    }
-	} else {
-	    player.sendMessage(ChatColor.RED + "Player '" + args[0]
-		    + "' not found (or is not online!)");
-	}
+        Player target = ASCore.getPlayer(args[0]);
+        if (target != null) {
+            if (!target.isDead() && target.isOnline()) {
+                try {
+                    target.setFireTicks(Integer.valueOf(args[1]) * 20);
+                    player.sendMessage(ChatColor.GRAY + "Burning '" + ASCore.getPlayerName(target) + "' for " + args[1] + " seconds");
+                } catch (Exception e) {
+                    player.sendMessage(ChatColor.RED + "Wrong syntax!");
+                    player.sendMessage(ChatColor.GRAY + getSyntax() + " " + getArguments());
+                }
+            }
+        } else {
+            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+        }
     }
 }

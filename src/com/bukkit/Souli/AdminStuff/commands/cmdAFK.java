@@ -31,7 +31,7 @@ import com.bukkit.Souli.AdminStuff.ASPlayer;
 public class cmdAFK extends Command {
 
     public cmdAFK(String syntax, String arguments, String node, Server server) {
-	super(syntax, arguments, node, server);
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -45,22 +45,20 @@ public class cmdAFK extends Command {
      * @param split
      */
     public void execute(String[] args, Player player) {
-	// ADD PLAYER, IF NOT FOUND
-	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
-	boolean isAFK = !thisPlayer.isAFK();
+        // ADD PLAYER, IF NOT FOUND
+        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+        boolean isAFK = !thisPlayer.isAFK();
 
-	thisPlayer.setAFK(isAFK);
-	thisPlayer.saveConfig(true, false, false, false, false, false, false);
-	thisPlayer.updateNick();
+        thisPlayer.setAFK(isAFK);
+        thisPlayer.saveConfig(true, false, false, false, false, false, false);
+        thisPlayer.updateNick();
 
-	if (isAFK) {
-	    ASCore.getMCServer().broadcastMessage(
-		    "* " + ASCore.getPlayerName(player) + " is now AFK.");
-	    player.sendMessage(ChatColor.GRAY + "You are now AFK.");
-	} else {
-	    ASCore.getMCServer().broadcastMessage(
-		    "* " + ASCore.getPlayerName(player) + " is no longer AFK.");
-	    player.sendMessage(ChatColor.GRAY + "You are no longer AFK.");
-	}
+        if (isAFK) {
+            ASCore.getMCServer().broadcastMessage("* " + ASCore.getPlayerName(player) + " is now AFK.");
+            player.sendMessage(ChatColor.GRAY + "You are now AFK.");
+        } else {
+            ASCore.getMCServer().broadcastMessage("* " + ASCore.getPlayerName(player) + " is no longer AFK.");
+            player.sendMessage(ChatColor.GRAY + "You are no longer AFK.");
+        }
     }
 }

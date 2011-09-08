@@ -33,9 +33,8 @@ import com.gemo.utils.BlockUtils;
 
 public class cmdUnlimitedOther extends Command {
 
-    public cmdUnlimitedOther(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdUnlimitedOther(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -51,71 +50,44 @@ public class cmdUnlimitedOther extends Command {
      *            split[1] is the player
      */
     public void execute(String[] args, Player player) {
+        try {
+            Player target = ASCore.getPlayer(args[1]);
+            if (target != null) {
+                if (!target.isDead() && target.isOnline()) {
+                    String ID = ASItem.getIDPart(args[0]);
+                    if (ASItem.isValid(ID, (byte) 0)) {
+                        ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
+                        boolean result = false;
+                        if (ASItem.isInteger(ID))
+                            result = thisTarget.toggleUnlimitedItem(Integer.valueOf(ID));
+                        else
+                            result = thisTarget.toggleUnlimitedItem(ASItem.matList.get(ID.toLowerCase()));
 
-	try {
-	    Player target = ASCore.getPlayer(args[1]);
-	    if (target != null) {
-		if (!target.isDead() && target.isOnline()) {
-		    String ID = ASItem.getIDPart(args[0]);
-		    if (ASItem.isValid(ID, (byte) 0)) {
-			// ADD PLAYER, IF NOT FOUND
-			ASPlayer thisTarget = ASCore
-				.getOrCreateASPlayer(target);
+                        String matName = ID;
+                        if (ASItem.isInteger(ID))
+                            matName = Material.getMaterial(Integer.valueOf(ID)).name().toLowerCase();
+                        else
+                            matName = Material.getMaterial(BlockUtils.getItemIDFromName(ID)).name().toLowerCase();
 
-			boolean result = false;
-			if (ASItem.isInteger(ID))
-			    result = thisTarget.toggleUnlimitedItem(Integer
-				    .valueOf(ID));
-			else
-			    result = thisTarget
-				    .toggleUnlimitedItem(ASItem.matList.get(ID
-					    .toLowerCase()));
-
-			String matName = ID;
-			if (ASItem.isInteger(ID))
-			    matName = Material.getMaterial(Integer.valueOf(ID))
-				    .name().toLowerCase();
-			else
-			    matName = Material
-				    .getMaterial(
-					    BlockUtils.getItemIDFromName(ID))
-				    .name().toLowerCase();
-
-			if (result) {
-			    player.sendMessage(ChatColor.GRAY + "'"
-				    + ASCore.getPlayerName(target)
-				    + "' has now unlimited amount of '"
-				    + matName + "'.");
-			    target.sendMessage(ChatColor.GRAY
-				    + "You have now unlimited amount of '"
-				    + matName + "'.");
-			} else {
-			    player.sendMessage(ChatColor.GRAY + "'"
-				    + ASCore.getPlayerName(target)
-				    + "' has no longer unlimited amount of '"
-				    + matName + "'.");
-			    target.sendMessage(ChatColor.GRAY
-				    + "You do no longer have unlimited amount of '"
-				    + matName + "'.");
-			}
-			thisTarget.saveConfig(false, false, true, false, false,
-				false, false);
-
-		    } else {
-			player.sendMessage(ChatColor.RED + "Item '" + args[0]
-				+ "' not found!");
-			player.sendMessage(ChatColor.GRAY + this.getSyntax()
-				+ " " + this.getArguments());
-		    }
-		}
-	    } else {
-		player.sendMessage(ChatColor.RED + "Player '" + args[0]
-			+ "' not found (or is not online!)");
-	    }
-	} catch (Exception e) {
-	    player.sendMessage(ChatColor.RED + "Wrong Syntax!");
-	    player.sendMessage(ChatColor.GRAY + this.getSyntax() + " "
-		    + this.getArguments());
-	}
+                        if (result) {
+                            player.sendMessage(ChatColor.GRAY + "'" + ASCore.getPlayerName(target) + "' has now unlimited amount of '" + matName + "'.");
+                            target.sendMessage(ChatColor.GRAY + "You have now unlimited amount of '" + matName + "'.");
+                        } else {
+                            player.sendMessage(ChatColor.GRAY + "'" + ASCore.getPlayerName(target) + "' has no longer unlimited amount of '" + matName + "'.");
+                            target.sendMessage(ChatColor.GRAY + "You do no longer have unlimited amount of '" + matName + "'.");
+                        }
+                        thisTarget.saveConfig(false, false, true, false, false, false, false);
+                    } else {
+                        player.sendMessage(ChatColor.RED + "Item '" + args[0] + "' not found!");
+                        player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
+                    }
+                }
+            } else {
+                player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+            }
+        } catch (Exception e) {
+            player.sendMessage(ChatColor.RED + "Wrong Syntax!");
+            player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
+        }
     }
 }

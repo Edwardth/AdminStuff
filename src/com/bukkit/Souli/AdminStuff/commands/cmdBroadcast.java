@@ -29,9 +29,8 @@ import com.bukkit.Souli.AdminStuff.ASCore;
 
 public class cmdBroadcast extends ExtendedCommand {
 
-    public cmdBroadcast(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdBroadcast(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -45,11 +44,11 @@ public class cmdBroadcast extends ExtendedCommand {
      * @param split
      */
     public void execute(String[] args, Player player) {
-	String message = "";
-	for (int i = 0; i < args.length; i++) {
-	    message += args[i] + " ";
-	}
-	
-	ASCore.getMCServer().broadcastMessage(ChatColor.RED + " [ Broadcast ] : " + ChatColor.GREEN + message);
-   }
+        String message = "";
+        for (int i = 0; i < args.length; i++) {
+            message += args[i] + " ";
+        }
+
+        ASCore.getMCServer().broadcastMessage(ChatColor.RED + " [ Broadcast ] : " + ChatColor.GREEN + message);
+    }
 }

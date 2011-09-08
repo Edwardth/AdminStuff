@@ -27,9 +27,8 @@ import org.bukkit.entity.Player;
 
 public class cmdKickAll extends Command {
 
-    public cmdKickAll(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdKickAll(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -43,11 +42,11 @@ public class cmdKickAll extends Command {
      * @param split
      */
     public void execute(String[] args, Player player) {
-	Player[] allPlayers = server.getOnlinePlayers();
-	for (Player kPlayer : allPlayers) {
-	    if(!kPlayer.getName().equalsIgnoreCase(player.getName()))
-		kPlayer.kickPlayer("You were kicked!");	    
-	}
-	player.sendMessage(ChatColor.GRAY + "All other players got kicked!");
+        Player[] allPlayers = server.getOnlinePlayers();
+        for (Player kPlayer : allPlayers) {
+            if (!kPlayer.getName().equalsIgnoreCase(player.getName()))
+                kPlayer.kickPlayer("You were kicked!");
+        }
+        player.sendMessage(ChatColor.GRAY + "All other players got kicked!");
     }
 }

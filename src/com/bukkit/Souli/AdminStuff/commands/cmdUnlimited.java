@@ -33,9 +33,8 @@ import com.gemo.utils.BlockUtils;
 
 public class cmdUnlimited extends Command {
 
-    public cmdUnlimited(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdUnlimited(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -50,52 +49,35 @@ public class cmdUnlimited extends Command {
      *            split[0] is the item name
      */
     public void execute(String[] args, Player player) {
-	try {
-	    String ID = ASItem.getIDPart(args[0]);
-	    if (ASItem.isValid(ID, (byte) 0)) {
-		// ADD PLAYER, IF NOT FOUND
-		ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+        try {
+            String ID = ASItem.getIDPart(args[0]);
+            if (ASItem.isValid(ID, (byte) 0)) {
+                ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+                boolean result = false;
+                if (ASItem.isInteger(ID))
+                    result = thisPlayer.toggleUnlimitedItem(Integer.valueOf(ID));
+                else
+                    result = thisPlayer.toggleUnlimitedItem(ASItem.matList.get(ID.toLowerCase()));
 
-		boolean result = false;
-		if (ASItem.isInteger(ID))
-		    result = thisPlayer
-			    .toggleUnlimitedItem(Integer.valueOf(ID));
-		else
-		    result = thisPlayer.toggleUnlimitedItem(ASItem.matList
-			    .get(ID.toLowerCase()));
+                String matName = ID;
+                if (ASItem.isInteger(ID))
+                    matName = Material.getMaterial(Integer.valueOf(ID)).name().toLowerCase();
+                else
+                    matName = Material.getMaterial(BlockUtils.getItemIDFromName(ID)).name().toLowerCase();
 
-		String matName = ID;
-		if (ASItem.isInteger(ID))
-		    matName = Material.getMaterial(Integer.valueOf(ID)).name()
-			    .toLowerCase();
-		else
-		    matName = Material
-			    .getMaterial(BlockUtils.getItemIDFromName(ID))
-			    .name().toLowerCase();
-
-		if (result) {
-		    player.sendMessage(ChatColor.GRAY
-			    + "You have now unlimited amount of '" + matName
-			    + "'.");
-		} else {
-		    player.sendMessage(ChatColor.GRAY
-			    + "You do no longer have unlimited amount of '"
-			    + matName + "'.");
-		}
-
-		thisPlayer.saveConfig(false, false, true, false, false, false,
-			false);
-
-	    } else {
-		player.sendMessage(ChatColor.RED + "Item '" + args[0]
-			+ "' not found!");
-		player.sendMessage(ChatColor.GRAY + this.getSyntax() + " "
-			+ this.getArguments());
-	    }
-	} catch (Exception e) {
-	    player.sendMessage(ChatColor.RED + "Wrong Syntax!");
-	    player.sendMessage(ChatColor.GRAY + this.getSyntax() + " "
-		    + this.getArguments());
-	}
+                if (result) {
+                    player.sendMessage(ChatColor.GRAY + "You have now unlimited amount of '" + matName + "'.");
+                } else {
+                    player.sendMessage(ChatColor.GRAY + "You do no longer have unlimited amount of '" + matName + "'.");
+                }
+                thisPlayer.saveConfig(false, false, true, false, false, false, false);
+            } else {
+                player.sendMessage(ChatColor.RED + "Item '" + args[0] + "' not found!");
+                player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
+            }
+        } catch (Exception e) {
+            player.sendMessage(ChatColor.RED + "Wrong Syntax!");
+            player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
+        }
     }
 }

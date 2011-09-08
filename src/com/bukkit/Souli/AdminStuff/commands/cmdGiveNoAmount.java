@@ -32,9 +32,8 @@ import com.bukkit.Souli.AdminStuff.ASItem;
 
 public class cmdGiveNoAmount extends Command {
 
-    public cmdGiveNoAmount(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdGiveNoAmount(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @SuppressWarnings("deprecation")
@@ -51,31 +50,23 @@ public class cmdGiveNoAmount extends Command {
      *            split[1] is the item name
      */
     public void execute(String[] args, Player player) {
-	Player target = ASCore.getPlayer(args[0]);
-	if (target != null) {
-	    int amount = 64;
-	    String ID = ASItem.getIDPart(args[1]);
-	    byte Data = ASItem.getDataPart(args[1]);
-	    if (ASItem.isValid(ID, Data)) {
-		ItemStack item = ASItem.getItemStack(ID, Data, amount);
-		target.getInventory().addItem(item);
-		player.updateInventory();
-		player.sendMessage(ChatColor.GRAY + "Giving '"
-			+ ASCore.getPlayerName(target) + "' " + amount + " of "
-			+ Material.getMaterial(item.getTypeId())
-			+ ((Data > 0) ? (":" + Data) : ""));
-		target.sendMessage(ChatColor.GRAY + "Giving you " + amount
-			+ " of " + Material.getMaterial(item.getTypeId())
-			+ ((Data > 0) ? (":" + Data) : ""));
-	    } else {
-		player.sendMessage(ChatColor.RED + "Item '" + args[1]
-			+ "' not found!");
-		player.sendMessage(ChatColor.GRAY + this.getSyntax() + " "
-			+ this.getArguments());
-	    }
-	} else {
-	    player.sendMessage(ChatColor.RED + "Player '" + args[0]
-		    + "' not found (or is not online!)");
-	}
+        Player target = ASCore.getPlayer(args[0]);
+        if (target != null) {
+            int amount = 64;
+            String ID = ASItem.getIDPart(args[1]);
+            byte Data = ASItem.getDataPart(args[1]);
+            if (ASItem.isValid(ID, Data)) {
+                ItemStack item = ASItem.getItemStack(ID, Data, amount);
+                target.getInventory().addItem(item);
+                player.updateInventory();
+                player.sendMessage(ChatColor.GRAY + "Giving '" + ASCore.getPlayerName(target) + "' " + amount + " of " + Material.getMaterial(item.getTypeId()) + ((Data > 0) ? (":" + Data) : ""));
+                target.sendMessage(ChatColor.GRAY + "Giving you " + amount + " of " + Material.getMaterial(item.getTypeId()) + ((Data > 0) ? (":" + Data) : ""));
+            } else {
+                player.sendMessage(ChatColor.RED + "Item '" + args[1] + "' not found!");
+                player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
+            }
+        } else {
+            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+        }
     }
 }

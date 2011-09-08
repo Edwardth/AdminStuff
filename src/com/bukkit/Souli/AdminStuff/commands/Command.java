@@ -39,7 +39,7 @@ public abstract class Command {
     public Command(String syntax, String arguments, String node, Server server) {
         this.syntax = syntax;
         this.arguments = arguments;
-        if(this.arguments == null)
+        if (this.arguments == null)
             arguments = "";
         this.server = server;
         this.node = node;
@@ -51,21 +51,17 @@ public abstract class Command {
             player.sendMessage(ChatColor.RED + NO_RIGHT);
             return;
         }
-
         if (!hasCorrectSyntax(args)) {
-            player.sendMessage(ChatColor.RED + getSyntax() + " " + getArguments() + " "
-                    + getDescription());
+            player.sendMessage(ChatColor.RED + getSyntax() + " " + getArguments() + " " + getDescription());
             return;
         }
-
         execute(args, player);
     }
 
     public abstract void execute(String[] args, Player player);
 
     public boolean hasRights(Player player) {
-        return UtilPermissions.playerCanUseCommand(player,
-                "adminstuff." + getNode());
+        return UtilPermissions.playerCanUseCommand(player, "adminstuff." + getNode());
     }
 
     public boolean hasCorrectSyntax(String[] args) {

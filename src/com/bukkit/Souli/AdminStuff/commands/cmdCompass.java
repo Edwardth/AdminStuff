@@ -28,9 +28,8 @@ import org.bukkit.entity.Player;
 
 public class cmdCompass extends Command {
 
-    public cmdCompass(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdCompass(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -44,55 +43,50 @@ public class cmdCompass extends Command {
      * @param split
      */
     public void execute(String[] args, Player player) {
-	String dir = "";
-	int r = (int) this.getCorrectedYaw(player.getLocation());
-	if (r < 23) {
-	    dir = "N";
-	} else {
+        String dir = "";
+        int r = (int) this.getCorrectedYaw(player.getLocation());
+        if (r < 23) {
+            dir = "N";
+        } else {
 
-	    if (r < 68) {
-		dir = "NE";
-	    } else {
+            if (r < 68) {
+                dir = "NE";
+            } else {
+                if (r < 113) {
+                    dir = "E";
+                } else {
 
-		if (r < 113) {
-		    dir = "E";
-		} else {
-
-		    if (r < 158) {
-			dir = "SE";
-		    } else {
-
-			if (r < 203) {
-			    dir = "S";
-			} else {
-
-			    if (r < 248) {
-				dir = "SW";
-			    } else {
-
-				if (r < 293) {
-				    dir = "W";
-				} else {
-
-				    if (r < 338)
-					dir = "NW";
-				    else
-					dir = "N";
-				}
-			    }
-			}
-		    }
-		}
-	    }
-	}
-	player.sendMessage(ChatColor.GRAY + "Compass: " + dir);
+                    if (r < 158) {
+                        dir = "SE";
+                    } else {
+                        if (r < 203) {
+                            dir = "S";
+                        } else {
+                            if (r < 248) {
+                                dir = "SW";
+                            } else {
+                                if (r < 293) {
+                                    dir = "W";
+                                } else {
+                                    if (r < 338)
+                                        dir = "NW";
+                                    else
+                                        dir = "N";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        player.sendMessage(ChatColor.GRAY + "Compass: " + dir);
     }
 
     public float getCorrectedYaw(Location location) {
-	float angle = (location.getYaw() - 90.0F) % 360.0F;
-	if (angle < 0.0F) {
-	    angle += 360.0F;
-	}
-	return angle;
+        float angle = (location.getYaw() - 90.0F) % 360.0F;
+        if (angle < 0.0F) {
+            angle += 360.0F;
+        }
+        return angle;
     }
 }

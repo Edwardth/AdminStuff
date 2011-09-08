@@ -30,9 +30,8 @@ import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdNicknamePlayer extends Command {
 
-    public cmdNicknamePlayer(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdNicknamePlayer(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -48,24 +47,18 @@ public class cmdNicknamePlayer extends Command {
      *            split[1] is the playername
      */
     public void execute(String[] args, Player player) {
-	Player target = ASCore.getPlayer(args[1]);
-	if (target != null) {
-	    if (target.isOnline()) {
-		// ADD PLAYER, IF NOT FOUND
-		ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
-
-		thisTarget.setNickname(args[0]);
-		player.sendMessage(ChatColor.GRAY + "The nickname of '"
-			+ target.getName() + "' is now '" + args[0] + "'.");
-		target.sendMessage(ChatColor.GRAY + "Your nickname is now '"
-			+ args[0] + "'.");
-		thisTarget.saveConfig(false, false, false, false, false, true,
-			false);
-		thisTarget.updateNick();
-	    }
-	} else {
-	    player.sendMessage(ChatColor.RED + "Player '" + args[1]
-		    + "' not found (or is not online!)");
-	}
+        Player target = ASCore.getPlayer(args[1]);
+        if (target != null) {
+            if (target.isOnline()) {
+                ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
+                thisTarget.setNickname(args[0]);
+                player.sendMessage(ChatColor.GRAY + "The nickname of '" + target.getName() + "' is now '" + args[0] + "'.");
+                target.sendMessage(ChatColor.GRAY + "Your nickname is now '" + args[0] + "'.");
+                thisTarget.saveConfig(false, false, false, false, false, true, false);
+                thisTarget.updateNick();
+            }
+        } else {
+            player.sendMessage(ChatColor.RED + "Player '" + args[1] + "' not found (or is not online!)");
+        }
     }
 }

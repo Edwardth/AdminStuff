@@ -27,9 +27,8 @@ import org.bukkit.entity.Player;
 
 public class cmdClearInventory extends Command {
 
-    public cmdClearInventory(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdClearInventory(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @SuppressWarnings("deprecation")
@@ -44,8 +43,8 @@ public class cmdClearInventory extends Command {
      * @param split
      */
     public void execute(String[] args, Player player) {
-	player.getInventory().clear();
-	player.updateInventory();
-	player.sendMessage(ChatColor.GRAY + "Inventory cleared!");
+        player.getInventory().clear();
+        player.updateInventory();
+        player.sendMessage(ChatColor.GRAY + "Inventory cleared!");
     }
 }

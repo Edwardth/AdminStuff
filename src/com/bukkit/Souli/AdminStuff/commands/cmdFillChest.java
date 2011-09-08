@@ -32,35 +32,32 @@ import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdFillChest extends Command {
 
-	public cmdFillChest(String syntax, String arguments, String node,
-			Server server) {
-		super(syntax, arguments, node, server);
-	}
+    public cmdFillChest(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /fillchest <ItemID or Name>[:SubID] <br>
-	 * Fill a chest with a specified item
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 *            split[0] is the item name
-	 */
-	public void execute(String[] args, Player player) {
-		int amount = 64;
-		String ID = ASItem.getIDPart(args[0]);
-		byte Data = ASItem.getDataPart(args[0]);
-		if (ASItem.isValid(ID, Data)) {			
-			ItemStack item = ASItem.getItemStack(ID, Data, amount);
-			ASPlayerListener.queuedFillChest.put(player.getName(), item);
-			player.sendMessage(ChatColor.GRAY + "Click on a chest to fill it with '" + Material.getMaterial(item.getTypeId()).name().toLowerCase() + "'!");
-		} else {
-			player.sendMessage(ChatColor.RED + "Item '" + args[0]
-					+ "' not found!");
-			player.sendMessage(ChatColor.GRAY + this.getSyntax() + " "
-					+ this.getArguments());
-		}
-	}
+    @Override
+    /**
+     * Representing the command <br>
+     * /fillchest <ItemID or Name>[:SubID] <br>
+     * Fill a chest with a specified item
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     *            split[0] is the item name
+     */
+    public void execute(String[] args, Player player) {
+        int amount = 64;
+        String ID = ASItem.getIDPart(args[0]);
+        byte Data = ASItem.getDataPart(args[0]);
+        if (ASItem.isValid(ID, Data)) {
+            ItemStack item = ASItem.getItemStack(ID, Data, amount);
+            ASPlayerListener.queuedFillChest.put(player.getName(), item);
+            player.sendMessage(ChatColor.GRAY + "Click on a chest to fill it with '" + Material.getMaterial(item.getTypeId()).name().toLowerCase() + "'!");
+        } else {
+            player.sendMessage(ChatColor.RED + "Item '" + args[0] + "' not found!");
+            player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
+        }
+    }
 }

@@ -30,9 +30,8 @@ import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdMessage extends ExtendedCommand {
 
-    public cmdMessage(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdMessage(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -47,28 +46,27 @@ public class cmdMessage extends ExtendedCommand {
      *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-	Player target = ASCore.getPlayer(args[0]);
-	if (target != null) {
-	    if (target.isOnline()) {
-		// ADD PLAYER, IF NOT FOUND
-		ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
-		ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
-		
-		String message = "";
-		for(int i = 1; i < args.length; i++)
-		{
-		    message += args[i] + " ";
-		}
-		
-		player.sendMessage(ChatColor.GOLD + "[ me -> " + ASCore.getPlayerName(target) + " ] : " + ChatColor.GRAY + message);
-		target.sendMessage(ChatColor.GOLD + "[ " + ASCore.getPlayerName(player) + " -> me ] : " + ChatColor.GRAY + message);
-		
-		thisPlayer.setLastSender(target.getName());
-		thisTarget.setLastSender(player.getName());
-	    }
-	} else {
-	    player.sendMessage(ChatColor.RED + "Player '" + args[0]
-		    + "' not found (or is not online!)");
-	}
+        Player target = ASCore.getPlayer(args[0]);
+        if (target != null) {
+            if (target.isOnline()) {
+                // ADD PLAYER, IF NOT FOUND
+                ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+                ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
+
+                String message = "";
+                for (int i = 1; i < args.length; i++)
+                {
+                    message += args[i] + " ";
+                }
+
+                player.sendMessage(ChatColor.GOLD + "[ me -> " + ASCore.getPlayerName(target) + " ] : " + ChatColor.GRAY + message);
+                target.sendMessage(ChatColor.GOLD + "[ " + ASCore.getPlayerName(player) + " -> me ] : " + ChatColor.GRAY + message);
+
+                thisPlayer.setLastSender(target.getName());
+                thisTarget.setLastSender(player.getName());
+            }
+        } else {
+            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+        }
     }
 }

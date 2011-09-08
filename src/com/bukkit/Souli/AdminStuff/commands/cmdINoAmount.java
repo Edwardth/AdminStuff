@@ -31,9 +31,8 @@ import com.bukkit.Souli.AdminStuff.ASItem;
 
 public class cmdINoAmount extends Command {
 
-    public cmdINoAmount(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdINoAmount(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @SuppressWarnings("deprecation")
@@ -49,22 +48,17 @@ public class cmdINoAmount extends Command {
      *            split[0] is the item name
      */
     public void execute(String[] args, Player player) {
-	int amount = 64;
-	String ID = ASItem.getIDPart(args[0]);
-	byte Data = ASItem.getDataPart(args[0]);
-	if (ASItem.isValid(ID, Data)) {
-	    ItemStack item = ASItem.getItemStack(ID, Data, amount);
-	    player.getInventory().addItem(item);
-	    player.updateInventory();
-	    player.sendMessage(ChatColor.GRAY + "Giving you " + amount + " of "
-		    + Material.getMaterial(item.getTypeId())
-		    + ((Data > 0) ? (":" + Data) : ""));
-	} else {
-	    player.sendMessage(ChatColor.RED + "Item '" + args[0]
-		    + "' not found!");
-	    player.sendMessage(ChatColor.GRAY + this.getSyntax() + " "
-		    + this.getArguments());
-	}
-
+        int amount = 64;
+        String ID = ASItem.getIDPart(args[0]);
+        byte Data = ASItem.getDataPart(args[0]);
+        if (ASItem.isValid(ID, Data)) {
+            ItemStack item = ASItem.getItemStack(ID, Data, amount);
+            player.getInventory().addItem(item);
+            player.updateInventory();
+            player.sendMessage(ChatColor.GRAY + "Giving you " + amount + " of " + Material.getMaterial(item.getTypeId()) + ((Data > 0) ? (":" + Data) : ""));
+        } else {
+            player.sendMessage(ChatColor.RED + "Item '" + args[0] + "' not found!");
+            player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
+        }
     }
 }

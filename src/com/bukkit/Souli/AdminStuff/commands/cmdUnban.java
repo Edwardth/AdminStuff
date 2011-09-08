@@ -49,8 +49,7 @@ public class cmdUnban extends Command {
      *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-        File playerFile = new File("plugins/AdminStuff/userdata/"
-                + args[0].toLowerCase() + ".yml");
+        File playerFile = new File("plugins/AdminStuff/userdata/" + args[0].toLowerCase() + ".yml");
         if (playerFile.exists()) {
             ASPlayer unbanned = ASCore.getOrCreateASPlayer(args[0]);
             unbanned.setBanned(false);
@@ -59,9 +58,7 @@ public class cmdUnban extends Command {
             unbanned.saveConfig(false, false, false, false, true, false, false);
         }
         ASCore.unbanPlayer(args[0]);
-        player.sendMessage(ChatColor.GRAY + "Player '" + args[0]
-                + "' unbanned!");
-
+        player.sendMessage(ChatColor.GRAY + "Player '" + args[0] + "' unbanned!");
         ((CraftServer) ASCore.getMCServer()).getHandle().b(args[0]);
     }
 }

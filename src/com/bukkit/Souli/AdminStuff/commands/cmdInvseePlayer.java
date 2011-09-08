@@ -30,9 +30,8 @@ import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdInvseePlayer extends Command {
 
-    public cmdInvseePlayer(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdInvseePlayer(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @SuppressWarnings("deprecation")
@@ -48,37 +47,32 @@ public class cmdInvseePlayer extends Command {
      *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-	Player target = ASCore.getPlayer(args[0]);
-	if (target != null) {
-	    if (target.getName().equalsIgnoreCase(player.getName())) {
-		return;
-	    }
-	    if (!target.isDead() && target.isOnline()) {
-		// ADD PLAYER, IF NOT FOUND
-		ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+        Player target = ASCore.getPlayer(args[0]);
+        if (target != null) {
+            if (target.getName().equalsIgnoreCase(player.getName())) {
+                return;
+            }
+            if (!target.isDead() && target.isOnline()) {
+                // ADD PLAYER, IF NOT FOUND
+                ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
 
-		// SAVE INVENTORY
-		thisPlayer.saveInventory(player.getInventory());
+                // SAVE INVENTORY
+                thisPlayer.saveInventory(player.getInventory());
 
-		// CLEAR INVENTORY
-		player.getInventory().clear();
+                // CLEAR INVENTORY
+                player.getInventory().clear();
 
-		// OVERWRITE INVENTORY WITH OTHER INVENTORY
-		for (int i = 0; i < target.getInventory().getSize(); i++) {
-		    if (target.getInventory().getItem(i) != null
-			    && target.getInventory().getItem(i).getTypeId() > 0) {
-			player.getInventory().setItem(i,
-				target.getInventory().getItem(i).clone());
-		    }
-		}
-		player.updateInventory();
-		player.sendMessage(ChatColor.GRAY
-			+ "Showing you the inventory of '"
-			+ ASCore.getPlayerName(target) + "'!");
-	    }
-	} else {
-	    player.sendMessage(ChatColor.RED + "Player '" + args[0]
-		    + "' not found (or is not online!)");
-	}
+                // OVERWRITE INVENTORY WITH OTHER INVENTORY
+                for (int i = 0; i < target.getInventory().getSize(); i++) {
+                    if (target.getInventory().getItem(i) != null && target.getInventory().getItem(i).getTypeId() > 0) {
+                        player.getInventory().setItem(i, target.getInventory().getItem(i).clone());
+                    }
+                }
+                player.updateInventory();
+                player.sendMessage(ChatColor.GRAY + "Showing you the inventory of '" + ASCore.getPlayerName(target) + "'!");
+            }
+        } else {
+            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+        }
     }
 }

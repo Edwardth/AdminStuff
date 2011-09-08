@@ -29,9 +29,8 @@ import com.bukkit.Souli.AdminStuff.ASCore;
 
 public class cmdKickMessage extends ExtendedCommand {
 
-    public cmdKickMessage(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdKickMessage(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -46,27 +45,24 @@ public class cmdKickMessage extends ExtendedCommand {
      *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-	Player target = ASCore.getPlayer(args[0]);
-	if (target != null) {
-	    if (target.isOnline()) {
-		// ADD PLAYER, IF NOT FOUND
-		ASCore.getOrCreateASPlayer(target);
+        Player target = ASCore.getPlayer(args[0]);
+        if (target != null) {
+            if (target.isOnline()) {
+                // ADD PLAYER, IF NOT FOUND
+                ASCore.getOrCreateASPlayer(target);
+                String message = "";
+                for (int i = 1; i < args.length; i++) {
+                    message += args[i] + " ";
+                }
 
-		String message = "";
-		for (int i = 1; i < args.length; i++) {
-		    message += args[i] + " ";
-		}
+                if (message.equalsIgnoreCase(""))
+                    message = "You were kicked.";
 
-		if(message.equalsIgnoreCase(""))
-		    message = "You were kicked.";
-		
-		target.kickPlayer(message);		
-		player.sendMessage(ChatColor.GRAY + "Player '"
-			+ ASCore.getPlayerName(target) + "' kicked!");		
-	    }
-	} else {
-	    player.sendMessage(ChatColor.RED + "Player '" + args[0]
-		    + "' not found (or is not online!)");
-	}
+                target.kickPlayer(message);
+                player.sendMessage(ChatColor.GRAY + "Player '" + ASCore.getPlayerName(target) + "' kicked!");
+            }
+        } else {
+            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+        }
     }
 }

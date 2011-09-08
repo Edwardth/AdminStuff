@@ -30,9 +30,8 @@ import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdNickname extends Command {
 
-    public cmdNickname(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdNickname(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -47,13 +46,11 @@ public class cmdNickname extends Command {
      * 		  split[0] is the nickname
      */
     public void execute(String[] args, Player player) {
-	// ADD PLAYER, IF NOT FOUND
-	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
-
-	thisPlayer.setNickname(args[0]);
-	player.sendMessage(ChatColor.GRAY + "Your nickname is now '" + args[0]
-		+ "'.");
-	thisPlayer.saveConfig(false, false, false, false, false, true, false);
-	thisPlayer.updateNick();
+        // ADD PLAYER, IF NOT FOUND
+        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+        thisPlayer.setNickname(args[0]);
+        player.sendMessage(ChatColor.GRAY + "Your nickname is now '" + args[0] + "'.");
+        thisPlayer.saveConfig(false, false, false, false, false, true, false);
+        thisPlayer.updateNick();
     }
 }

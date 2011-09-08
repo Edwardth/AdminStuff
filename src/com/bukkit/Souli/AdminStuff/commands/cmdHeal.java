@@ -28,7 +28,7 @@ import org.bukkit.entity.Player;
 public class cmdHeal extends Command {
 
     public cmdHeal(String syntax, String arguments, String node, Server server) {
-	super(syntax, arguments, node, server);
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class cmdHeal extends Command {
      * @param split
      */
     public void execute(String[] args, Player player) {
-	player.setHealth(20);
-	player.sendMessage(ChatColor.GRAY + "Healed yourself.");
+        player.setHealth(20);
+        player.sendMessage(ChatColor.GRAY + "Healed yourself.");
     }
 }

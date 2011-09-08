@@ -30,9 +30,8 @@ import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdGodPlayer extends Command {
 
-    public cmdGodPlayer(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdGodPlayer(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -47,29 +46,24 @@ public class cmdGodPlayer extends Command {
      *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-	Player target = ASCore.getPlayer(args[0]);
-	if (target != null) {
-	    if (!target.isDead() && target.isOnline()) {
-		// ADD PLAYER, IF NOT FOUND
-		ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
-		boolean isGod = !thisTarget.isGod();
-		thisTarget.setGod(isGod);
-		thisTarget.saveConfig(false, false, false, false, false, false,
-			true);
-		if (isGod) {
-		    player.sendMessage(ChatColor.GRAY + "'"
-			    + ASCore.getPlayerName(target) + "' is now a god.");
-		    target.sendMessage(ChatColor.GRAY + "Godmode enabled.");
-		} else {
-		    player.sendMessage(ChatColor.GRAY + "'"
-			    + ASCore.getPlayerName(target)
-			    + "' is no longer a god.");
-		    target.sendMessage(ChatColor.GRAY + "Godmode disabled.");
-		}
-	    }
-	} else {
-	    player.sendMessage(ChatColor.RED + "Player '" + args[0]
-		    + "' not found (or is not online!)");
-	}
+        Player target = ASCore.getPlayer(args[0]);
+        if (target != null) {
+            if (!target.isDead() && target.isOnline()) {
+                // ADD PLAYER, IF NOT FOUND
+                ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
+                boolean isGod = !thisTarget.isGod();
+                thisTarget.setGod(isGod);
+                thisTarget.saveConfig(false, false, false, false, false, false, true);
+                if (isGod) {
+                    player.sendMessage(ChatColor.GRAY + "'" + ASCore.getPlayerName(target) + "' is now a god.");
+                    target.sendMessage(ChatColor.GRAY + "Godmode enabled.");
+                } else {
+                    player.sendMessage(ChatColor.GRAY + "'" + ASCore.getPlayerName(target) + "' is no longer a god.");
+                    target.sendMessage(ChatColor.GRAY + "Godmode disabled.");
+                }
+            }
+        } else {
+            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+        }
     }
 }

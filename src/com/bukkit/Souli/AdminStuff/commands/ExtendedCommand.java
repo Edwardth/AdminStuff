@@ -27,30 +27,27 @@ import org.bukkit.entity.Player;
 
 public abstract class ExtendedCommand extends Command {
 
-    public ExtendedCommand(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public ExtendedCommand(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     public void run(String[] args, Player player) {
-	if (!super.hasRights(player)) {
-	    player.sendMessage(ChatColor.RED + NO_RIGHT);
-	    return;
-	}
+        if (!super.hasRights(player)) {
+            player.sendMessage(ChatColor.RED + NO_RIGHT);
+            return;
+        }
 
-	if (!this.hasCorrectSyntax(args)) {
-	    player.sendMessage(ChatColor.RED + getSyntax() + " "
-		    + getArguments() + " " + getDescription());
-	    return;
-	}
-
-	execute(args, player);
+        if (!this.hasCorrectSyntax(args)) {
+            player.sendMessage(ChatColor.RED + getSyntax() + " " + getArguments() + " " + getDescription());
+            return;
+        }
+        execute(args, player);
     }
 
     public abstract void execute(String[] args, Player player);
 
     @Override
     public boolean hasCorrectSyntax(String[] args) {
-	return args.length >= super.countArguments();
+        return args.length >= super.countArguments();
     }
 }

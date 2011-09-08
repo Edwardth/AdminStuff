@@ -54,21 +54,17 @@ public class cmdBan extends Command {
                 ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
 
                 thisTarget.setBanned(true);
-                thisTarget.saveConfig(false, false, false, false, true, false,
-                        false);
+                thisTarget.saveConfig(false, false, false, false, true, false, false);
                 String message = "You were banned.";
                 target.kickPlayer(message);
-                player.sendMessage(ChatColor.GRAY + "Player '"
-                        + ASCore.getPlayerName(target) + "' banned!");
+                player.sendMessage(ChatColor.GRAY + "Player '" + ASCore.getPlayerName(target) + "' banned!");
 
-                ((CraftServer) ASCore.getMCServer()).getHandle().a(
-                        target.getName());
+                ((CraftServer) ASCore.getMCServer()).getHandle().a(target.getName());
             }
             ASCore.banPlayer(target.getName());
         } else {
             ASCore.banPlayer(args[0]);
-            player.sendMessage(ChatColor.GRAY + "Player '" + args[0]
-                    + "' banned!");
+            player.sendMessage(ChatColor.GRAY + "Player '" + args[0] + "' banned!");
             ((CraftServer) ASCore.getMCServer()).getHandle().a(args[0]);
         }
     }

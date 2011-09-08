@@ -31,7 +31,7 @@ import com.gemo.utils.UtilPermissions;
 public class cmdKit extends Command {
 
     public cmdKit(String syntax, String arguments, String node, Server server) {
-	super(syntax, arguments, node, server);
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -45,23 +45,19 @@ public class cmdKit extends Command {
      * @param split
      */
     public void execute(String[] args, Player player) {
-	// IS KIT AVAILABLE
-	if (!ASCore.kitList.containsKey(args[0].toLowerCase())) {
-	    player.sendMessage(ChatColor.RED + "Kit '" + args[0]
-		    + "' not found.");
-	    return;
-	}
+        // IS KIT AVAILABLE
+        if (!ASCore.kitList.containsKey(args[0].toLowerCase())) {
+            player.sendMessage(ChatColor.RED + "Kit '" + args[0] + "' not found.");
+            return;
+        }
 
-	// CHECK PERMISSIONS
-	if (!UtilPermissions.playerCanUseCommand(player,
-		"adminstuff.commands.admin.kit." + args[0].toLowerCase())) {
-	    player.sendMessage(ChatColor.RED
-		    + "You are not allowed to use that kit.");
-	    return;
-	}
+        // CHECK PERMISSIONS
+        if (!UtilPermissions.playerCanUseCommand(player, "adminstuff.commands.admin.kit." + args[0].toLowerCase())) {
+            player.sendMessage(ChatColor.RED + "You are not allowed to use that kit.");
+            return;
+        }
 
-	ASCore.kitList.get(args[0].toLowerCase()).giveKit(player);
-	player.sendMessage(ChatColor.GRAY + "Giving you the kit '" + args[0]
-		+ "'.");
+        ASCore.kitList.get(args[0].toLowerCase()).giveKit(player);
+        player.sendMessage(ChatColor.GRAY + "Giving you the kit '" + args[0] + "'.");
     }
 }

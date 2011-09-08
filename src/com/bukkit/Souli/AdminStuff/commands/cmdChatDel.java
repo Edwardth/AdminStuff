@@ -30,9 +30,8 @@ import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdChatDel extends Command {
 
-    public cmdChatDel(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdChatDel(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -46,12 +45,11 @@ public class cmdChatDel extends Command {
      * @param split
      */
     public void execute(String[] args, Player player) {
-	// ADD PLAYER, IF NOT FOUND
-	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+        // ADD PLAYER, IF NOT FOUND
+        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
 
-	// DELETE RECIPIENTLIST
-	thisPlayer.setRecipients(null);
-	player.sendMessage(ChatColor.GRAY
-		+ "You are now sending messages everyone!");
+        // DELETE RECIPIENTLIST
+        thisPlayer.setRecipients(null);
+        player.sendMessage(ChatColor.GRAY + "You are now sending messages everyone!");
     }
 }

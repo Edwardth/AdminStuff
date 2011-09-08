@@ -30,7 +30,7 @@ import com.bukkit.Souli.AdminStuff.ASCore;
 public class cmdMe extends ExtendedCommand {
 
     public cmdMe(String syntax, String arguments, String node, Server server) {
-	super(syntax, arguments, node, server);
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -44,14 +44,13 @@ public class cmdMe extends ExtendedCommand {
      * @param split
      */
     public void execute(String[] args, Player player) {
-	String message = "";
-	for (int i = 0; i < args.length; i++) {
-	    message += args[i] + " ";
-	}
+        String message = "";
+        for (int i = 0; i < args.length; i++) {
+            message += args[i] + " ";
+        }
 
-	// ADD PLAYER, IF NOT FOUND
-	ASCore.getOrCreateASPlayer(player);
-	ASCore.getMCServer().broadcastMessage(
-		ChatColor.WHITE + " * " + ASCore.getPlayerName(player) + " " + message );
+        // ADD PLAYER, IF NOT FOUND
+        ASCore.getOrCreateASPlayer(player);
+        ASCore.getMCServer().broadcastMessage(ChatColor.WHITE + " * " + ASCore.getPlayerName(player) + " " + message);
     }
 }

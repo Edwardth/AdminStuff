@@ -28,7 +28,7 @@ import org.bukkit.entity.Player;
 public class cmdFlash extends Command {
 
     public cmdFlash(String syntax, String arguments, String node, Server server) {
-	super(syntax, arguments, node, server);
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -42,10 +42,9 @@ public class cmdFlash extends Command {
      * @param split
      */
     public void execute(String[] args, Player player) {
-	Location strikeLocation = player.getLastTwoTargetBlocks(null, 50)
-		.get(0).getLocation();
-	
-	if(strikeLocation != null)
-	    player.getWorld().strikeLightning(strikeLocation);
+        Location strikeLocation = player.getLastTwoTargetBlocks(null, 50).get(0).getLocation();
+
+        if (strikeLocation != null)
+            player.getWorld().strikeLightning(strikeLocation);
     }
 }

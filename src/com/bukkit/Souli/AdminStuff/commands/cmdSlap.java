@@ -30,7 +30,7 @@ import com.bukkit.Souli.AdminStuff.ASPlayer;
 public class cmdSlap extends Command {
 
     public cmdSlap(String syntax, String arguments, String node, Server server) {
-	super(syntax, arguments, node, server);
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -45,21 +45,16 @@ public class cmdSlap extends Command {
      * 			args[0] = Player to be slapped
      */
     public void execute(String[] args, Player player) {
-	Player target = ASCore.getPlayer(args[0]);
-	if (target != null) {
-	    if (!target.isDead() && target.isOnline()) {
-		// ADD PLAYER, IF NOT FOUND
-		ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
-		thisTarget.setSlapped(true);
-		ASCore.getMCServer().broadcastMessage(
-			ChatColor.BLUE + ASCore.getPlayerName(player)
-				+ " schlägt " + ASCore.getPlayerName(target)
-				+ " mit einem kalten Fisch ins Gesicht!");
-		thisTarget.updateNick();
-	    }
-	} else {
-	    player.sendMessage(ChatColor.RED + "Player '" + args[0]
-		    + "' not found (or is not online!)");
-	}
+        Player target = ASCore.getPlayer(args[0]);
+        if (target != null) {
+            if (!target.isDead() && target.isOnline()) {
+                ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
+                thisTarget.setSlapped(true);
+                ASCore.getMCServer().broadcastMessage(ChatColor.BLUE + ASCore.getPlayerName(player) + " schlägt " + ASCore.getPlayerName(target) + " mit einem kalten Fisch ins Gesicht!");
+                thisTarget.updateNick();
+            }
+        } else {
+            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+        }
     }
 }

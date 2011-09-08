@@ -31,7 +31,7 @@ import com.bukkit.Souli.AdminStuff.ASPlayer;
 public class cmdGlue extends Command {
 
     public cmdGlue(String syntax, String arguments, String node, Server server) {
-	super(syntax, arguments, node, server);
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -46,31 +46,25 @@ public class cmdGlue extends Command {
      *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-	Player target = ASCore.getPlayer(args[0]);
-	if (target != null) {
-	    if (!target.isDead() && target.isOnline()) {
-		// ADD PLAYER, IF NOT FOUND
-		ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(target);
-		thisPlayer.setGlued(!thisPlayer.isGlued());
-		if (thisPlayer.isGlued()) {
-		    thisPlayer.setGlueLocation(target.getLocation());
-		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + ASCore.getPlayerName(target) + "' glued!");
-		    target.sendMessage(ChatColor.BLUE + "You are now glued!");
-		} else {
-		    thisPlayer.setGlueLocation(null);
-		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + ASCore.getPlayerName(target) + "' is no longer glued!");
-		    target.sendMessage(ChatColor.BLUE
-			    + "You are no longer glued!");
-		}
-
-		thisPlayer.saveConfig(false, false,
-			false, true, false, false, false);
-	    }
-	} else {
-	    player.sendMessage(ChatColor.RED + "Player '" + args[0]
-		    + "' not found (or is not online!)");
-	}
+        Player target = ASCore.getPlayer(args[0]);
+        if (target != null) {
+            if (!target.isDead() && target.isOnline()) {
+                // ADD PLAYER, IF NOT FOUND
+                ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(target);
+                thisPlayer.setGlued(!thisPlayer.isGlued());
+                if (thisPlayer.isGlued()) {
+                    thisPlayer.setGlueLocation(target.getLocation());
+                    player.sendMessage(ChatColor.GRAY + "Player '" + ASCore.getPlayerName(target) + "' glued!");
+                    target.sendMessage(ChatColor.BLUE + "You are now glued!");
+                } else {
+                    thisPlayer.setGlueLocation(null);
+                    player.sendMessage(ChatColor.GRAY + "Player '" + ASCore.getPlayerName(target) + "' is no longer glued!");
+                    target.sendMessage(ChatColor.BLUE + "You are no longer glued!");
+                }
+                thisPlayer.saveConfig(false, false, false, true, false, false, false);
+            }
+        } else {
+            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+        }
     }
 }

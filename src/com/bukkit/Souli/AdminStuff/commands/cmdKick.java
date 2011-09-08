@@ -30,7 +30,7 @@ import com.bukkit.Souli.AdminStuff.ASCore;
 public class cmdKick extends Command {
 
     public cmdKick(String syntax, String arguments, String node, Server server) {
-	super(syntax, arguments, node, server);
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -45,20 +45,18 @@ public class cmdKick extends Command {
      *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-	Player target = ASCore.getPlayer(args[0]);
-	if (target != null) {
-	    if (target.isOnline()) {
-		// ADD PLAYER, IF NOT FOUND
-		ASCore.getOrCreateASPlayer(target);
+        Player target = ASCore.getPlayer(args[0]);
+        if (target != null) {
+            if (target.isOnline()) {
+                // ADD PLAYER, IF NOT FOUND
+                ASCore.getOrCreateASPlayer(target);
 
-		String message = "You were kicked.";
-		target.kickPlayer(message);
-		player.sendMessage(ChatColor.GRAY + "Player '"
-			+ ASCore.getPlayerName(target) + "' kicked!");
-	    }
-	} else {
-	    player.sendMessage(ChatColor.RED + "Player '" + args[0]
-		    + "' not found (or is not online!)");
-	}
+                String message = "You were kicked.";
+                target.kickPlayer(message);
+                player.sendMessage(ChatColor.GRAY + "Player '" + ASCore.getPlayerName(target) + "' kicked!");
+            }
+        } else {
+            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+        }
     }
 }

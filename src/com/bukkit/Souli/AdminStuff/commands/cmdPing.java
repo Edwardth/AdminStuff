@@ -28,7 +28,7 @@ import org.bukkit.entity.Player;
 public class cmdPing extends Command {
 
     public cmdPing(String syntax, String arguments, String node, Server server) {
-	super(syntax, arguments, node, server);
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -42,6 +42,6 @@ public class cmdPing extends Command {
      * @param split
      */
     public void execute(String[] args, Player player) {
-	player.sendMessage(ChatColor.GRAY + "* PONG!");
+        player.sendMessage(ChatColor.GRAY + "* PONG!");
     }
 }

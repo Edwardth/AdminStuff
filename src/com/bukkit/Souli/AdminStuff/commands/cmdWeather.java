@@ -27,9 +27,8 @@ import org.bukkit.entity.Player;
 
 public class cmdWeather extends Command {
 
-    public cmdWeather(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdWeather(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -44,30 +43,23 @@ public class cmdWeather extends Command {
      *            split[0] is the weather
      */
     public void execute(String[] args, Player player) {
-	if (args[0].equalsIgnoreCase("sun")) {
-	    player.getWorld().setThundering(false);
-	    player.getWorld().setStorm(false);
-	    player.sendMessage(ChatColor.GRAY
-		    + "Weather in your world changed to '"
-		    + args[0].toLowerCase() + "'!");
-	    return;
-	} else if (args[0].equalsIgnoreCase("rain")) {
-	    player.getWorld().setStorm(true);
-	    player.getWorld().setThundering(false);
-	    player.sendMessage(ChatColor.GRAY
-		    + "Weather in your world changed to '"
-		    + args[0].toLowerCase() + "'!");
-	    return;
-	} else if (args[0].equalsIgnoreCase("storm")) {
-	    player.getWorld().setStorm(true);
-	    player.getWorld().setThundering(true);
-	    player.sendMessage(ChatColor.GRAY
-		    + "Weather in your world changed to '"
-		    + args[0].toLowerCase() + "'!");
-	    return;
-	}
-	player.sendMessage(ChatColor.RED + "Wrong syntax!");
-	player.sendMessage(ChatColor.GRAY + this.getSyntax() + " "
-		+ this.getArguments());
+        if (args[0].equalsIgnoreCase("sun")) {
+            player.getWorld().setThundering(false);
+            player.getWorld().setStorm(false);
+            player.sendMessage(ChatColor.GRAY + "Weather in your world changed to '" + args[0].toLowerCase() + "'!");
+            return;
+        } else if (args[0].equalsIgnoreCase("rain")) {
+            player.getWorld().setStorm(true);
+            player.getWorld().setThundering(false);
+            player.sendMessage(ChatColor.GRAY + "Weather in your world changed to '" + args[0].toLowerCase() + "'!");
+            return;
+        } else if (args[0].equalsIgnoreCase("storm")) {
+            player.getWorld().setStorm(true);
+            player.getWorld().setThundering(true);
+            player.sendMessage(ChatColor.GRAY + "Weather in your world changed to '" + args[0].toLowerCase() + "'!");
+            return;
+        }
+        player.sendMessage(ChatColor.RED + "Wrong syntax!");
+        player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
     }
 }

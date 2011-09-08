@@ -30,9 +30,8 @@ import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdHideChat extends Command {
 
-    public cmdHideChat(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdHideChat(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -46,15 +45,15 @@ public class cmdHideChat extends Command {
      * @param split
      */
     public void execute(String[] args, Player player) {
-	// ADD PLAYER, IF NOT FOUND
-	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
-	boolean hide = !thisPlayer.isHideChat();
-	thisPlayer.setHideChat(hide);
+        // ADD PLAYER, IF NOT FOUND
+        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+        boolean hide = !thisPlayer.isHideChat();
+        thisPlayer.setHideChat(hide);
 
-	if (hide) {
-	    player.sendMessage(ChatColor.GRAY + "The chat is now hidden.");
-	} else {
-	    player.sendMessage(ChatColor.GRAY + "The chat is no longer hidden.");
-	}
+        if (hide) {
+            player.sendMessage(ChatColor.GRAY + "The chat is now hidden.");
+        } else {
+            player.sendMessage(ChatColor.GRAY + "The chat is no longer hidden.");
+        }
     }
 }

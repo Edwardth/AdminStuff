@@ -31,7 +31,7 @@ import com.bukkit.Souli.AdminStuff.ASPlayer;
 public class cmdInvsee extends Command {
 
     public cmdInvsee(String syntax, String arguments, String node, Server server) {
-	super(syntax, arguments, node, server);
+        super(syntax, arguments, node, server);
     }
 
     @SuppressWarnings("deprecation")
@@ -46,18 +46,16 @@ public class cmdInvsee extends Command {
      * @param split
      */
     public void execute(String[] args, Player player) {
-	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
-	// CLEAR INVENTORY
-	player.getInventory().clear();
-	// RESTORE INVENTORY
-	for (int i = 0; i < thisPlayer.getInvBackUp().length; i++) {
-	    if (thisPlayer.getInvBackUp()[i] != null
-		    && thisPlayer.getInvBackUp()[i].getTypeId() > 0)
-		player.getInventory().setItem(i,
-			thisPlayer.getInvBackUp()[i].clone());
-	}
-	player.updateInventory();
-	player.sendMessage(ChatColor.GRAY + "Restoring your inventory!");
+        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+        // CLEAR INVENTORY
+        player.getInventory().clear();
+        // RESTORE INVENTORY
+        for (int i = 0; i < thisPlayer.getInvBackUp().length; i++) {
+            if (thisPlayer.getInvBackUp()[i] != null && thisPlayer.getInvBackUp()[i].getTypeId() > 0)
+                player.getInventory().setItem(i, thisPlayer.getInvBackUp()[i].clone());
+        }
+        player.updateInventory();
+        player.sendMessage(ChatColor.GRAY + "Restoring your inventory!");
 
     }
 }

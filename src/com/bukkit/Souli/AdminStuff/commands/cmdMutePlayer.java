@@ -30,9 +30,8 @@ import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdMutePlayer extends Command {
 
-    public cmdMutePlayer(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdMutePlayer(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -47,28 +46,22 @@ public class cmdMutePlayer extends Command {
      *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-	Player target = ASCore.getPlayer(args[0]);
-	if (target != null) {
-	    if (target.isOnline()) {
-		// ADD PLAYER, IF NOT FOUND
-		ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
-		thisTarget.setMuted(!thisTarget.isMuted());
+        Player target = ASCore.getPlayer(args[0]);
+        if (target != null) {
+            if (target.isOnline()) {
+                // ADD PLAYER, IF NOT FOUND
+                ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
+                thisTarget.setMuted(!thisTarget.isMuted());
 
-		if (thisTarget.isMuted()) {
-		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + ASCore.getPlayerName(target) + "' is now muted!");
-		} else {
-		    player.sendMessage(ChatColor.GRAY + "Player '"
-			    + ASCore.getPlayerName(target)
-			    + "' is no longer muted!");
-		}
-
-		thisTarget.saveConfig(false, true, false, false, false, false,
-			false);
-	    }
-	} else {
-	    player.sendMessage(ChatColor.RED + "Player '" + args[0]
-		    + "' not found (or is not online!)");
-	}
+                if (thisTarget.isMuted()) {
+                    player.sendMessage(ChatColor.GRAY + "Player '" + ASCore.getPlayerName(target) + "' is now muted!");
+                } else {
+                    player.sendMessage(ChatColor.GRAY + "Player '" + ASCore.getPlayerName(target) + "' is no longer muted!");
+                }
+                thisTarget.saveConfig(false, true, false, false, false, false, false);
+            }
+        } else {
+            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+        }
     }
 }

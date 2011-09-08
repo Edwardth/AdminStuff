@@ -33,9 +33,8 @@ import com.gemo.utils.UtilPermissions;
 
 public class cmdListKits extends Command {
 
-    public cmdListKits(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdListKits(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -49,15 +48,13 @@ public class cmdListKits extends Command {
      * @param split
      */
     public void execute(String[] args, Player player) {
-	player.sendMessage(ChatColor.AQUA + "List of Kits:");
-	int count = 1;
-	for (Map.Entry<String, ASKit> entry : ASCore.kitList.entrySet()) {
-	    if (UtilPermissions.playerCanUseCommand(player,
-		    "adminstuff.commands.admin.kit." + entry.getKey())) {
-		player.sendMessage(ChatColor.GRAY + "#" + count + " : "
-			+ entry.getKey());
-		count++;
-	    }
-	}
+        player.sendMessage(ChatColor.AQUA + "List of Kits:");
+        int count = 1;
+        for (Map.Entry<String, ASKit> entry : ASCore.kitList.entrySet()) {
+            if (UtilPermissions.playerCanUseCommand(player, "adminstuff.commands.admin.kit." + entry.getKey())) {
+                player.sendMessage(ChatColor.GRAY + "#" + count + " : " + entry.getKey());
+                count++;
+            }
+        }
     }
 }

@@ -28,9 +28,8 @@ import com.bukkit.Souli.AdminStuff.ASCore;
 
 public class cmdFlashPlayer extends Command {
 
-    public cmdFlashPlayer(String syntax, String arguments, String node,
-	    Server server) {
-	super(syntax, arguments, node, server);
+    public cmdFlashPlayer(String syntax, String arguments, String node, Server server) {
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -45,17 +44,16 @@ public class cmdFlashPlayer extends Command {
      *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-	Player target = ASCore.getPlayer(args[0]);
-	if (target != null) {
-	    if (!target.isDead() && target.isOnline()) {
-		target.getInventory().clear();
-		target.getWorld().strikeLightning(target.getLocation());
-		target.damage(100);
-		ASCore.getMCServer().broadcastMessage(ChatColor.LIGHT_PURPLE + "Eat my shorts, '" + ASCore.getPlayerName(target) + "'!");		
-	    }
-	} else {
-	    player.sendMessage(ChatColor.RED + "Player '" + args[0]
-		    + "' not found (or is not online!)");
-	}
+        Player target = ASCore.getPlayer(args[0]);
+        if (target != null) {
+            if (!target.isDead() && target.isOnline()) {
+                target.getInventory().clear();
+                target.getWorld().strikeLightning(target.getLocation());
+                target.damage(100);
+                ASCore.getMCServer().broadcastMessage(ChatColor.LIGHT_PURPLE + "Eat my shorts, '" + ASCore.getPlayerName(target) + "'!");
+            }
+        } else {
+            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+        }
     }
 }
