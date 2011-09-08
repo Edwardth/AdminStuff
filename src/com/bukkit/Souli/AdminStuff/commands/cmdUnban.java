@@ -34,7 +34,7 @@ import com.bukkit.Souli.AdminStuff.ASPlayer;
 public class cmdUnban extends Command {
 
     public cmdUnban(String syntax, String arguments, String node, Server server) {
-	super(syntax, arguments, node, server);
+        super(syntax, arguments, node, server);
     }
 
     @Override
@@ -49,17 +49,19 @@ public class cmdUnban extends Command {
      *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-	File playerFile = new File("plugins/AdminStuff/userdata/"
-		+ args[0].toLowerCase() + ".yml");
-	if (playerFile.exists()) {
-	    ASPlayer unbanned = ASCore.getOrCreateASPlayer(args[0]);
-	    unbanned.setBanned(false);
-	    unbanned.setTempBanned(false);
-	    unbanned.setBanEndTime(0);
-	    unbanned.saveConfig(false, false, false, false, true, false, false);
-	}
-	player.sendMessage(ChatColor.GRAY + "Player '" + args[0]
-		+ "' unbanned!");
-	((CraftServer) ASCore.getMCServer()).getHandle().b(args[0]);
+        File playerFile = new File("plugins/AdminStuff/userdata/"
+                + args[0].toLowerCase() + ".yml");
+        if (playerFile.exists()) {
+            ASPlayer unbanned = ASCore.getOrCreateASPlayer(args[0]);
+            unbanned.setBanned(false);
+            unbanned.setTempBanned(false);
+            unbanned.setBanEndTime(0);
+            unbanned.saveConfig(false, false, false, false, true, false, false);
+        }
+        ASCore.unbanPlayer(args[0]);
+        player.sendMessage(ChatColor.GRAY + "Player '" + args[0]
+                + "' unbanned!");
+
+        ((CraftServer) ASCore.getMCServer()).getHandle().b(args[0]);
     }
 }

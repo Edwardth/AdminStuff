@@ -22,9 +22,11 @@
 package com.bukkit.Souli.AdminStuff;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,8 +62,11 @@ public class ASCore extends JavaPlugin {
     public static HashMap<String, Integer> bannedPlayers = new HashMap<String, Integer>();
 
     public static void loadBannedPlayers() {
-        File file = new File("banned-players.txt");
+        File file = new File("banned-adminstuff-players.txt");
         BufferedReader reader = null;
+
+        if (!file.exists())
+            file = new File("banned-players.txt");
 
         try {
             reader = new BufferedReader(new FileReader(file));
@@ -83,6 +88,35 @@ public class ASCore extends JavaPlugin {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static void banPlayer(String name)
+    {
+        name = name.toLowerCase();
+        bannedPlayers.put(name, 0);
+        ASCore.saveBannedPlayers();
+    }
+
+    public static void unbanPlayer(String name)
+    {
+        name = name.toLowerCase();
+        bannedPlayers.remove(name);
+        ASCore.saveBannedPlayers();
+    }
+
+    public static void saveBannedPlayers()
+    {
+        File file = new File("banned-adminstuff-players.txt");
+        if (file.exists())
+            file.delete();
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter("banned-adminstuff-players.txt", true));
+            for (String str : bannedPlayers.keySet())
+                out.write(str + "\r\n");
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
