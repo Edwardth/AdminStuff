@@ -49,8 +49,7 @@ public class ASItem {
         if (matList == null) {
             matList = new HashMap<String, Integer>();
             for (Material mat : Material.values()) {
-                matList.put(mat.name().replace("_", "").replace(" ", "")
-                        .toLowerCase(), mat.getId());
+                matList.put(mat.name().replace("_", "").replace(" ", "").toLowerCase(), mat.getId());
             }
         }
     }

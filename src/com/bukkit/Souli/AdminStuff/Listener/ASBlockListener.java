@@ -49,5 +49,4 @@ public class ASBlockListener extends BlockListener {
             player.updateInventory();
         }
     }
-
 }

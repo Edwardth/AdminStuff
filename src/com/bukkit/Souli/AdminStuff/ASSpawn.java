@@ -39,9 +39,7 @@ public class ASSpawn {
      */
     public static void setSpawn(World world, Location loc) {
         spawns.put(world.getName(), loc);
-        world.setSpawnLocation(loc.getBlockX(), loc.getBlockY(),
-                loc.getBlockZ());
-
+        world.setSpawnLocation(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
         saveSpawnFile(world, loc);
     }
 
@@ -58,7 +56,6 @@ public class ASSpawn {
         Location loc = world.getSpawnLocation();
         loc.setYaw(spawns.get(world.getName()).getYaw());
         loc.setPitch(spawns.get(world.getName()).getPitch());
-
         return loc;
     }
 
@@ -70,8 +67,7 @@ public class ASSpawn {
      */
     public static void saveSpawnFile(World world, Location loc) {
         new File("plugins/AdminStuff/spawns/").mkdirs();
-        Configuration config = new Configuration(new File(
-                "plugins/AdminStuff/spawns/" + world.getName() + ".yml"));
+        Configuration config = new Configuration(new File("plugins/AdminStuff/spawns/" + world.getName() + ".yml"));
         config.setProperty("X", loc.getBlockX());
         config.setProperty("Y", loc.getBlockY());
         config.setProperty("Z", loc.getBlockZ());
@@ -92,7 +88,6 @@ public class ASSpawn {
         for (File file : files) {
             if (!file.isFile())
                 continue;
-
             if (file.getName().endsWith(".yml")) {
                 loadSpawnFile(file.getName().replace(".yml", ""));
             }
@@ -107,18 +102,20 @@ public class ASSpawn {
      */
     public static void loadSpawnFile(String worldName) {
         new File("plugins/AdminStuff/spawns/").mkdirs();
-        Configuration config = new Configuration(new File(
-                "plugins/AdminStuff/spawns/" + worldName + ".yml"));
+        Configuration config = new Configuration(new File("plugins/AdminStuff/spawns/" + worldName + ".yml"));
         config.load();
 
         World world = ASCore.getMCServer().getWorld(worldName);
-
         if (world == null)
             world = ASCore.getMCServer().getWorlds().get(0);
 
-        Location loc = new Location(world, config.getInt("X", 0),
-                config.getInt("Y", 127), config.getInt("Z", 0), config.getInt(
-                        "Yaw", 0), config.getInt("Pitch", 0));
+        Location loc = new Location(world,
+                config.getInt("X", 0),
+                config.getInt("Y", 127),
+                config.getInt("Z", 0),
+                config.getInt("Yaw", 0),
+                config.getInt("Pitch", 0));
+
         spawns.put(worldName, loc);
     }
 }

@@ -84,7 +84,6 @@ public class ASPlayer {
      */
     public void saveInventory(Inventory toSave) {
         invBackUp = new ItemStack[36];
-        // SAVE INVENTORY
         for (int i = 0; i < toSave.getSize(); i++) {
             if (toSave.getItem(i) != null && toSave.getItem(i).getTypeId() > 0) {
                 getInvBackUp()[i] = toSave.getItem(i).clone();
@@ -99,8 +98,7 @@ public class ASPlayer {
      */
     public void loadConfig() {
         new File("plugins/AdminStuff/userdata/").mkdirs();
-        Configuration config = new Configuration(new File(
-                "plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml"));
+        Configuration config = new Configuration(new File("plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml"));
 
         config.load();
         setGod(config.getBoolean("isGod", false));
@@ -123,14 +121,14 @@ public class ASPlayer {
 
         // LOAD GLUE
         if (isGlued()) {
-            World world = ASCore.getMCServer().getWorld(
-                    config.getString("glue.Worldname", null));
+            World world = ASCore.getMCServer().getWorld(config.getString("glue.Worldname", null));
             if (world != null) {
-                glueLocation = new Location(world, config.getInt("glue.X", 0),
+                glueLocation = new Location(world,
+                        config.getInt("glue.X", 0),
                         config.getInt("glue.Y", 127),
                         config.getInt("glue.Z", 0),
-                        config.getInt("glue.Yaw", 0), config.getInt(
-                                "glue.Pitch", 0));
+                        config.getInt("glue.Yaw", 0),
+                        config.getInt("glue.Pitch", 0));
             } else {
                 glueLocation = null;
             }
@@ -142,12 +140,9 @@ public class ASPlayer {
     /**
      * SAVE PLAYERDATA TO A FILE
      */
-    public void saveConfig(boolean saveAFK, boolean saveMute,
-            boolean saveUnlimited, boolean saveGlue, boolean saveBan,
-            boolean saveNick, boolean saveGod) {
+    public void saveConfig(boolean saveAFK, boolean saveMute, boolean saveUnlimited, boolean saveGlue, boolean saveBan, boolean saveNick, boolean saveGod) {
         new File("plugins/AdminStuff/userdata/").mkdirs();
-        Configuration config = new Configuration(new File(
-                "plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml"));
+        Configuration config = new Configuration(new File("plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml"));
         config.load();
         if (saveBan) {
             config.setProperty("isBanned", isBanned);
@@ -180,8 +175,7 @@ public class ASPlayer {
                 config.setProperty("glue.Z", glueLocation.getBlockZ());
                 config.setProperty("glue.Pitch", glueLocation.getPitch());
                 config.setProperty("glue.Yaw", glueLocation.getYaw());
-                config.setProperty("glue.Worldname", glueLocation.getWorld()
-                        .getName());
+                config.setProperty("glue.Worldname", glueLocation.getWorld().getName());
             }
         }
 

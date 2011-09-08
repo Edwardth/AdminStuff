@@ -38,6 +38,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 import com.bukkit.Souli.AdminStuff.Listener.ASBlockListener;
@@ -91,15 +92,13 @@ public class ASCore extends JavaPlugin {
         }
     }
 
-    public static void banPlayer(String name)
-    {
+    public static void banPlayer(String name) {
         name = name.toLowerCase();
         bannedPlayers.put(name, 0);
         ASCore.saveBannedPlayers();
     }
 
-    public static void unbanPlayer(String name)
-    {
+    public static void unbanPlayer(String name) {
         name = name.toLowerCase();
         bannedPlayers.remove(name);
         ASCore.saveBannedPlayers();
@@ -151,33 +150,18 @@ public class ASCore extends JavaPlugin {
             for (Player player : getServer().getOnlinePlayers()) {
                 ASCore.getOrCreateASPlayer(player);
             }
-            getServer().getPluginManager().registerEvent(
-                    Event.Type.BLOCK_PLACE, bListener, Event.Priority.Monitor,
-                    this);
-            getServer().getPluginManager().registerEvent(
-                    Event.Type.ENTITY_DAMAGE, eListener, Event.Priority.Normal,
-                    this);
-            getServer().getPluginManager().registerEvent(
-                    Event.Type.PLAYER_CHAT, pListener, Event.Priority.Normal,
-                    this);
-            getServer().getPluginManager().registerEvent(
-                    Event.Type.PLAYER_INTERACT, pListener,
-                    Event.Priority.Normal, this);
-            getServer().getPluginManager().registerEvent(
-                    Event.Type.PLAYER_JOIN, pListener, Event.Priority.Monitor,
-                    this);
-            getServer().getPluginManager().registerEvent(
-                    Event.Type.PLAYER_KICK, pListener, Event.Priority.Monitor,
-                    this);
-            getServer().getPluginManager().registerEvent(
-                    Event.Type.PLAYER_MOVE, pListener, Event.Priority.Normal,
-                    this);
-            getServer().getPluginManager().registerEvent(
-                    Event.Type.PLAYER_RESPAWN, pListener,
-                    Event.Priority.Normal, this);
-            getServer().getPluginManager().registerEvent(
-                    Event.Type.PLAYER_QUIT, pListener, Event.Priority.Monitor,
-                    this);
+
+            PluginManager pm = server.getPluginManager();
+
+            pm.registerEvent(Event.Type.BLOCK_PLACE, bListener, Event.Priority.Monitor, this);
+            pm.registerEvent(Event.Type.ENTITY_DAMAGE, eListener, Event.Priority.Normal, this);
+            pm.registerEvent(Event.Type.PLAYER_CHAT, pListener, Event.Priority.Normal, this);
+            pm.registerEvent(Event.Type.PLAYER_INTERACT, pListener, Event.Priority.Normal, this);
+            pm.registerEvent(Event.Type.PLAYER_JOIN, pListener, Event.Priority.Monitor, this);
+            pm.registerEvent(Event.Type.PLAYER_KICK, pListener, Event.Priority.Monitor, this);
+            pm.registerEvent(Event.Type.PLAYER_MOVE, pListener, Event.Priority.Normal, this);
+            pm.registerEvent(Event.Type.PLAYER_RESPAWN, pListener, Event.Priority.Normal, this);
+            pm.registerEvent(Event.Type.PLAYER_QUIT, pListener, Event.Priority.Monitor, this);
 
             loadConfig();
             error = false;
@@ -194,8 +178,7 @@ public class ASCore extends JavaPlugin {
      * ON COMMAND
      */
     @Override
-    public boolean onCommand(CommandSender sender, Command command,
-            String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         CommandList.handleCommand(sender, label, args);
         return true;
     }
@@ -206,12 +189,10 @@ public class ASCore extends JavaPlugin {
     @SuppressWarnings("unchecked")
     public void loadConfig() {
         new File("plugins/AdminStuff/").mkdirs();
-        Configuration config = new Configuration(new File(
-                "plugins/AdminStuff/config.yml"));
+        Configuration config = new Configuration(new File("plugins/AdminStuff/config.yml"));
         config.load();
 
-        Map<String, ArrayList<String>> nodeList = (Map<String, ArrayList<String>>) config
-                .getProperty("kits");
+        Map<String, ArrayList<String>> nodeList = (Map<String, ArrayList<String>>) config.getProperty("kits");
 
         if (nodeList == null)
             return;
@@ -326,12 +307,10 @@ public class ASCore extends JavaPlugin {
     }
 
     public static ASPlayer getOrCreateASPlayer(String playerName) {
-        ASPlayer result = ASPlayerListener.getPlayerMap().get(
-                playerName.toLowerCase());
+        ASPlayer result = ASPlayerListener.getPlayerMap().get(playerName.toLowerCase());
         if (result == null) {
             result = new ASPlayer(playerName);
-            ASPlayerListener.getPlayerMap().put(playerName.toLowerCase(),
-                    result);
+            ASPlayerListener.getPlayerMap().put(playerName.toLowerCase(), result);
         }
         return result;
     }
