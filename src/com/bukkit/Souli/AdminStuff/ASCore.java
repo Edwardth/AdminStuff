@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -60,10 +62,10 @@ public class ASCore extends JavaPlugin {
     private ASPlayerListener pListener;
 
     public static HashMap<String, ASKit> kitList = new HashMap<String, ASKit>();
-    public static HashMap<String, Integer> bannedPlayers = new HashMap<String, Integer>();
+    public static Map<String, Integer> bannedPlayers = new TreeMap<String, Integer>();
 
     public static void loadBannedPlayers() {
-        File file = new File("banned-adminstuff-players.txt");
+        File file = new File("plugins/AdminStuff/banned-adminstuff-players.txt");
         BufferedReader reader = null;
 
         if (!file.exists())
@@ -90,6 +92,8 @@ public class ASCore extends JavaPlugin {
                 e.printStackTrace();
             }
         }
+
+        saveBannedPlayers();
     }
 
     public static void banPlayer(String name) {
@@ -105,11 +109,12 @@ public class ASCore extends JavaPlugin {
     }
 
     public static void saveBannedPlayers() {
-        File file = new File("banned-adminstuff-players.txt");
+        File file = new File("plugins/AdminStuff/banned-adminstuff-players.txt");
         if (file.exists())
             file.delete();
+
         try {
-            BufferedWriter out = new BufferedWriter(new FileWriter("banned-adminstuff-players.txt", true));
+            BufferedWriter out = new BufferedWriter(new FileWriter("plugins/AdminStuff/banned-adminstuff-players.txt", true));
             for (String str : bannedPlayers.keySet())
                 out.write(str + "\r\n");
             out.close();
