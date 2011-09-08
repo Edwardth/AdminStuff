@@ -53,27 +53,27 @@ public class ASPlayer {
     private ItemStack[] invBackUp = new ItemStack[36];
 
     public ASPlayer(String playerName) {
-	this.playerName = playerName;
-	this.loadConfig();
+        this.playerName = playerName;
+        this.loadConfig();
     }
 
     public ASPlayer(Player player) {
-	this.playerName = player.getName();
-	this.loadConfig();
+        this.playerName = player.getName();
+        this.loadConfig();
     }
 
     /**
      * IS RECIPIENT
      */
     public boolean isRecipient(String playerName) {
-	if (Recipients == null)
-	    return false;
+        if (Recipients == null)
+            return false;
 
-	for (String name : Recipients) {
-	    if (name.equalsIgnoreCase(playerName))
-		return true;
-	}
-	return false;
+        for (String name : Recipients) {
+            if (name.equalsIgnoreCase(playerName))
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -83,13 +83,13 @@ public class ASPlayer {
      *            Inventory to save
      */
     public void saveInventory(Inventory toSave) {
-	invBackUp = new ItemStack[36];
-	// SAVE INVENTORY
-	for (int i = 0; i < toSave.getSize(); i++) {
-	    if (toSave.getItem(i) != null && toSave.getItem(i).getTypeId() > 0) {
-		getInvBackUp()[i] = toSave.getItem(i).clone();
-	    }
-	}
+        invBackUp = new ItemStack[36];
+        // SAVE INVENTORY
+        for (int i = 0; i < toSave.getSize(); i++) {
+            if (toSave.getItem(i) != null && toSave.getItem(i).getTypeId() > 0) {
+                getInvBackUp()[i] = toSave.getItem(i).clone();
+            }
+        }
     }
 
     /**
@@ -98,99 +98,98 @@ public class ASPlayer {
      * @param playerName
      */
     public void loadConfig() {
-	new File("plugins/AdminStuff/userdata/").mkdirs();
-	Configuration config = new Configuration(new File(
-		"plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml"));
+        new File("plugins/AdminStuff/userdata/").mkdirs();
+        Configuration config = new Configuration(new File(
+                "plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml"));
 
-	config.load();
-	setGod(config.getBoolean("isGod", false));
-	setGlued(config.getBoolean("glue.isGlued", false));
-	setAFK(config.getBoolean("isAFK", false));
-	setMuted(config.getBoolean("isMuted", false));
-	setBanned(config.getBoolean("isBanned", false));
-	setTempBanned(config.getBoolean("isTempBanned", false));
-	setBanEndTime(Long.valueOf(config.getString("banEndTime", "0")));
-	setNickname(config.getString("Nickname", ""));
-	
-	
-	// LOAD INFINITE ITEMS
-	List<Integer> newList = new ArrayList<Integer>();	
-	newList = config.getIntList("unlimited",  new ArrayList<Integer>());
-	for(int ItemID : newList)
-	{
-	    if(ASItem.isValid(ItemID))
-		this.toggleUnlimitedItem(ItemID);
-	}
-	
-	// LOAD GLUE
-	if (isGlued()) {
-	    World world = ASCore.getMCServer().getWorld(
-		    config.getString("glue.Worldname", null));
-	    if (world != null) {
-		glueLocation = new Location(world, config.getInt("glue.X", 0),
-			config.getInt("glue.Y", 127),
-			config.getInt("glue.Z", 0),
-			config.getInt("glue.Yaw", 0), config.getInt(
-				"glue.Pitch", 0));
-	    } else {
-		glueLocation = null;
-	    }
-	} else {
-	    glueLocation = null;
-	}
+        config.load();
+        setGod(config.getBoolean("isGod", false));
+        setGlued(config.getBoolean("glue.isGlued", false));
+        setAFK(config.getBoolean("isAFK", false));
+        setMuted(config.getBoolean("isMuted", false));
+        setBanned(config.getBoolean("isBanned", false));
+        setTempBanned(config.getBoolean("isTempBanned", false));
+        setBanEndTime(Long.valueOf(config.getString("banEndTime", "0")));
+        setNickname(config.getString("Nickname", ""));
+
+        // LOAD INFINITE ITEMS
+        List<Integer> newList = new ArrayList<Integer>();
+        newList = config.getIntList("unlimited", new ArrayList<Integer>());
+        for (int ItemID : newList)
+        {
+            if (ASItem.isValid(ItemID))
+                this.toggleUnlimitedItem(ItemID);
+        }
+
+        // LOAD GLUE
+        if (isGlued()) {
+            World world = ASCore.getMCServer().getWorld(
+                    config.getString("glue.Worldname", null));
+            if (world != null) {
+                glueLocation = new Location(world, config.getInt("glue.X", 0),
+                        config.getInt("glue.Y", 127),
+                        config.getInt("glue.Z", 0),
+                        config.getInt("glue.Yaw", 0), config.getInt(
+                                "glue.Pitch", 0));
+            } else {
+                glueLocation = null;
+            }
+        } else {
+            glueLocation = null;
+        }
     }
 
     /**
      * SAVE PLAYERDATA TO A FILE
      */
     public void saveConfig(boolean saveAFK, boolean saveMute,
-	    boolean saveUnlimited, boolean saveGlue, boolean saveBan,
-	    boolean saveNick, boolean saveGod) {
-	new File("plugins/AdminStuff/userdata/").mkdirs();
-	Configuration config = new Configuration(new File(
-		"plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml"));
-	config.load();
-	if (saveBan) {
-	    config.setProperty("isBanned", isBanned);
-	    config.setProperty("isTempBanned", isTempBanned);
-	    config.setProperty("banEndTime", String.valueOf(getBanEndTime()));
-	}
+            boolean saveUnlimited, boolean saveGlue, boolean saveBan,
+            boolean saveNick, boolean saveGod) {
+        new File("plugins/AdminStuff/userdata/").mkdirs();
+        Configuration config = new Configuration(new File(
+                "plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml"));
+        config.load();
+        if (saveBan) {
+            config.setProperty("isBanned", isBanned);
+            config.setProperty("isTempBanned", isTempBanned);
+            config.setProperty("banEndTime", String.valueOf(getBanEndTime()));
+        }
 
-	if (saveNick) {
-	    config.setProperty("Nickname", nickname);
-	}
+        if (saveNick) {
+            config.setProperty("Nickname", nickname);
+        }
 
-	if (saveAFK)
-	    config.setProperty("isAFK", isAFK);
+        if (saveAFK)
+            config.setProperty("isAFK", isAFK);
 
-	if (saveMute)
-	    config.setProperty("isMuted", isMuted);
+        if (saveMute)
+            config.setProperty("isMuted", isMuted);
 
-	if (saveUnlimited) {
-	    List<Integer> list = new ArrayList<Integer>();
-	    for (int val : unlimitedList.keySet())
-		list.add(val);
-	    config.setProperty("unlimited", list);
-	}
+        if (saveUnlimited) {
+            List<Integer> list = new ArrayList<Integer>();
+            for (int val : unlimitedList.keySet())
+                list.add(val);
+            config.setProperty("unlimited", list);
+        }
 
-	if (saveGlue) {
-	    config.setProperty("glue.isGlued", isGlued);
-	    if (glueLocation != null) {
-		config.setProperty("glue.X", glueLocation.getBlockX());
-		config.setProperty("glue.Y", glueLocation.getBlockY());
-		config.setProperty("glue.Z", glueLocation.getBlockZ());
-		config.setProperty("glue.Pitch", glueLocation.getPitch());
-		config.setProperty("glue.Yaw", glueLocation.getYaw());
-		config.setProperty("glue.Worldname", glueLocation.getWorld()
-			.getName());
-	    }
-	}
+        if (saveGlue) {
+            config.setProperty("glue.isGlued", isGlued);
+            if (glueLocation != null) {
+                config.setProperty("glue.X", glueLocation.getBlockX());
+                config.setProperty("glue.Y", glueLocation.getBlockY());
+                config.setProperty("glue.Z", glueLocation.getBlockZ());
+                config.setProperty("glue.Pitch", glueLocation.getPitch());
+                config.setProperty("glue.Yaw", glueLocation.getYaw());
+                config.setProperty("glue.Worldname", glueLocation.getWorld()
+                        .getName());
+            }
+        }
 
-	if (saveGod) {
-	    config.setProperty("isGod", isGod);
-	}
+        if (saveGod) {
+            config.setProperty("isGod", isGod);
+        }
 
-	config.save();
+        config.save();
     }
 
     /**
@@ -200,15 +199,15 @@ public class ASPlayer {
      * @return true, if added (false, if removed)
      */
     public boolean toggleUnlimitedItem(int TypeID) {
-	if (!hasUnlimitedItem(TypeID)) {
-	    // ADD ITEM
-	    unlimitedList.put(TypeID, new ASItem(TypeID));
-	    return true;
-	} else {
-	    // REMOVE ITEM
-	    unlimitedList.remove(TypeID);
-	    return false;
-	}
+        if (!hasUnlimitedItem(TypeID)) {
+            // ADD ITEM
+            unlimitedList.put(TypeID, new ASItem(TypeID));
+            return true;
+        } else {
+            // REMOVE ITEM
+            unlimitedList.remove(TypeID);
+            return false;
+        }
     }
 
     /**
@@ -217,14 +216,14 @@ public class ASPlayer {
      * @return true, if found
      */
     public boolean hasUnlimitedItem(int TypeID) {
-	return unlimitedList.containsKey(TypeID);
+        return unlimitedList.containsKey(TypeID);
     }
 
     /**
      * @return the isAFK
      */
     public boolean isAFK() {
-	return isAFK;
+        return isAFK;
     }
 
     /**
@@ -232,14 +231,14 @@ public class ASPlayer {
      *            the isAFK to set
      */
     public void setAFK(boolean isAFK) {
-	this.isAFK = isAFK;
+        this.isAFK = isAFK;
     }
 
     /**
      * @return the muted
      */
     public boolean isMuted() {
-	return isMuted;
+        return isMuted;
     }
 
     /**
@@ -247,14 +246,14 @@ public class ASPlayer {
      *            the muted to set
      */
     public void setMuted(boolean muted) {
-	this.isMuted = muted;
+        this.isMuted = muted;
     }
 
     /**
      * @return the lastSender
      */
     public String getLastSender() {
-	return lastSender;
+        return lastSender;
     }
 
     /**
@@ -262,14 +261,14 @@ public class ASPlayer {
      *            the lastSender to set
      */
     public void setLastSender(String lastSender) {
-	this.lastSender = lastSender;
+        this.lastSender = lastSender;
     }
 
     /**
      * @return the invBackUp
      */
     public ItemStack[] getInvBackUp() {
-	return invBackUp;
+        return invBackUp;
     }
 
     /**
@@ -277,7 +276,7 @@ public class ASPlayer {
      *            the invBackUp to set
      */
     public void setInvBackUp(ItemStack[] invBackUp) {
-	this.invBackUp = invBackUp;
+        this.invBackUp = invBackUp;
     }
 
     /**
@@ -287,22 +286,22 @@ public class ASPlayer {
      * @param isAFK
      */
     public void updateNick() {
-	Player player = ASCore.getPlayer(playerName);
-	if (player == null)
-	    return;
+        Player player = ASCore.getPlayer(playerName);
+        if (player == null)
+            return;
 
-	String nick = ASCore.getPlayerName(player);
-	if (!getNickname().equalsIgnoreCase("")) {
-	    nick = getNickname();
-	}
-	nick = nick.replace("[AFK] ", "").replace(" was fished!", "");
-	if (isAFK)
-	    nick = "[AFK] " + nick;
+        String nick = ASCore.getPlayerName(player);
+        if (!getNickname().equalsIgnoreCase("")) {
+            nick = getNickname();
+        }
+        nick = nick.replace("[AFK] ", "").replace(" was fished!", "");
+        if (isAFK)
+            nick = "[AFK] " + nick;
 
-	if (isSlapped)
-	    nick = nick + " was fished!";
+        if (isSlapped)
+            nick = nick + " was fished!";
 
-	player.setDisplayName(nick);
+        player.setDisplayName(nick);
     }
 
     /**
@@ -311,7 +310,7 @@ public class ASPlayer {
      * @return the unlimitedList
      */
     public Map<Integer, ASItem> getUnlimitedList() {
-	return unlimitedList;
+        return unlimitedList;
     }
 
     /**
@@ -321,7 +320,7 @@ public class ASPlayer {
      *            the unlimitedList to set
      */
     public void setUnlimitedList(Map<Integer, ASItem> unlimitedList) {
-	this.unlimitedList = unlimitedList;
+        this.unlimitedList = unlimitedList;
     }
 
     /**
@@ -330,7 +329,7 @@ public class ASPlayer {
      * @return the isGlued
      */
     public boolean isGlued() {
-	return isGlued;
+        return isGlued;
     }
 
     /**
@@ -340,7 +339,7 @@ public class ASPlayer {
      *            the isGlued to set
      */
     public void setGlued(boolean isGlued) {
-	this.isGlued = isGlued;
+        this.isGlued = isGlued;
     }
 
     /**
@@ -349,7 +348,7 @@ public class ASPlayer {
      * @return the glueLocation
      */
     public Location getGlueLocation() {
-	return glueLocation;
+        return glueLocation;
     }
 
     /**
@@ -359,7 +358,7 @@ public class ASPlayer {
      *            the glueLocation to set
      */
     public void setGlueLocation(Location glueLocation) {
-	this.glueLocation = glueLocation;
+        this.glueLocation = glueLocation;
     }
 
     /**
@@ -368,7 +367,7 @@ public class ASPlayer {
      * @return the isSlapped
      */
     public boolean isSlapped() {
-	return isSlapped;
+        return isSlapped;
     }
 
     /**
@@ -378,14 +377,14 @@ public class ASPlayer {
      *            the isSlapped to set
      */
     public void setSlapped(boolean isSlapped) {
-	this.isSlapped = isSlapped;
+        this.isSlapped = isSlapped;
     }
 
     /**
      * @return the recipients
      */
     public String[] getRecipients() {
-	return Recipients;
+        return Recipients;
     }
 
     /**
@@ -393,21 +392,21 @@ public class ASPlayer {
      *            the recipients to set
      */
     public void setRecipients(String[] recipients) {
-	Recipients = recipients;
+        Recipients = recipients;
     }
 
     /**
      * @return the isBanned
      */
     public boolean isBanned() {
-	return isBanned;
+        return isBanned;
     }
 
     /**
      * @return the isTempBanned
      */
     public boolean isTempBanned() {
-	return isTempBanned;
+        return isTempBanned;
     }
 
     /**
@@ -415,14 +414,14 @@ public class ASPlayer {
      *            the isTempBanned to set
      */
     public void setTempBanned(boolean isTempBanned) {
-	this.isTempBanned = isTempBanned;
+        this.isTempBanned = isTempBanned;
     }
 
     /**
      * @return the banEndTime
      */
     public long getBanEndTime() {
-	return banEndTime;
+        return banEndTime;
     }
 
     /**
@@ -430,7 +429,7 @@ public class ASPlayer {
      *            the banEndTime to set
      */
     public void setBanEndTime(long banEndTime) {
-	this.banEndTime = banEndTime;
+        this.banEndTime = banEndTime;
     }
 
     /**
@@ -438,14 +437,14 @@ public class ASPlayer {
      *            the isBanned to set
      */
     public void setBanned(boolean isBanned) {
-	this.isBanned = isBanned;
+        this.isBanned = isBanned;
     }
 
     /**
      * @return the nickname
      */
     public String getNickname() {
-	return nickname;
+        return nickname;
     }
 
     /**
@@ -453,14 +452,14 @@ public class ASPlayer {
      *            the nickname to set
      */
     public void setNickname(String nickname) {
-	this.nickname = nickname;
+        this.nickname = nickname;
     }
 
     /**
      * @return the hideChat
      */
     public boolean isHideChat() {
-	return hideChat;
+        return hideChat;
     }
 
     /**
@@ -468,14 +467,14 @@ public class ASPlayer {
      *            the hideChat to set
      */
     public void setHideChat(boolean hideChat) {
-	this.hideChat = hideChat;
+        this.hideChat = hideChat;
     }
 
     /**
      * @return the isGod
      */
     public boolean isGod() {
-	return isGod;
+        return isGod;
     }
 
     /**
@@ -483,6 +482,6 @@ public class ASPlayer {
      *            the isGod to set
      */
     public void setGod(boolean isGod) {
-	this.isGod = isGod;
+        this.isGod = isGod;
     }
 }

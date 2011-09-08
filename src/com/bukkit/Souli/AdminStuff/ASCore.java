@@ -60,30 +60,30 @@ public class ASCore extends JavaPlugin {
     public static HashMap<String, Integer> bannedPlayers = new HashMap<String, Integer>();
 
     public static void loadBannedPlayers() {
-	File file = new File("banned-players.txt");
-	BufferedReader reader = null;
+        File file = new File("banned-players.txt");
+        BufferedReader reader = null;
 
-	try {
-	    reader = new BufferedReader(new FileReader(file));
-	    String text = null;
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            String text = null;
 
-	    // repeat until all lines is read
-	    while ((text = reader.readLine()) != null) {
-		bannedPlayers.put(text.replace(" ", "").replace("\r\n", "").toLowerCase(), 0);
-	    }
-	} catch (FileNotFoundException e) {
-	    e.printStackTrace();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	} finally {
-	    try {
-		if (reader != null) {
-		    reader.close();
-		}
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
-	}
+            // repeat until all lines is read
+            while ((text = reader.readLine()) != null) {
+                bannedPlayers.put(text.replace(" ", "").replace("\r\n", "").toLowerCase(), 0);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -91,7 +91,7 @@ public class ASCore extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-	log.printInfo("v" + this.version + " disabled!");
+        log.printInfo("v" + this.version + " disabled!");
     }
 
     /**
@@ -99,61 +99,61 @@ public class ASCore extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-	ASCore.setMCServer(getServer());
-	this.pluginName = this.getDescription().getName();
-	this.version = this.getDescription().getVersion();
-	log = LogUnit.getInstance(pluginName);
+        ASCore.setMCServer(getServer());
+        this.pluginName = this.getDescription().getName();
+        this.version = this.getDescription().getVersion();
+        log = LogUnit.getInstance(pluginName);
 
-	boolean error = false;
-	try {
-	    loadBannedPlayers();
-	    ASSpawn.loadAllSpawns();
+        boolean error = false;
+        try {
+            loadBannedPlayers();
+            ASSpawn.loadAllSpawns();
 
-	    bListener = new ASBlockListener();
-	    eListener = new ASEntityListener();
-	    pListener = new ASPlayerListener();
-	    new CommandList(getServer());
+            bListener = new ASBlockListener();
+            eListener = new ASEntityListener();
+            pListener = new ASPlayerListener();
+            new CommandList(getServer());
 
-	    for (Player player : getServer().getOnlinePlayers()) {
-		ASCore.getOrCreateASPlayer(player);
-	    }
-	    getServer().getPluginManager().registerEvent(
-		    Event.Type.BLOCK_PLACE, bListener, Event.Priority.Monitor,
-		    this);
-	    getServer().getPluginManager().registerEvent(
-		    Event.Type.ENTITY_DAMAGE, eListener, Event.Priority.Normal,
-		    this);
-	    getServer().getPluginManager().registerEvent(
-		    Event.Type.PLAYER_CHAT, pListener, Event.Priority.Normal,
-		    this);
-	    getServer().getPluginManager().registerEvent(
-		    Event.Type.PLAYER_INTERACT, pListener,
-		    Event.Priority.Normal, this);
-	    getServer().getPluginManager().registerEvent(
-		    Event.Type.PLAYER_JOIN, pListener, Event.Priority.Monitor,
-		    this);
-	    getServer().getPluginManager().registerEvent(
-		    Event.Type.PLAYER_KICK, pListener, Event.Priority.Monitor,
-		    this);
-	    getServer().getPluginManager().registerEvent(
-		    Event.Type.PLAYER_MOVE, pListener, Event.Priority.Normal,
-		    this);
-	    getServer().getPluginManager().registerEvent(
-		    Event.Type.PLAYER_RESPAWN, pListener,
-		    Event.Priority.Normal, this);
-	    getServer().getPluginManager().registerEvent(
-		    Event.Type.PLAYER_QUIT, pListener, Event.Priority.Monitor,
-		    this);
+            for (Player player : getServer().getOnlinePlayers()) {
+                ASCore.getOrCreateASPlayer(player);
+            }
+            getServer().getPluginManager().registerEvent(
+                    Event.Type.BLOCK_PLACE, bListener, Event.Priority.Monitor,
+                    this);
+            getServer().getPluginManager().registerEvent(
+                    Event.Type.ENTITY_DAMAGE, eListener, Event.Priority.Normal,
+                    this);
+            getServer().getPluginManager().registerEvent(
+                    Event.Type.PLAYER_CHAT, pListener, Event.Priority.Normal,
+                    this);
+            getServer().getPluginManager().registerEvent(
+                    Event.Type.PLAYER_INTERACT, pListener,
+                    Event.Priority.Normal, this);
+            getServer().getPluginManager().registerEvent(
+                    Event.Type.PLAYER_JOIN, pListener, Event.Priority.Monitor,
+                    this);
+            getServer().getPluginManager().registerEvent(
+                    Event.Type.PLAYER_KICK, pListener, Event.Priority.Monitor,
+                    this);
+            getServer().getPluginManager().registerEvent(
+                    Event.Type.PLAYER_MOVE, pListener, Event.Priority.Normal,
+                    this);
+            getServer().getPluginManager().registerEvent(
+                    Event.Type.PLAYER_RESPAWN, pListener,
+                    Event.Priority.Normal, this);
+            getServer().getPluginManager().registerEvent(
+                    Event.Type.PLAYER_QUIT, pListener, Event.Priority.Monitor,
+                    this);
 
-	    loadConfig();
-	    error = false;
-	} catch (Exception e) {
-	    error = true;
-	    log.printError("ERROR while enabling " + pluginName + "!", e);
-	}
+            loadConfig();
+            error = false;
+        } catch (Exception e) {
+            error = true;
+            log.printError("ERROR while enabling " + pluginName + "!", e);
+        }
 
-	if (!error)
-	    log.printInfo("v" + this.version + " enabled!");
+        if (!error)
+            log.printInfo("v" + this.version + " enabled!");
     }
 
     /**
@@ -161,9 +161,9 @@ public class ASCore extends JavaPlugin {
      */
     @Override
     public boolean onCommand(CommandSender sender, Command command,
-	    String label, String[] args) {
-	CommandList.handleCommand(sender, label, args);
-	return true;
+            String label, String[] args) {
+        CommandList.handleCommand(sender, label, args);
+        return true;
     }
 
     /**
@@ -171,48 +171,48 @@ public class ASCore extends JavaPlugin {
      */
     @SuppressWarnings("unchecked")
     public void loadConfig() {
-	new File("plugins/AdminStuff/").mkdirs();
-	Configuration config = new Configuration(new File(
-		"plugins/AdminStuff/config.yml"));
-	config.load();
+        new File("plugins/AdminStuff/").mkdirs();
+        Configuration config = new Configuration(new File(
+                "plugins/AdminStuff/config.yml"));
+        config.load();
 
-	Map<String, ArrayList<String>> nodeList = (Map<String, ArrayList<String>>) config
-		.getProperty("kits");
+        Map<String, ArrayList<String>> nodeList = (Map<String, ArrayList<String>>) config
+                .getProperty("kits");
 
-	if (nodeList == null)
-	    return;
+        if (nodeList == null)
+            return;
 
-	for (Map.Entry<String, ArrayList<String>> entry : nodeList.entrySet()) {
-	    ASKit thisKit = new ASKit();
-	    for (String part : entry.getValue()) {
-		try {
-		    String[] split = part.split(" ");
+        for (Map.Entry<String, ArrayList<String>> entry : nodeList.entrySet()) {
+            ASKit thisKit = new ASKit();
+            for (String part : entry.getValue()) {
+                try {
+                    String[] split = part.split(" ");
 
-		    int TypeID = 0;
-		    byte Data = 0;
-		    int Amount = 1;
+                    int TypeID = 0;
+                    byte Data = 0;
+                    int Amount = 1;
 
-		    String[] itemSplit = split[0].split(":");
-		    if (split.length > 1) {
-			Amount = Integer.valueOf(split[1]);
-		    }
+                    String[] itemSplit = split[0].split(":");
+                    if (split.length > 1) {
+                        Amount = Integer.valueOf(split[1]);
+                    }
 
-		    TypeID = Integer.valueOf(itemSplit[0]);
-		    if (itemSplit.length > 1) {
-			Data = Byte.valueOf(itemSplit[1]);
-		    }
+                    TypeID = Integer.valueOf(itemSplit[0]);
+                    if (itemSplit.length > 1) {
+                        Data = Byte.valueOf(itemSplit[1]);
+                    }
 
-		    if (ASItem.isValid(TypeID, Data)) {
-			ItemStack item = new ItemStack(TypeID);
-			item.setAmount(Amount);
-			item.setDurability(Data);
-			thisKit.addItem(item);
-		    }
-		} catch (Exception e) {
-		}
-	    }
-	    kitList.put(entry.getKey().toLowerCase(), thisKit);
-	}
+                    if (ASItem.isValid(TypeID, Data)) {
+                        ItemStack item = new ItemStack(TypeID);
+                        item.setAmount(Amount);
+                        item.setDurability(Data);
+                        thisKit.addItem(item);
+                    }
+                } catch (Exception e) {
+                }
+            }
+            kitList.put(entry.getKey().toLowerCase(), thisKit);
+        }
     }
 
     /**
@@ -224,13 +224,13 @@ public class ASCore extends JavaPlugin {
      * @return the player
      */
     public static Player getPlayer(String name) {
-	if (name == null)
-	    return null;
-	List<Player> matchedPlayers = server.matchPlayer(name);
-	if (matchedPlayers != null)
-	    if (matchedPlayers.size() > 0)
-		return matchedPlayers.get(0);
-	return null;
+        if (name == null)
+            return null;
+        List<Player> matchedPlayers = server.matchPlayer(name);
+        if (matchedPlayers != null)
+            if (matchedPlayers.size() > 0)
+                return matchedPlayers.get(0);
+        return null;
     }
 
     /**
@@ -242,9 +242,9 @@ public class ASCore extends JavaPlugin {
      * @return the player
      */
     public static Player getDirectPlayer(String name) {
-	if (name == null)
-	    return null;
-	return server.getPlayer(name);
+        if (name == null)
+            return null;
+        return server.getPlayer(name);
     }
 
     /**
@@ -256,14 +256,14 @@ public class ASCore extends JavaPlugin {
      * @return the players name
      */
     public static String getPlayerName(Player player) {
-	if (player == null)
-	    return "PLAYER NOT FOUND";
-	String nick = player.getName();
-	if (player.getDisplayName() != null)
-	    nick = player.getDisplayName();
+        if (player == null)
+            return "PLAYER NOT FOUND";
+        String nick = player.getName();
+        if (player.getDisplayName() != null)
+            nick = player.getDisplayName();
 
-	nick = nick.replace("[AFK] ", "").replace(" was fished!", "");
-	return nick;
+        nick = nick.replace("[AFK] ", "").replace(" was fished!", "");
+        return nick;
     }
 
     /**
@@ -274,7 +274,7 @@ public class ASCore extends JavaPlugin {
      *            the serverinstance
      */
     public static void setMCServer(Server server) {
-	ASCore.server = server;
+        ASCore.server = server;
     }
 
     /**
@@ -284,21 +284,21 @@ public class ASCore extends JavaPlugin {
      * @return the serverinstance
      */
     public static Server getMCServer() {
-	return ASCore.server;
+        return ASCore.server;
     }
 
     public static ASPlayer getOrCreateASPlayer(Player player) {
-	return getOrCreateASPlayer(player.getName());
+        return getOrCreateASPlayer(player.getName());
     }
 
     public static ASPlayer getOrCreateASPlayer(String playerName) {
-	ASPlayer result = ASPlayerListener.getPlayerMap().get(
-		playerName.toLowerCase());
-	if (result == null) {
-	    result = new ASPlayer(playerName);
-	    ASPlayerListener.getPlayerMap().put(playerName.toLowerCase(),
-		    result);
-	}
-	return result;
+        ASPlayer result = ASPlayerListener.getPlayerMap().get(
+                playerName.toLowerCase());
+        if (result == null) {
+            result = new ASPlayer(playerName);
+            ASPlayerListener.getPlayerMap().put(playerName.toLowerCase(),
+                    result);
+        }
+        return result;
     }
 }

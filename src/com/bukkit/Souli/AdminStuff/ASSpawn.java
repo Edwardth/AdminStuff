@@ -38,11 +38,11 @@ public class ASSpawn {
      * @param loc
      */
     public static void setSpawn(World world, Location loc) {
-	spawns.put(world.getName(), loc);
-	world.setSpawnLocation(loc.getBlockX(), loc.getBlockY(),
-		loc.getBlockZ());
+        spawns.put(world.getName(), loc);
+        world.setSpawnLocation(loc.getBlockX(), loc.getBlockY(),
+                loc.getBlockZ());
 
-	saveSpawnFile(world, loc);
+        saveSpawnFile(world, loc);
     }
 
     /**
@@ -52,14 +52,14 @@ public class ASSpawn {
      * @return Location of the spawn
      */
     public static Location getSpawn(World world) {
-	if (!spawns.containsKey(world.getName()))
-	    return world.getSpawnLocation();
+        if (!spawns.containsKey(world.getName()))
+            return world.getSpawnLocation();
 
-	Location loc = world.getSpawnLocation();
-	loc.setYaw(spawns.get(world.getName()).getYaw());
-	loc.setPitch(spawns.get(world.getName()).getPitch());
+        Location loc = world.getSpawnLocation();
+        loc.setYaw(spawns.get(world.getName()).getYaw());
+        loc.setPitch(spawns.get(world.getName()).getPitch());
 
-	return loc;
+        return loc;
     }
 
     /**
@@ -69,35 +69,35 @@ public class ASSpawn {
      * @param loc
      */
     public static void saveSpawnFile(World world, Location loc) {
-	new File("plugins/AdminStuff/spawns/").mkdirs();
-	Configuration config = new Configuration(new File(
-		"plugins/AdminStuff/spawns/" + world.getName() + ".yml"));
-	config.setProperty("X", loc.getBlockX());
-	config.setProperty("Y", loc.getBlockY());
-	config.setProperty("Z", loc.getBlockZ());
-	config.setProperty("Pitch", loc.getPitch());
-	config.setProperty("Yaw", loc.getYaw());
-	config.save();
+        new File("plugins/AdminStuff/spawns/").mkdirs();
+        Configuration config = new Configuration(new File(
+                "plugins/AdminStuff/spawns/" + world.getName() + ".yml"));
+        config.setProperty("X", loc.getBlockX());
+        config.setProperty("Y", loc.getBlockY());
+        config.setProperty("Z", loc.getBlockZ());
+        config.setProperty("Pitch", loc.getPitch());
+        config.setProperty("Yaw", loc.getYaw());
+        config.save();
     }
 
     /**
      * LOAD ALL SPAWNFILES
      */
     public static void loadAllSpawns() {
-	File folder = new File("plugins/AdminStuff/spawns/");
-	folder.mkdirs();
+        File folder = new File("plugins/AdminStuff/spawns/");
+        folder.mkdirs();
 
-	File[] files = folder.listFiles();
+        File[] files = folder.listFiles();
 
-	for (File file : files) {
-	    if (!file.isFile())
-		continue;
+        for (File file : files) {
+            if (!file.isFile())
+                continue;
 
-	    if (file.getName().endsWith(".yml")) {
-		loadSpawnFile(file.getName().replace(".yml", ""));
-	    }
-	}
-	ASCore.log.printInfo(spawns.size() + " worldspawns loaded.");
+            if (file.getName().endsWith(".yml")) {
+                loadSpawnFile(file.getName().replace(".yml", ""));
+            }
+        }
+        ASCore.log.printInfo(spawns.size() + " worldspawns loaded.");
     }
 
     /**
@@ -106,19 +106,19 @@ public class ASSpawn {
      * @param worldName
      */
     public static void loadSpawnFile(String worldName) {
-	new File("plugins/AdminStuff/spawns/").mkdirs();
-	Configuration config = new Configuration(new File(
-		"plugins/AdminStuff/spawns/" + worldName + ".yml"));
-	config.load();
+        new File("plugins/AdminStuff/spawns/").mkdirs();
+        Configuration config = new Configuration(new File(
+                "plugins/AdminStuff/spawns/" + worldName + ".yml"));
+        config.load();
 
-	World world = ASCore.getMCServer().getWorld(worldName);
+        World world = ASCore.getMCServer().getWorld(worldName);
 
-	if (world == null)
-	    world = ASCore.getMCServer().getWorlds().get(0);
+        if (world == null)
+            world = ASCore.getMCServer().getWorlds().get(0);
 
-	Location loc = new Location(world, config.getInt("X", 0),
-		config.getInt("Y", 127), config.getInt("Z", 0), config.getInt(
-			"Yaw", 0), config.getInt("Pitch", 0));
-	spawns.put(worldName, loc);
+        Location loc = new Location(world, config.getInt("X", 0),
+                config.getInt("Y", 127), config.getInt("Z", 0), config.getInt(
+                        "Yaw", 0), config.getInt("Pitch", 0));
+        spawns.put(worldName, loc);
     }
 }

@@ -27,25 +27,25 @@ import org.bukkit.entity.Player;
 
 public class cmdClearInventory extends Command {
 
-	public cmdClearInventory(String syntax, String arguments, String node,
-			Server server) {
-		super(syntax, arguments, node, server);
-	}
+    public cmdClearInventory(String syntax, String arguments, String node,
+	    Server server) {
+	super(syntax, arguments, node, server);
+    }
 
-	@SuppressWarnings("deprecation")
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /clearinventory <br>
-	 * This clears your inventory
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 */
-	public void execute(String[] args, Player player) {
-		player.getInventory().clear();
-		player.updateInventory();
-		player.sendMessage(ChatColor.GRAY + "Inventory cleared!");
-	}
+    @SuppressWarnings("deprecation")
+    @Override
+    /**
+     * Representing the command <br>
+     * /clearinventory <br>
+     * This clears your inventory
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     */
+    public void execute(String[] args, Player player) {
+	player.getInventory().clear();
+	player.updateInventory();
+	player.sendMessage(ChatColor.GRAY + "Inventory cleared!");
+    }
 }

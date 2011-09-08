@@ -64,12 +64,13 @@ public class cmdGiveAmount extends Command {
 		    ItemStack item = ASItem.getItemStack(ID, Data, amount);
 		    target.getInventory().addItem(item);
 		    player.updateInventory();
-		    player.sendMessage(ChatColor.GRAY + "Giving '" + ASCore.getPlayerName(target) + "' " + amount
-				+ " of " + Material.getMaterial(item.getTypeId())
-				+ ((Data > 0) ? (":" + Data) : ""));
-			target.sendMessage(ChatColor.GRAY + "Giving you " + amount
-				+ " of " + Material.getMaterial(item.getTypeId())
-				+ ((Data > 0) ? (":" + Data) : ""));
+		    player.sendMessage(ChatColor.GRAY + "Giving '"
+			    + ASCore.getPlayerName(target) + "' " + amount
+			    + " of " + Material.getMaterial(item.getTypeId())
+			    + ((Data > 0) ? (":" + Data) : ""));
+		    target.sendMessage(ChatColor.GRAY + "Giving you " + amount
+			    + " of " + Material.getMaterial(item.getTypeId())
+			    + ((Data > 0) ? (":" + Data) : ""));
 		} else {
 		    player.sendMessage(ChatColor.RED + "Item '" + args[1]
 			    + "' not found!");

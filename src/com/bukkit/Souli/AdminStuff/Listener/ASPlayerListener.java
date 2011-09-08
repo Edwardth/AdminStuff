@@ -60,16 +60,16 @@ public class ASPlayerListener extends PlayerListener {
      */
     @Override
     public void onPlayerMove(PlayerMoveEvent event) {
-	if (BlockUtils.LocationEquals(event.getTo(), event.getFrom()))
-	    return;
+        if (BlockUtils.LocationEquals(event.getTo(), event.getFrom()))
+            return;
 
-	// ADD PLAYER, IF NOT FOUND
-	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(event.getPlayer());
+        // ADD PLAYER, IF NOT FOUND
+        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(event.getPlayer());
 
-	// IS PLAYER GLUED = RETURN TO GLUELOCATION
-	if (thisPlayer.isGlued() && thisPlayer.getGlueLocation() != null) {
-	    event.setTo(thisPlayer.getGlueLocation());
-	}
+        // IS PLAYER GLUED = RETURN TO GLUELOCATION
+        if (thisPlayer.isGlued() && thisPlayer.getGlueLocation() != null) {
+            event.setTo(thisPlayer.getGlueLocation());
+        }
     }
 
     /**
@@ -79,40 +79,40 @@ public class ASPlayerListener extends PlayerListener {
      */
     @Override
     public void onPlayerJoin(PlayerJoinEvent event) {
-	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(event.getPlayer());
+        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(event.getPlayer());
 
-	// IS USER BANNED IN TXT?
-	if (ASCore.bannedPlayers.containsKey(event.getPlayer().getName().toLowerCase())) {
-	    event.getPlayer().kickPlayer("You are banned!");
-	    return;
-	}
+        // IS USER BANNED IN TXT?
+        if (ASCore.bannedPlayers.containsKey(event.getPlayer().getName().toLowerCase())) {
+            event.getPlayer().kickPlayer("You are banned!");
+            return;
+        }
 
-	// IS USER BANNED?
-	if (thisPlayer.isBanned()) {
-	    event.getPlayer().kickPlayer("You are banned!");
-	    return;
-	}
+        // IS USER BANNED?
+        if (thisPlayer.isBanned()) {
+            event.getPlayer().kickPlayer("You are banned!");
+            return;
+        }
 
-	// IS USER TEMPBANNED?
-	if (thisPlayer.isTempBanned()) {
-	    long endTime = thisPlayer.getBanEndTime();
-	    if (endTime < System.currentTimeMillis()) {
-		thisPlayer.setTempBanned(false);
-		thisPlayer.setBanEndTime(0);
-		thisPlayer.saveConfig(false, false, false, false, true, false,
-			false);
-		return;
-	    } else {
-		Date newDate = new Date(endTime + 1000);
-		event.getPlayer().kickPlayer(
-			"You are temporary banned until " + newDate.toString()
-				+ "!");
-		return;
-	    }
-	}
+        // IS USER TEMPBANNED?
+        if (thisPlayer.isTempBanned()) {
+            long endTime = thisPlayer.getBanEndTime();
+            if (endTime < System.currentTimeMillis()) {
+                thisPlayer.setTempBanned(false);
+                thisPlayer.setBanEndTime(0);
+                thisPlayer.saveConfig(false, false, false, false, true, false,
+                        false);
+                return;
+            } else {
+                Date newDate = new Date(endTime + 1000);
+                event.getPlayer().kickPlayer(
+                        "You are temporary banned until " + newDate.toString()
+                                + "!");
+                return;
+            }
+        }
 
-	// UPDATE NICK
-	thisPlayer.updateNick();
+        // UPDATE NICK
+        thisPlayer.updateNick();
     }
 
     /**
@@ -122,9 +122,9 @@ public class ASPlayerListener extends PlayerListener {
      */
     @Override
     public void onPlayerKick(PlayerKickEvent event) {
-	if (event.isCancelled())
-	    return;
-	playerMap.remove(event.getPlayer().getName().toLowerCase());
+        if (event.isCancelled())
+            return;
+        playerMap.remove(event.getPlayer().getName().toLowerCase());
     }
 
     /**
@@ -134,7 +134,7 @@ public class ASPlayerListener extends PlayerListener {
      */
     @Override
     public void onPlayerQuit(PlayerQuitEvent event) {
-	playerMap.remove(event.getPlayer().getName().toLowerCase());
+        playerMap.remove(event.getPlayer().getName().toLowerCase());
     }
 
     /**
@@ -144,19 +144,19 @@ public class ASPlayerListener extends PlayerListener {
      */
     @Override
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-	// TELEPORT TO WORLDSPAWN
-	Location loc = ASSpawn
-		.getSpawn(ASCore.getMCServer().getWorlds().get(0));
-	Location nloc = loc.getWorld().getHighestBlockAt(loc).getLocation();
-	nloc.setYaw(loc.getYaw());
-	nloc.setPitch(loc.getPitch());
-	event.setRespawnLocation(nloc);
+        // TELEPORT TO WORLDSPAWN
+        Location loc = ASSpawn
+                .getSpawn(ASCore.getMCServer().getWorlds().get(0));
+        Location nloc = loc.getWorld().getHighestBlockAt(loc).getLocation();
+        nloc.setYaw(loc.getYaw());
+        nloc.setPitch(loc.getPitch());
+        event.setRespawnLocation(nloc);
 
-	/*
-	 * ASPlayer.updateNick(event.getPlayer().getName(),
-	 * playerMap.get(event.getPlayer().getName()).isAFK(), playerMap
-	 * .get(event.getPlayer().getName()).isSlapped());
-	 */
+        /*
+         * ASPlayer.updateNick(event.getPlayer().getName(),
+         * playerMap.get(event.getPlayer().getName()).isAFK(), playerMap
+         * .get(event.getPlayer().getName()).isSlapped());
+         */
     }
 
     /**
@@ -167,47 +167,47 @@ public class ASPlayerListener extends PlayerListener {
     @Override
     public void onPlayerInteract(PlayerInteractEvent event) {
 
-	// ONLY CLICKS ON A BLOCK
-	if (event.getAction() != Action.LEFT_CLICK_BLOCK
-		&& event.getAction() != Action.RIGHT_CLICK_BLOCK)
-	    return;
+        // ONLY CLICKS ON A BLOCK
+        if (event.getAction() != Action.LEFT_CLICK_BLOCK
+                && event.getAction() != Action.RIGHT_CLICK_BLOCK)
+            return;
 
-	// FILL CHEST
-	if (queuedFillChest.containsKey(event.getPlayer().getName())) {
+        // FILL CHEST
+        if (queuedFillChest.containsKey(event.getPlayer().getName())) {
 
-	    // CLICKED ON A CHEST?
-	    if (event.getClickedBlock().getTypeId() != Material.CHEST.getId()) {
-		queuedFillChest.remove(event.getPlayer().getName());
-		event.getPlayer().sendMessage(
-			ChatColor.RED + "Chestfill cancelled.");
-		return;
-	    } else {
-		// CANCEL EVENT
-		event.setUseInteractedBlock(Event.Result.DENY);
-		event.setUseItemInHand(Event.Result.DENY);
-		event.setCancelled(true);
+            // CLICKED ON A CHEST?
+            if (event.getClickedBlock().getTypeId() != Material.CHEST.getId()) {
+                queuedFillChest.remove(event.getPlayer().getName());
+                event.getPlayer().sendMessage(
+                        ChatColor.RED + "Chestfill cancelled.");
+                return;
+            } else {
+                // CANCEL EVENT
+                event.setUseInteractedBlock(Event.Result.DENY);
+                event.setUseItemInHand(Event.Result.DENY);
+                event.setCancelled(true);
 
-		// FILL CHEST / DOUBLECHEST
-		ItemStack item = queuedFillChest.get(
-			event.getPlayer().getName()).clone();
-		Chest chest = (Chest) event.getClickedBlock().getState();
-		fillChest(chest, item);
+                // FILL CHEST / DOUBLECHEST
+                ItemStack item = queuedFillChest.get(
+                        event.getPlayer().getName()).clone();
+                Chest chest = (Chest) event.getClickedBlock().getState();
+                fillChest(chest, item);
 
-		Chest dChest = BlockUtils.isDoubleChest(chest.getBlock());
-		if (dChest != null) {
-		    fillChest(dChest, item);
-		}
+                Chest dChest = BlockUtils.isDoubleChest(chest.getBlock());
+                if (dChest != null) {
+                    fillChest(dChest, item);
+                }
 
-		// SEND MESSAGE
-		event.getPlayer().sendMessage(
-			ChatColor.GREEN
-				+ "Chest filled with '"
-				+ Material.getMaterial(item.getTypeId()).name()
-					.toLowerCase() + "'.");
-		queuedFillChest.remove(event.getPlayer().getName());
-	    }
-	    return;
-	}
+                // SEND MESSAGE
+                event.getPlayer().sendMessage(
+                        ChatColor.GREEN
+                                + "Chest filled with '"
+                                + Material.getMaterial(item.getTypeId()).name()
+                                        .toLowerCase() + "'.");
+                queuedFillChest.remove(event.getPlayer().getName());
+            }
+            return;
+        }
     }
 
     /**
@@ -221,8 +221,8 @@ public class ASPlayerListener extends PlayerListener {
      * 
      */
     public void fillChest(Chest chest, ItemStack item) {
-	for (int i = 0; i < chest.getInventory().getSize(); i++)
-	    chest.getInventory().setItem(i, item.clone());
+        for (int i = 0; i < chest.getInventory().getSize(); i++)
+            chest.getInventory().setItem(i, item.clone());
     }
 
     /**
@@ -232,84 +232,84 @@ public class ASPlayerListener extends PlayerListener {
      */
     @Override
     public void onPlayerChat(PlayerChatEvent event) {
-	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(event.getPlayer());
-	String nick = ASCore.getPlayerName(event.getPlayer());
+        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(event.getPlayer());
+        String nick = ASCore.getPlayerName(event.getPlayer());
 
-	// PLAYER IS MUTED = ONLY ADMINS/MODS RECEIVE A MESSAGE
-	if (thisPlayer.isMuted()) {
-	    Iterator<Player> it = event.getRecipients().iterator();
-	    while (it.hasNext()) {
-		Player nextPlayer = it.next();
-		if (nextPlayer.getName().equalsIgnoreCase(
-			event.getPlayer().getName())) {
-		    nextPlayer.sendMessage(ChatColor.RED + "[Muted] " + nick
-			    + ChatColor.WHITE + ": " + event.getMessage());
-		    continue;
-		}
+        // PLAYER IS MUTED = ONLY ADMINS/MODS RECEIVE A MESSAGE
+        if (thisPlayer.isMuted()) {
+            Iterator<Player> it = event.getRecipients().iterator();
+            while (it.hasNext()) {
+                Player nextPlayer = it.next();
+                if (nextPlayer.getName().equalsIgnoreCase(
+                        event.getPlayer().getName())) {
+                    nextPlayer.sendMessage(ChatColor.RED + "[Muted] " + nick
+                            + ChatColor.WHITE + ": " + event.getMessage());
+                    continue;
+                }
 
-		if (UtilPermissions.playerCanUseCommand(nextPlayer,
-			"adminstuff.chat.read.muted")) {
-		    nextPlayer.sendMessage(ChatColor.RED + "[Muted] " + nick
-			    + ChatColor.WHITE + ": " + event.getMessage());
-		}
-	    }
-	    event.setCancelled(true);
-	    return;
-	}
+                if (UtilPermissions.playerCanUseCommand(nextPlayer,
+                        "adminstuff.chat.read.muted")) {
+                    nextPlayer.sendMessage(ChatColor.RED + "[Muted] " + nick
+                            + ChatColor.WHITE + ": " + event.getMessage());
+                }
+            }
+            event.setCancelled(true);
+            return;
+        }
 
-	// PLAYER IS IN CHATMODE
-	if (thisPlayer.getRecipients() != null) {
-	    Iterator<Player> it = event.getRecipients().iterator();
-	    while (it.hasNext()) {
-		Player nextPlayer = it.next();
-		boolean found = false;
-		if (UtilPermissions.playerCanUseCommand(nextPlayer,
-			"adminstuff.chat.read.all")) {
-		    nextPlayer.sendMessage(ChatColor.DARK_GREEN + nick
-			    + ChatColor.WHITE + ": " + event.getMessage());
-		    found = true;
-		}
-		if (!found) {
-		    for (String name : thisPlayer.getRecipients()) {
-			if (name.equalsIgnoreCase(nextPlayer.getName())
-				|| nextPlayer.getName().equalsIgnoreCase(
-					event.getPlayer().getName())) {
-			    nextPlayer.sendMessage(ChatColor.DARK_GREEN + nick
-				    + ChatColor.WHITE + ": "
-				    + event.getMessage());
-			    break;
-			}
-		    }
-		}
-	    }
-	    event.setCancelled(true);
-	    return;
-	}
+        // PLAYER IS IN CHATMODE
+        if (thisPlayer.getRecipients() != null) {
+            Iterator<Player> it = event.getRecipients().iterator();
+            while (it.hasNext()) {
+                Player nextPlayer = it.next();
+                boolean found = false;
+                if (UtilPermissions.playerCanUseCommand(nextPlayer,
+                        "adminstuff.chat.read.all")) {
+                    nextPlayer.sendMessage(ChatColor.DARK_GREEN + nick
+                            + ChatColor.WHITE + ": " + event.getMessage());
+                    found = true;
+                }
+                if (!found) {
+                    for (String name : thisPlayer.getRecipients()) {
+                        if (name.equalsIgnoreCase(nextPlayer.getName())
+                                || nextPlayer.getName().equalsIgnoreCase(
+                                        event.getPlayer().getName())) {
+                            nextPlayer.sendMessage(ChatColor.DARK_GREEN + nick
+                                    + ChatColor.WHITE + ": "
+                                    + event.getMessage());
+                            break;
+                        }
+                    }
+                }
+            }
+            event.setCancelled(true);
+            return;
+        }
 
-	// CHAT IS HIDDEN = ONLY RECEIVE MESSAGES FROM OTHER PREDEFINED PLAYERS
-	Iterator<Player> it = event.getRecipients().iterator();
-	while (it.hasNext()) {
-	    Player nextPlayer = it.next();
-	    if (nextPlayer.getName().equalsIgnoreCase(
-		    event.getPlayer().getName()))
-		continue;
+        // CHAT IS HIDDEN = ONLY RECEIVE MESSAGES FROM OTHER PREDEFINED PLAYERS
+        Iterator<Player> it = event.getRecipients().iterator();
+        while (it.hasNext()) {
+            Player nextPlayer = it.next();
+            if (nextPlayer.getName().equalsIgnoreCase(
+                    event.getPlayer().getName()))
+                continue;
 
-	    ASPlayer actPlayer = playerMap.get(nextPlayer.getName());
-	    if (actPlayer != null) {
-		if (actPlayer.isHideChat()) {
-		    if (!actPlayer.isRecipient(event.getPlayer().getName())) {
-			it.remove();
-		    }
-		}
-	    }
-	}
+            ASPlayer actPlayer = playerMap.get(nextPlayer.getName());
+            if (actPlayer != null) {
+                if (actPlayer.isHideChat()) {
+                    if (!actPlayer.isRecipient(event.getPlayer().getName())) {
+                        it.remove();
+                    }
+                }
+            }
+        }
     }
 
     /**
      * @return the playerMap
      */
     public static Map<String, ASPlayer> getPlayerMap() {
-	return playerMap;
+        return playerMap;
     }
 
     /**
@@ -317,7 +317,7 @@ public class ASPlayerListener extends PlayerListener {
      *            the playerMap to set
      */
     public static void setPlayerMap(Map<String, ASPlayer> playerMap) {
-	ASPlayerListener.playerMap = playerMap;
+        ASPlayerListener.playerMap = playerMap;
     }
 
 }

@@ -38,17 +38,16 @@ public class ASBlockListener extends BlockListener {
     @SuppressWarnings("deprecation")
     @Override
     public void onBlockPlace(BlockPlaceEvent event) {
-	if (event.isCancelled())
-	    return;
+        if (event.isCancelled())
+            return;
 
-	Player player = event.getPlayer();
-	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
-	if (thisPlayer.hasUnlimitedItem(
-		event.getBlockPlaced().getTypeId())) {
-	    player.getItemInHand().setAmount(
-		    player.getItemInHand().getAmount() + 1);
-	    player.updateInventory();
-	}
+        Player player = event.getPlayer();
+        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+        if (thisPlayer.hasUnlimitedItem(event.getBlockPlaced().getTypeId())) {
+            player.getItemInHand().setAmount(
+                    player.getItemInHand().getAmount() + 1);
+            player.updateInventory();
+        }
     }
 
 }

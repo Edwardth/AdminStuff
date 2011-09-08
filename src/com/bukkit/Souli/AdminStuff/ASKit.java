@@ -26,27 +26,27 @@ import org.bukkit.inventory.ItemStack;
 public class ASKit
 {
     public HashMap<String, ItemStack> kitList = new HashMap<String, ItemStack>();
-    
+
     public void giveKit(Player player)
     {
-	for(ItemStack item: kitList.values())
-	{
-	    player.getInventory().addItem(item);
-	}
+        for (ItemStack item : kitList.values())
+        {
+            player.getInventory().addItem(item);
+        }
     }
-    
+
     public boolean hasItem(ItemStack item)
     {
-	return kitList.containsKey(item.getTypeId() + "_" + item.getData());
+        return kitList.containsKey(item.getTypeId() + "_" + item.getData());
     }
-    
+
     public void addItem(ItemStack item)
     {
-	kitList.put(item.getTypeId() + "_" + item.getData(), item);
+        kitList.put(item.getTypeId() + "_" + item.getData(), item);
     }
-    
+
     public void removeItem(ItemStack item)
     {
-	kitList.remove(item.getTypeId() + "_" + item.getData());
+        kitList.remove(item.getTypeId() + "_" + item.getData());
     }
 }

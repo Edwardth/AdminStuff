@@ -25,51 +25,51 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LogUnit {
-	private static LogUnit instance = null;
-	private static Logger log;
-	private String pluginName = "";
+    private static LogUnit instance = null;
+    private static Logger log;
+    private String pluginName = "";
 
-	/**
-	 * 
-	 * CONSTRUCTOR
-	 * 
-	 */
-	private LogUnit() {
-	}
+    /**
+     * 
+     * CONSTRUCTOR
+     * 
+     */
+    private LogUnit() {
+    }
 
-	/**
-	 * CREATE OR GET INSTANCE
-	 * 
-	 * @return Instance of LogUnit
-	 */
-	public static LogUnit getInstance(String pluginName) {
-		if (instance == null) {
-			instance = new LogUnit();
-			LogUnit.log = Logger.getLogger("Minecraft");
-			instance.pluginName = pluginName;
-		}
-		return instance;
-	}
+    /**
+     * CREATE OR GET INSTANCE
+     * 
+     * @return Instance of LogUnit
+     */
+    public static LogUnit getInstance(String pluginName) {
+        if (instance == null) {
+            instance = new LogUnit();
+            LogUnit.log = Logger.getLogger("Minecraft");
+            instance.pluginName = pluginName;
+        }
+        return instance;
+    }
 
-	/**
-	 * PRINT INFO IN CONSOLE
-	 */
-	public void printInfo(String info) {
-		log.log(Level.INFO, "[ " + pluginName + " ] : " + info);
-	}
+    /**
+     * PRINT INFO IN CONSOLE
+     */
+    public void printInfo(String info) {
+        log.log(Level.INFO, "[ " + pluginName + " ] : " + info);
+    }
 
-	/**
-	 * PRINT WARNING IN CONSOLE
-	 */
-	public void printWarning(String info) {
-		log.log(Level.WARNING, "[ " + pluginName + " ] : " + info);
-	}
+    /**
+     * PRINT WARNING IN CONSOLE
+     */
+    public void printWarning(String info) {
+        log.log(Level.WARNING, "[ " + pluginName + " ] : " + info);
+    }
 
-	/**
-	 * PRINT ERROR IN CONSOLE
-	 */
-	public void printError(String info, Exception e) {
-		log.log(Level.SEVERE, "[ " + pluginName + " ] : " + info);
-		e.printStackTrace();
-	}
+    /**
+     * PRINT ERROR IN CONSOLE
+     */
+    public void printError(String info, Exception e) {
+        log.log(Level.SEVERE, "[ " + pluginName + " ] : " + info);
+        e.printStackTrace();
+    }
 }

@@ -36,23 +36,23 @@ public class ASEntityListener extends EntityListener {
      */
     @Override
     public void onEntityDamage(EntityDamageEvent event) {
-	if (event.isCancelled())
-	    return;
+        if (event.isCancelled())
+            return;
 
-	// ONLY PLAYERS
-	if (!(event.getEntity() instanceof Player))
-	    return;
+        // ONLY PLAYERS
+        if (!(event.getEntity() instanceof Player))
+            return;
 
-	// ADD PLAYER, IF NOT FOUND
-	Player player = (Player) event.getEntity();
-	ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+        // ADD PLAYER, IF NOT FOUND
+        Player player = (Player) event.getEntity();
+        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
 
-	// IS PLAYER GOD = NO DAMAGE
-	if (thisPlayer.isGod()) {
-	    event.setDamage(0);
-	    event.setCancelled(true);
-	    return;
-	}
+        // IS PLAYER GOD = NO DAMAGE
+        if (thisPlayer.isGod()) {
+            event.setDamage(0);
+            event.setCancelled(true);
+            return;
+        }
     }
 
 }
