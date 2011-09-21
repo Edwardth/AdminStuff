@@ -26,6 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdInvseePlayer extends Command {
@@ -69,10 +70,10 @@ public class cmdInvseePlayer extends Command {
                     }
                 }
                 player.updateInventory();
-                player.sendMessage(ChatColor.GRAY + "Showing you the inventory of '" + ASCore.getPlayerName(target) + "'!");
+                player.sendMessage(ASLocalizer.format("INVENTORY_SHOW_OF_X", ChatColor.GRAY, ASCore.getPlayerName(target)));
             }
         } else {
-            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+            player.sendMessage(ASLocalizer.format("PLAYER_NOT_FOUND", ChatColor.RED, args[0]));
         }
     }
 }

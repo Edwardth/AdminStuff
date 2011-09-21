@@ -29,6 +29,7 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASKit;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.gemo.utils.UtilPermissions;
 
 public class cmdListKits extends Command {
@@ -48,7 +49,7 @@ public class cmdListKits extends Command {
      * @param split
      */
     public void execute(String[] args, Player player) {
-        player.sendMessage(ChatColor.AQUA + "List of Kits:");
+        player.sendMessage(ASLocalizer.format("KIT_LIST", ChatColor.AQUA));
         int count = 1;
         for (Map.Entry<String, ASKit> entry : ASCore.kitList.entrySet()) {
             if (UtilPermissions.playerCanUseCommand(player, "adminstuff.commands.admin.kit." + entry.getKey())) {

@@ -27,6 +27,7 @@ import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdBan extends Command {
@@ -54,17 +55,16 @@ public class cmdBan extends Command {
                 ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
 
                 thisTarget.setBanned(true);
-                thisTarget.saveConfig(false, false, false, false, true, false, false);
-                String message = "You were banned.";
+                thisTarget.saveConfig(false, false, false, false, true, false, false, false);
+                String message = ASLocalizer.format("YOU_ARE_BANNED");
                 target.kickPlayer(message);
-                player.sendMessage(ChatColor.GRAY + "Player '" + ASCore.getPlayerName(target) + "' banned!");
-
+                player.sendMessage(ASLocalizer.format("PLAYER_IS_BANNED", ChatColor.GRAY, ASCore.getPlayerName(target)));
                 ((CraftServer) ASCore.getMCServer()).getHandle().a(target.getName());
-            }
-            ASCore.banPlayer(target.getName());
+                ASCore.banPlayer(target.getName());
+            }            
         } else {
             ASCore.banPlayer(args[0]);
-            player.sendMessage(ChatColor.GRAY + "Player '" + args[0] + "' banned!");
+            player.sendMessage(ASLocalizer.format("PLAYER_IS_BANNED", ChatColor.GRAY, args[0]));
             ((CraftServer) ASCore.getMCServer()).getHandle().a(args[0]);
         }
     }

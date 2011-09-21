@@ -26,6 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdGodPlayer extends Command {
@@ -53,17 +54,17 @@ public class cmdGodPlayer extends Command {
                 ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
                 boolean isGod = !thisTarget.isGod();
                 thisTarget.setGod(isGod);
-                thisTarget.saveConfig(false, false, false, false, false, false, true);
+                thisTarget.saveConfig(false, false, false, false, false, false, true, false);
                 if (isGod) {
-                    player.sendMessage(ChatColor.GRAY + "'" + ASCore.getPlayerName(target) + "' is now a god.");
-                    target.sendMessage(ChatColor.GRAY + "Godmode enabled.");
+                    player.sendMessage(ASLocalizer.format("PLAYER_IS_A_GOD", ChatColor.GRAY, ASCore.getPlayerName(target)));
+                    target.sendMessage(ASLocalizer.format("YOU_ARE_A_GOD", ChatColor.GRAY));
                 } else {
-                    player.sendMessage(ChatColor.GRAY + "'" + ASCore.getPlayerName(target) + "' is no longer a god.");
-                    target.sendMessage(ChatColor.GRAY + "Godmode disabled.");
+                    player.sendMessage(ASLocalizer.format("PLAYER_IS_NO_LONGER_GOD", ChatColor.GRAY, ASCore.getPlayerName(target)));
+                    target.sendMessage(ASLocalizer.format("NO_LONGER_A_GOD", ChatColor.GRAY));
                 }
             }
         } else {
-            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+            player.sendMessage(ASLocalizer.format("PLAYER_NOT_FOUND", ChatColor.RED, args[0]));
         }
     }
 }

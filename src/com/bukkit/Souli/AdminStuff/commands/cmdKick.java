@@ -26,6 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 
 public class cmdKick extends Command {
 
@@ -50,13 +51,12 @@ public class cmdKick extends Command {
             if (target.isOnline()) {
                 // ADD PLAYER, IF NOT FOUND
                 ASCore.getOrCreateASPlayer(target);
-
-                String message = "You were kicked.";
+                String message = ASLocalizer.format("KICKED_YOU");
                 target.kickPlayer(message);
-                player.sendMessage(ChatColor.GRAY + "Player '" + ASCore.getPlayerName(target) + "' kicked!");
+                player.sendMessage(ASLocalizer.format("KICKED_PLAYER", ChatColor.GRAY, ASCore.getPlayerName(target)));
             }
         } else {
-            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+            player.sendMessage(ASLocalizer.format("PLAYER_NOT_FOUND", ChatColor.RED, args[0]));
         }
     }
 }

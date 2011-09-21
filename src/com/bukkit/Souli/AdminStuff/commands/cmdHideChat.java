@@ -26,6 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdHideChat extends Command {
@@ -51,9 +52,9 @@ public class cmdHideChat extends Command {
         thisPlayer.setHideChat(hide);
 
         if (hide) {
-            player.sendMessage(ChatColor.GRAY + "The chat is now hidden.");
+            player.sendMessage(ASLocalizer.format("CHAT_HIDDEN", ChatColor.GRAY));
         } else {
-            player.sendMessage(ChatColor.GRAY + "The chat is no longer hidden.");
+            player.sendMessage(ASLocalizer.format("CHAT_NO_LONGER_HIDDEN", ChatColor.GRAY));
         }
     }
 }

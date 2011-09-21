@@ -26,6 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 
 public class cmdBurn extends Command {
 
@@ -51,14 +52,14 @@ public class cmdBurn extends Command {
             if (!target.isDead() && target.isOnline()) {
                 try {
                     target.setFireTicks(Integer.valueOf(args[1]) * 20);
-                    player.sendMessage(ChatColor.GRAY + "Burning '" + ASCore.getPlayerName(target) + "' for " + args[1] + " seconds");
+                    player.sendMessage(ASLocalizer.format("BURN_PLAYER", ASCore.getPlayerName(target)));
                 } catch (Exception e) {
-                    player.sendMessage(ChatColor.RED + "Wrong syntax!");
+                    player.sendMessage(ASLocalizer.format("WRONG_SYNTAX", ChatColor.RED));
                     player.sendMessage(ChatColor.GRAY + getSyntax() + " " + getArguments());
                 }
             }
         } else {
-            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+            player.sendMessage(ASLocalizer.format("PLAYER_NOT_FOUND", ChatColor.RED, args[0]));
         }
     }
 }

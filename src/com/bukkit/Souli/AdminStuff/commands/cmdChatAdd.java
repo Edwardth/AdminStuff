@@ -28,6 +28,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdChatAdd extends ExtendedCommand {
@@ -61,7 +62,7 @@ public class cmdChatAdd extends ExtendedCommand {
         }
 
         if (recipientList.size() < 1) {
-            player.sendMessage(ChatColor.RED + "No recipient found!");
+            player.sendMessage(ASLocalizer.format("NO_RECIPIENT_FOUND", ChatColor.RED));
             return;
         }
 
@@ -74,6 +75,6 @@ public class cmdChatAdd extends ExtendedCommand {
                 list += ", ";
         }
         thisASPlayer.setRecipients(recList);
-        player.sendMessage(ChatColor.GRAY + "You are now sending messages only to: " + list);
+        player.sendMessage(ASLocalizer.format("ONLY_CHAT_TO", ChatColor.GRAY, list));
     }
 }

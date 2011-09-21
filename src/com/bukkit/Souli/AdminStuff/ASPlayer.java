@@ -45,6 +45,7 @@ public class ASPlayer {
     private boolean isTempBanned = false;
     private boolean hideChat = false;
     private boolean isGod = false;
+    private boolean classicMode = false;
     private long banEndTime = 0;
     private Location glueLocation = null;
     private String lastSender = null;
@@ -109,6 +110,7 @@ public class ASPlayer {
         setTempBanned(config.getBoolean("isTempBanned", false));
         setBanEndTime(Long.valueOf(config.getString("banEndTime", "0")));
         setNickname(config.getString("Nickname", ""));
+        setClassicMode(config.getBoolean("classicMode", false));
 
         // LOAD INFINITE ITEMS
         List<Integer> newList = new ArrayList<Integer>();
@@ -134,7 +136,7 @@ public class ASPlayer {
     /**
      * SAVE PLAYERDATA TO A FILE
      */
-    public void saveConfig(boolean saveAFK, boolean saveMute, boolean saveUnlimited, boolean saveGlue, boolean saveBan, boolean saveNick, boolean saveGod) {
+    public void saveConfig(boolean saveAFK, boolean saveMute, boolean saveUnlimited, boolean saveGlue, boolean saveBan, boolean saveNick, boolean saveGod, boolean saveClassic) {
         new File("plugins/AdminStuff/userdata/").mkdirs();
         Configuration config = new Configuration(new File("plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml"));
         config.load();
@@ -150,6 +152,9 @@ public class ASPlayer {
 
         if (saveAFK)
             config.setProperty("isAFK", isAFK);
+        
+        if (saveClassic)
+            config.setProperty("classicMode", classicMode);
 
         if (saveMute)
             config.setProperty("isMuted", isMuted);
@@ -282,12 +287,12 @@ public class ASPlayer {
         if (!getNickname().equalsIgnoreCase("")) {
             nick = getNickname();
         }
-        nick = nick.replace("[AFK] ", "").replace(" was fished!", "");
+        nick = nick.replace("[AFK] ", "").replace(ASLocalizer.format("SLAP_SUFFIX"), "");
         if (isAFK)
             nick = "[AFK] " + nick;
 
         if (isSlapped)
-            nick = nick + " was fished!";
+            nick = nick + ASLocalizer.format("SLAP_SUFFIX");
 
         player.setDisplayName(nick);
     }
@@ -471,5 +476,35 @@ public class ASPlayer {
      */
     public void setGod(boolean isGod) {
         this.isGod = isGod;
+    }
+
+    /**
+     * @return the playerName
+     */
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    /**
+     * @param playerName
+     *            the playerName to set
+     */
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    /**
+     * @return the classicMode
+     */
+    public boolean isClassicMode() {
+        return classicMode;
+    }
+
+    /**
+     * @param classicMode
+     *            the classicMode to set
+     */
+    public void setClassicMode(boolean classicMode) {
+        this.classicMode = classicMode;
     }
 }

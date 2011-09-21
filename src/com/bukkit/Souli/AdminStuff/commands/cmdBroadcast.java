@@ -26,6 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 
 public class cmdBroadcast extends ExtendedCommand {
 
@@ -48,7 +49,6 @@ public class cmdBroadcast extends ExtendedCommand {
         for (int i = 0; i < args.length; i++) {
             message += args[i] + " ";
         }
-
-        ASCore.getMCServer().broadcastMessage(ChatColor.RED + " [ Broadcast ] : " + ChatColor.GREEN + message);
+        ASCore.getMCServer().broadcastMessage(ChatColor.RED + " [ " + ASLocalizer.format("BROADCAST") + " ] : " + ChatColor.GREEN + message);
     }
 }

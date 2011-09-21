@@ -28,6 +28,7 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASItem;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 import com.gemo.utils.BlockUtils;
 
@@ -66,17 +67,17 @@ public class cmdUnlimited extends Command {
                     matName = Material.getMaterial(BlockUtils.getItemIDFromName(ID)).name().toLowerCase();
 
                 if (result) {
-                    player.sendMessage(ChatColor.GRAY + "You have now unlimited amount of '" + matName + "'.");
+                    player.sendMessage(ASLocalizer.format("UNLIMITED_ACCESS", ChatColor.GRAY, matName));
                 } else {
-                    player.sendMessage(ChatColor.GRAY + "You do no longer have unlimited amount of '" + matName + "'.");
+                    player.sendMessage(ASLocalizer.format("UNLIMITED_DENY", ChatColor.GRAY, matName));
                 }
-                thisPlayer.saveConfig(false, false, true, false, false, false, false);
+                thisPlayer.saveConfig(false, false, true, false, false, false, false, false);
             } else {
-                player.sendMessage(ChatColor.RED + "Item '" + args[0] + "' not found!");
+                player.sendMessage(ASLocalizer.format("ITEM_NOT_FOUND", ChatColor.RED, args[0]));
                 player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
             }
         } catch (Exception e) {
-            player.sendMessage(ChatColor.RED + "Wrong Syntax!");
+            player.sendMessage(ASLocalizer.format("WRONG_SYNTAX", ChatColor.RED));
             player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
         }
     }

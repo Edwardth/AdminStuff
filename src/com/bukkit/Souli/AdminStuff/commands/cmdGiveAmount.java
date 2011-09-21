@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASItem;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 
 public class cmdGiveAmount extends Command {
 
@@ -63,17 +64,17 @@ public class cmdGiveAmount extends Command {
                     ItemStack item = ASItem.getItemStack(ID, Data, amount);
                     target.getInventory().addItem(item);
                     player.updateInventory();
-                    player.sendMessage(ChatColor.GRAY + "Giving '" + ASCore.getPlayerName(target) + "' " + amount + " of " + Material.getMaterial(item.getTypeId()) + ((Data > 0) ? (":" + Data) : ""));
-                    target.sendMessage(ChatColor.GRAY + "Giving you " + amount + " of " + Material.getMaterial(item.getTypeId()) + ((Data > 0) ? (":" + Data) : ""));
+                    player.sendMessage(ASLocalizer.format("GIVING_TO", ChatColor.GRAY, String.valueOf(amount), Material.getMaterial(item.getTypeId()) + ((Data > 0) ? (":" + Data) : ""), ASCore.getPlayerName(target)));
+                    target.sendMessage(ASLocalizer.format("GIVING_YOU", ChatColor.GRAY, String.valueOf(amount), Material.getMaterial(item.getTypeId()) + ((Data > 0) ? (":" + Data) : "")));
                 } else {
-                    player.sendMessage(ChatColor.RED + "Item '" + args[1] + "' not found!");
+                    player.sendMessage(ASLocalizer.format("ITEM_NOT_FOUND", ChatColor.RED, args[0]));
                     player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
                 }
             } else {
-                player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+                player.sendMessage(ASLocalizer.format("PLAYER_NOT_FOUND", ChatColor.RED, args[0]));
             }
         } catch (Exception e) {
-            player.sendMessage(ChatColor.RED + "Wrong Syntax!");
+            player.sendMessage(ASLocalizer.format("WRONG_SYNTAX", ChatColor.RED));
             player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
         }
     }

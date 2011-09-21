@@ -26,6 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdChatDel extends Command {
@@ -50,6 +51,6 @@ public class cmdChatDel extends Command {
 
         // DELETE RECIPIENTLIST
         thisPlayer.setRecipients(null);
-        player.sendMessage(ChatColor.GRAY + "You are now sending messages everyone!");
+        player.sendMessage(ASLocalizer.format("CHAT_TO_ALL", ChatColor.GRAY));
     }
 }

@@ -25,6 +25,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
+
 public class cmdTime extends Command {
 
     public cmdTime(String syntax, String arguments, String node, Server server) {
@@ -45,14 +47,14 @@ public class cmdTime extends Command {
     public void execute(String[] args, Player player) {
         if (args[0].equalsIgnoreCase("day")) {
             player.getWorld().setTime(0);
-            player.sendMessage(ChatColor.GRAY + "Time in your world changed to '" + args[0].toLowerCase() + "'!");
+            player.sendMessage(ASLocalizer.format("TIME_SET", ChatColor.GRAY, ASLocalizer.format("TIME_DAY")));
             return;
         } else if (args[0].equalsIgnoreCase("night")) {
             player.getWorld().setTime(13000);
-            player.sendMessage(ChatColor.GRAY + "Time in your world changed to '" + args[0].toLowerCase() + "'!");
+            player.sendMessage(ASLocalizer.format("TIME_SET", ChatColor.GRAY, ASLocalizer.format("TIME_NIGHT")));
             return;
         }
-        player.sendMessage(ChatColor.RED + "Wrong syntax!");
+        player.sendMessage(ASLocalizer.format("WRONG_SYNTAX", ChatColor.RED));
         player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
     }
 }

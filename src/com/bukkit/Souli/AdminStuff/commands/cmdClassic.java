@@ -22,39 +22,44 @@
 package com.bukkit.Souli.AdminStuff.commands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
+
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASLocalizer;
+import com.bukkit.Souli.AdminStuff.ASPlayer;
 
-public class cmdFlashPlayer extends Command {
+public class cmdClassic extends Command {
 
-    public cmdFlashPlayer(String syntax, String arguments, String node, Server server) {
+    public cmdClassic(String syntax, String arguments, String node, Server server) {
         super(syntax, arguments, node, server);
     }
 
     @Override
     /**
      * Representing the command <br>
-     * /flash <Player><br>
-     * Flashes a player and kills him
+     * /classic <br>
+     * Toggle the classicmode
      * 
      * @param player
      *            Called the command
      * @param split
-     *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-        Player target = ASCore.getPlayer(args[0]);
-        if (target != null) {
-            if (!target.isDead() && target.isOnline()) {
-                target.getInventory().clear();
-                target.getWorld().strikeLightning(target.getLocation());
-                target.damage(100);
-                ASCore.getMCServer().broadcastMessage(ASLocalizer.format("FLASH_PLAYER", ChatColor.LIGHT_PURPLE, ASCore.getPlayerName(target)));
-            }
+        // ADD PLAYER, IF NOT FOUND
+        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+        boolean isClassic = !thisPlayer.isClassicMode();
+
+        thisPlayer.setClassicMode(isClassic);
+        thisPlayer.saveConfig(true, false, false, false, false, false, false, true);
+
+        if (isClassic) {
+            player.setGameMode(GameMode.CREATIVE);
+            player.sendMessage(ASLocalizer.format("YOU_ARE_IN_CLASSICMODE", ChatColor.GRAY));
         } else {
-            player.sendMessage(ASLocalizer.format("PLAYER_NOT_FOUND", ChatColor.RED, args[0]));
+            player.setGameMode(GameMode.SURVIVAL);
+            player.sendMessage(ASLocalizer.format("YOU_ARE_NO_LONGER_IN_CLASSICMODE", ChatColor.GRAY));
         }
     }
 }

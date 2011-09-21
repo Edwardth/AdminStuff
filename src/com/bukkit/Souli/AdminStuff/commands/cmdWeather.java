@@ -25,6 +25,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
+
 public class cmdWeather extends Command {
 
     public cmdWeather(String syntax, String arguments, String node, Server server) {
@@ -46,20 +48,20 @@ public class cmdWeather extends Command {
         if (args[0].equalsIgnoreCase("sun")) {
             player.getWorld().setThundering(false);
             player.getWorld().setStorm(false);
-            player.sendMessage(ChatColor.GRAY + "Weather in your world changed to '" + args[0].toLowerCase() + "'!");
+            player.sendMessage(ASLocalizer.format("WEATHER_SET", ChatColor.GRAY, ASLocalizer.format("WEATHER_SUN")));
             return;
         } else if (args[0].equalsIgnoreCase("rain")) {
             player.getWorld().setStorm(true);
             player.getWorld().setThundering(false);
-            player.sendMessage(ChatColor.GRAY + "Weather in your world changed to '" + args[0].toLowerCase() + "'!");
+            player.sendMessage(ASLocalizer.format("WEATHER_SET", ChatColor.GRAY, ASLocalizer.format("WEATHER_RAIN")));
             return;
         } else if (args[0].equalsIgnoreCase("storm")) {
             player.getWorld().setStorm(true);
             player.getWorld().setThundering(true);
-            player.sendMessage(ChatColor.GRAY + "Weather in your world changed to '" + args[0].toLowerCase() + "'!");
+            player.sendMessage(ASLocalizer.format("WEATHER_SET", ChatColor.GRAY, ASLocalizer.format("WEATHER_STORM")));
             return;
         }
-        player.sendMessage(ChatColor.RED + "Wrong syntax!");
+        player.sendMessage(ASLocalizer.format("WRONG_SYNTAX", ChatColor.RED));
         player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
     }
 }

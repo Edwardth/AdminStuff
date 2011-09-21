@@ -168,6 +168,9 @@ public class ASCore extends JavaPlugin {
             pm.registerEvent(Event.Type.PLAYER_QUIT, pListener, Event.Priority.Monitor, this);
 
             loadConfig();
+            
+            new ASLocalizer("deutsch");
+            
             error = false;
         } catch (Exception e) {
             error = true;
@@ -281,7 +284,7 @@ public class ASCore extends JavaPlugin {
         if (player.getDisplayName() != null)
             nick = player.getDisplayName();
 
-        nick = nick.replace("[AFK] ", "").replace(" was fished!", "");
+        nick = nick.replace("[AFK] ", "").replace(ASLocalizer.format("SLAP_SUFFIX"), "");
         return nick;
     }
 

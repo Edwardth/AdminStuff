@@ -25,6 +25,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
+
 public class cmdClearInventory extends Command {
 
     public cmdClearInventory(String syntax, String arguments, String node, Server server) {
@@ -45,6 +47,6 @@ public class cmdClearInventory extends Command {
     public void execute(String[] args, Player player) {
         player.getInventory().clear();
         player.updateInventory();
-        player.sendMessage(ChatColor.GRAY + "Inventory cleared!");
+        player.sendMessage(ASLocalizer.format("INVENTORY_CLEARED", ChatColor.GRAY));
     }
 }

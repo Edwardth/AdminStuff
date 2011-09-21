@@ -26,6 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 
 public class cmdClearInventoryOther extends Command {
 
@@ -51,11 +52,11 @@ public class cmdClearInventoryOther extends Command {
             if (!target.isDead() && target.isOnline()) {
                 target.getInventory().clear();
                 target.updateInventory();
-                player.sendMessage(ChatColor.GRAY + "Inventory of '" + ASCore.getPlayerName(target) + "' cleared!");
-                target.sendMessage(ChatColor.GRAY + "Your inventory got cleared!");
+                player.sendMessage(ASLocalizer.format("CLEARED_OTHER_INVENTORY", ChatColor.GRAY, ASCore.getPlayerName(target)));
+                target.sendMessage(ASLocalizer.format("INVENTORY_CLEARED", ChatColor.GRAY));
             }
         } else {
-            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+            player.sendMessage(ASLocalizer.format("PLAYER_NOT_FOUND", ChatColor.RED, args[0]));
         }
     }
 }

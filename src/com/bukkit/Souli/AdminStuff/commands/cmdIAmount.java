@@ -28,6 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.bukkit.Souli.AdminStuff.ASItem;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 
 public class cmdIAmount extends Command {
 
@@ -59,13 +60,13 @@ public class cmdIAmount extends Command {
                 ItemStack item = ASItem.getItemStack(ID, Data, amount);
                 player.getInventory().addItem(item);
                 player.updateInventory();
-                player.sendMessage(ChatColor.GRAY + "Giving you " + amount + " of " + Material.getMaterial(item.getTypeId()) + ((Data > 0) ? (":" + Data) : ""));
+                player.sendMessage(ASLocalizer.format("GIVING_YOU", ChatColor.GRAY, String.valueOf(amount), Material.getMaterial(item.getTypeId()) + ((Data > 0) ? (":" + Data) : "")));
             } else {
-                player.sendMessage(ChatColor.RED + "Item '" + args[0] + "' not found!");
+                player.sendMessage(ASLocalizer.format("ITEM_NOT_FOUND", ChatColor.RED, args[0]));
                 player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
             }
         } catch (Exception e) {
-            player.sendMessage(ChatColor.RED + "Wrong Syntax!");
+            player.sendMessage(ASLocalizer.format("WRONG_SYNTAX", ChatColor.RED));
             player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
         }
     }

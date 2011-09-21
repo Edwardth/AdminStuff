@@ -25,6 +25,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
+
 public class cmdKickAll extends Command {
 
     public cmdKickAll(String syntax, String arguments, String node, Server server) {
@@ -45,8 +47,8 @@ public class cmdKickAll extends Command {
         Player[] allPlayers = server.getOnlinePlayers();
         for (Player kPlayer : allPlayers) {
             if (!kPlayer.getName().equalsIgnoreCase(player.getName()))
-                kPlayer.kickPlayer("You were kicked!");
+                kPlayer.kickPlayer(ASLocalizer.format("KICKED_YOU"));
         }
-        player.sendMessage(ChatColor.GRAY + "All other players got kicked!");
+        player.sendMessage(ASLocalizer.format("KICKED_ALL", ChatColor.GRAY));
     }
 }

@@ -38,6 +38,9 @@ public class CommandList {
                 // USER PUNISH COMMANDS
         new cmdBurn("/burn", "<Player> <Time in seconds>", "commands.admin.burn", server), new cmdSlap("/slap", "<Player>", "commands.admin.slap", server), new cmdKill("/kill", "<Player>", "commands.admin.kill", server), new cmdGlue("/glue", "<Player>", "commands.admin.glue", server), new cmdGlueHere("/gluehere", "<Player>", "commands.admin.gluehere", server),
 
+                // CLASSICMODE
+        new cmdClassic("/classic", "", "commands.admin.classic", server),
+
                 // FLASH COMMANDS
         new cmdFlash("/flash", "", "commands.admin.flash", server), new cmdFlashPlayer("/flash", "<Player>", "commands.admin.flashplayer", server), new cmdFlash("/lightning", "", "commands.admin.flash", server), new cmdFlashPlayer("/lightning", "<Player>", "commands.admin.flashplayer", server),
 

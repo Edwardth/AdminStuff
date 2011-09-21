@@ -26,6 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdMutePlayer extends Command {
@@ -54,14 +55,14 @@ public class cmdMutePlayer extends Command {
                 thisTarget.setMuted(!thisTarget.isMuted());
 
                 if (thisTarget.isMuted()) {
-                    player.sendMessage(ChatColor.GRAY + "Player '" + ASCore.getPlayerName(target) + "' is now muted!");
+                    player.sendMessage(ASLocalizer.format("MUTE_PLAYER", ChatColor.GRAY, ASCore.getPlayerName(target)));
                 } else {
-                    player.sendMessage(ChatColor.GRAY + "Player '" + ASCore.getPlayerName(target) + "' is no longer muted!");
+                    player.sendMessage(ASLocalizer.format("UNMUTE_PLAYER", ChatColor.GRAY, ASCore.getPlayerName(target)));
                 }
-                thisTarget.saveConfig(false, true, false, false, false, false, false);
+                thisTarget.saveConfig(false, true, false, false, false, false, false, false);
             }
         } else {
-            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+            player.sendMessage(ASLocalizer.format("PLAYER_NOT_FOUND", ChatColor.RED, args[0]));
         }
     }
 }

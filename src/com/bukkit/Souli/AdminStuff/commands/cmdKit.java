@@ -26,6 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.gemo.utils.UtilPermissions;
 
 public class cmdKit extends Command {
@@ -47,17 +48,17 @@ public class cmdKit extends Command {
     public void execute(String[] args, Player player) {
         // IS KIT AVAILABLE
         if (!ASCore.kitList.containsKey(args[0].toLowerCase())) {
-            player.sendMessage(ChatColor.RED + "Kit '" + args[0] + "' not found.");
+            player.sendMessage(ASLocalizer.format("KIT_NOT_FOUND", ChatColor.RED, args[0]));
             return;
         }
 
         // CHECK PERMISSIONS
         if (!UtilPermissions.playerCanUseCommand(player, "adminstuff.commands.admin.kit." + args[0].toLowerCase())) {
-            player.sendMessage(ChatColor.RED + "You are not allowed to use that kit.");
+            player.sendMessage(ASLocalizer.format("KIT_NOT_ALLOWED", ChatColor.RED));
             return;
         }
 
         ASCore.kitList.get(args[0].toLowerCase()).giveKit(player);
-        player.sendMessage(ChatColor.GRAY + "Giving you the kit '" + args[0] + "'.");
+        player.sendMessage(ASLocalizer.format("KIT_GIVE", ChatColor.GRAY, args[0]));
     }
 }

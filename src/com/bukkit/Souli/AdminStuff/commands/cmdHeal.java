@@ -25,6 +25,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
+
 public class cmdHeal extends Command {
 
     public cmdHeal(String syntax, String arguments, String node, Server server) {
@@ -43,6 +45,6 @@ public class cmdHeal extends Command {
      */
     public void execute(String[] args, Player player) {
         player.setHealth(20);
-        player.sendMessage(ChatColor.GRAY + "Healed yourself.");
+        player.sendMessage(ASLocalizer.format("HEALED_YOURSELF", ChatColor.GRAY));
     }
 }

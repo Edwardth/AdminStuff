@@ -26,6 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 
 public class cmdHealPlayer extends Command {
 
@@ -49,11 +50,11 @@ public class cmdHealPlayer extends Command {
         if (target != null) {
             if (!target.isDead() && target.isOnline()) {
                 target.setHealth(20);
-                player.sendMessage(ChatColor.GRAY + "Healed '" + ASCore.getPlayerName(target) + "'.");
-                target.sendMessage(ChatColor.GRAY + "Healed by '" + ASCore.getPlayerName(player) + "'.");
+                player.sendMessage(ASLocalizer.format("HEALED_X", ChatColor.GRAY, ASCore.getPlayerName(target)));
+                target.sendMessage(ASLocalizer.format("HEALED_BY_X", ChatColor.GRAY, ASCore.getPlayerName(player)));
             }
         } else {
-            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+            player.sendMessage(ASLocalizer.format("PLAYER_NOT_FOUND", ChatColor.RED, args[0]));
         }
     }
 }

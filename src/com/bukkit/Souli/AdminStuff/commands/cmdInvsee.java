@@ -26,6 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdInvsee extends Command {
@@ -55,7 +56,7 @@ public class cmdInvsee extends Command {
                 player.getInventory().setItem(i, thisPlayer.getInvBackUp()[i].clone());
         }
         player.updateInventory();
-        player.sendMessage(ChatColor.GRAY + "Restoring your inventory!");
+        player.sendMessage(ASLocalizer.format("INVENTORY_RESTORED", ChatColor.GRAY));
 
     }
 }

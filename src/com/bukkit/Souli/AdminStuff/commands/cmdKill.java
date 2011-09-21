@@ -26,6 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 
 public class cmdKill extends Command {
 
@@ -48,12 +49,12 @@ public class cmdKill extends Command {
         Player target = ASCore.getPlayer(args[0]);
         if (target != null) {
             if (!target.isDead() && target.isOnline()) {
-                player.sendMessage(ChatColor.GRAY + "Player '" + ASCore.getPlayerName(target) + "' killed!");
+                player.sendMessage(ASLocalizer.format("KILLED_PLAYER", ChatColor.GRAY, ASCore.getPlayerName(target)));
                 target.getInventory().clear();
                 target.damage(100);
             }
         } else {
-            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+            player.sendMessage(ASLocalizer.format("PLAYER_NOT_FOUND", ChatColor.RED, args[0]));
         }
     }
 }

@@ -25,6 +25,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdSlap extends Command {
@@ -50,11 +51,11 @@ public class cmdSlap extends Command {
             if (!target.isDead() && target.isOnline()) {
                 ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
                 thisTarget.setSlapped(true);
-                ASCore.getMCServer().broadcastMessage(ChatColor.BLUE + ASCore.getPlayerName(player) + " schlägt " + ASCore.getPlayerName(target) + " mit einem kalten Fisch ins Gesicht!");
+                ASCore.getMCServer().broadcastMessage(ASLocalizer.format("SLAP_PLAYER", ChatColor.BLUE, ASCore.getPlayerName(player), ASCore.getPlayerName(target)));
                 thisTarget.updateNick();
             }
         } else {
-            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+            player.sendMessage(ASLocalizer.format("PLAYER_NOT_FOUND", ChatColor.RED, args[0]));
         }
     }
 }

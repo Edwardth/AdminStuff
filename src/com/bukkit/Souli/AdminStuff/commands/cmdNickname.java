@@ -26,6 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdNickname extends Command {
@@ -49,8 +50,8 @@ public class cmdNickname extends Command {
         // ADD PLAYER, IF NOT FOUND
         ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
         thisPlayer.setNickname(args[0]);
-        player.sendMessage(ChatColor.GRAY + "Your nickname is now '" + args[0] + "'.");
-        thisPlayer.saveConfig(false, false, false, false, false, true, false);
+        player.sendMessage(ASLocalizer.format("NICKNAME", ChatColor.GRAY, args[0]));
+        thisPlayer.saveConfig(false, false, false, false, false, true, false, false);
         thisPlayer.updateNick();
     }
 }

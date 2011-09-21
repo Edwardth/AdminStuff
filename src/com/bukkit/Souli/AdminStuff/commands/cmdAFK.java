@@ -26,6 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdAFK extends Command {
@@ -50,15 +51,15 @@ public class cmdAFK extends Command {
         boolean isAFK = !thisPlayer.isAFK();
 
         thisPlayer.setAFK(isAFK);
-        thisPlayer.saveConfig(true, false, false, false, false, false, false);
+        thisPlayer.saveConfig(true, false, false, false, false, false, false, false);
         thisPlayer.updateNick();
 
         if (isAFK) {
-            ASCore.getMCServer().broadcastMessage("* " + ASCore.getPlayerName(player) + " is now AFK.");
-            player.sendMessage(ChatColor.GRAY + "You are now AFK.");
+            ASCore.getMCServer().broadcastMessage(ASLocalizer.format("IS_NOW_AFK", ASCore.getPlayerName(player)));
+            player.sendMessage(ASLocalizer.format("YOU_ARE_AFK", ChatColor.GRAY));
         } else {
-            ASCore.getMCServer().broadcastMessage("* " + ASCore.getPlayerName(player) + " is no longer AFK.");
-            player.sendMessage(ChatColor.GRAY + "You are no longer AFK.");
+            ASCore.getMCServer().broadcastMessage(ASLocalizer.format("IS_NO_LONGER_AFK", ASCore.getPlayerName(player)));
+            player.sendMessage(ASLocalizer.format("NO_LONGER_AFK", ChatColor.GRAY));
         }
     }
 }

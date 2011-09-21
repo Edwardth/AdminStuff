@@ -26,6 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdTempBan extends Command {
@@ -79,33 +80,33 @@ public class cmdTempBan extends Command {
                 mins = Integer.valueOf(args[1].substring(preIndex, mIndex));
             }
         } catch (Exception e) {
-            player.sendMessage(ChatColor.RED + "Wrong timesyntax!");
-            player.sendMessage(ChatColor.GRAY + "Example: 2d10h5m!");
-            player.sendMessage(ChatColor.GRAY + "Example: 2d");
-            player.sendMessage(ChatColor.GRAY + "Example: 10h!");
-            player.sendMessage(ChatColor.GRAY + "Example: 5m!");
+            player.sendMessage(ASLocalizer.format("WRONG_SYNTAX", ChatColor.RED));
+            player.sendMessage(ASLocalizer.format("TEMPBAN_EXAMPLE", ChatColor.GRAY) + ": 2d10h5m!");
+            player.sendMessage(ASLocalizer.format("TEMPBAN_EXAMPLE", ChatColor.GRAY) + ": 2d");
+            player.sendMessage(ASLocalizer.format("TEMPBAN_EXAMPLE", ChatColor.GRAY) + ": 10h!");
+            player.sendMessage(ASLocalizer.format("TEMPBAN_EXAMPLE", ChatColor.GRAY) + ": 5m!");
             return;
         }
 
         if (mins < 1 && hours < 1 && days < 1) {
-            player.sendMessage(ChatColor.RED + "Wrong timesyntax!");
-            player.sendMessage(ChatColor.GRAY + "Example: 2d10h5m!");
-            player.sendMessage(ChatColor.GRAY + "Example: 2d");
-            player.sendMessage(ChatColor.GRAY + "Example: 10h!");
-            player.sendMessage(ChatColor.GRAY + "Example: 5m!");
+            player.sendMessage(ASLocalizer.format("WRONG_SYNTAX", ChatColor.RED));
+            player.sendMessage(ASLocalizer.format("TEMPBAN_EXAMPLE", ChatColor.GRAY) + ": 2d10h5m!");
+            player.sendMessage(ASLocalizer.format("TEMPBAN_EXAMPLE", ChatColor.GRAY) + ": 2d");
+            player.sendMessage(ASLocalizer.format("TEMPBAN_EXAMPLE", ChatColor.GRAY) + ": 10h!");
+            player.sendMessage(ASLocalizer.format("TEMPBAN_EXAMPLE", ChatColor.GRAY) + ": 5m!");
             return;
         }
 
         thisTarget.setTempBanned(true);
         thisTarget.setBanEndTime(System.currentTimeMillis() + (days * 24 * 60 * 60 * 1000) + (hours * 60 * 60 * 1000) + (mins * 60 * 1000));
-        thisTarget.saveConfig(false, false, false, false, true, false, false);
-        String message = "You were temporary banned for " + args[1] + ".";
+        thisTarget.saveConfig(false, false, false, false, true, false, false, false);
+        String message = ASLocalizer.format("TEMPBAN_YOU", args[1]);
 
         if (target != null) {
             target.kickPlayer(message);
-            player.sendMessage(ChatColor.GRAY + "Player '" + ASCore.getPlayerName(target) + "' temporary banned!");
+            player.sendMessage(ASLocalizer.format("TEMPBAN_PLAYER", ChatColor.GRAY, ASCore.getPlayerName(target)));
         } else {
-            player.sendMessage(ChatColor.GRAY + "Player '" + args[0] + "' temporary banned!");
+            player.sendMessage(ASLocalizer.format("TEMPBAN_PLAYER", ChatColor.GRAY, args[0]));
         }
     }
 

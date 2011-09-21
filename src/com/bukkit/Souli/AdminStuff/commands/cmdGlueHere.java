@@ -27,6 +27,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdGlueHere extends Command {
@@ -57,17 +58,17 @@ public class cmdGlueHere extends Command {
                 if (thisPlayer.isGlued()) {
                     target.teleport(glueLocation);
                     thisPlayer.setGlueLocation(glueLocation);
-                    player.sendMessage(ChatColor.GRAY + "Player '" + ASCore.getPlayerName(target) + "' glued!");
-                    target.sendMessage(ChatColor.BLUE + "You are now glued!");
+                    player.sendMessage(ASLocalizer.format("PLAYER_GLUED", ChatColor.GRAY, ASCore.getPlayerName(target)));
+                    target.sendMessage(ASLocalizer.format("YOU_ARE_GLUED", ChatColor.BLUE));
                 } else {
                     thisPlayer.setGlueLocation(null);
-                    player.sendMessage(ChatColor.GRAY + "Player '" + ASCore.getPlayerName(target) + "' is no longer glued!");
-                    target.sendMessage(ChatColor.BLUE + "You are no longer glued!");
+                    player.sendMessage(ASLocalizer.format("NO_LONGER__GLUED", ChatColor.GRAY, ASCore.getPlayerName(target)));
+                    target.sendMessage(ASLocalizer.format("YOU_ARE_NO_LONGER_GLUED", ChatColor.BLUE));
                 }
-                thisPlayer.saveConfig(false, false, false, true, false, false, false);
+                thisPlayer.saveConfig(false, false, false, true, false, false, false, false);
             }
         } else {
-            player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
+            player.sendMessage(ASLocalizer.format("PLAYER_NOT_FOUND", ChatColor.RED, args[0]));
         }
     }
 }

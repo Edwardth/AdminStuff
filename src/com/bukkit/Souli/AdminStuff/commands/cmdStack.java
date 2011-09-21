@@ -27,6 +27,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.bukkit.Souli.AdminStuff.ASItem;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 
 public class cmdStack extends Command {
 
@@ -85,6 +86,6 @@ public class cmdStack extends Command {
         if (affected > 0) {
             player.getInventory().setContents(items);
         }
-        player.sendMessage(ChatColor.GRAY + "Items stacked.");
+        player.sendMessage(ASLocalizer.format("ITEMS_STACKED", ChatColor.GRAY));
     }
 }

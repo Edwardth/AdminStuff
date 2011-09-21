@@ -26,6 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdNicknamePlayer extends Command {
@@ -52,13 +53,13 @@ public class cmdNicknamePlayer extends Command {
             if (target.isOnline()) {
                 ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
                 thisTarget.setNickname(args[0]);
-                player.sendMessage(ChatColor.GRAY + "The nickname of '" + target.getName() + "' is now '" + args[0] + "'.");
-                target.sendMessage(ChatColor.GRAY + "Your nickname is now '" + args[0] + "'.");
-                thisTarget.saveConfig(false, false, false, false, false, true, false);
+                player.sendMessage(ASLocalizer.format("NICKNAME_PLAYER", ChatColor.GRAY, ASCore.getPlayerName(target), args[0]));
+                target.sendMessage(ASLocalizer.format("NICKNAME", ChatColor.GRAY, args[0]));
+                thisTarget.saveConfig(false, false, false, false, false, true, false, false);
                 thisTarget.updateNick();
             }
         } else {
-            player.sendMessage(ChatColor.RED + "Player '" + args[1] + "' not found (or is not online!)");
+            player.sendMessage(ASLocalizer.format("PLAYER_NOT_FOUND", ChatColor.RED, args[0]));
         }
     }
 }

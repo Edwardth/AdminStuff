@@ -29,6 +29,7 @@ import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdUnban extends Command {
@@ -55,10 +56,10 @@ public class cmdUnban extends Command {
             unbanned.setBanned(false);
             unbanned.setTempBanned(false);
             unbanned.setBanEndTime(0);
-            unbanned.saveConfig(false, false, false, false, true, false, false);
+            unbanned.saveConfig(false, false, false, false, true, false, false, false);
         }
         ASCore.unbanPlayer(args[0]);
-        player.sendMessage(ChatColor.GRAY + "Player '" + args[0] + "' unbanned!");
+        player.sendMessage(ASLocalizer.format("UNBAN_PLAYER", ChatColor.GRAY, args[0]));
         ((CraftServer) ASCore.getMCServer()).getHandle().b(args[0]);
     }
 }

@@ -26,6 +26,8 @@ import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
+
 public class cmdCompass extends Command {
 
     public cmdCompass(String syntax, String arguments, String node, Server server) {
@@ -79,7 +81,7 @@ public class cmdCompass extends Command {
                 }
             }
         }
-        player.sendMessage(ChatColor.GRAY + "Compass: " + dir);
+        player.sendMessage(ASLocalizer.format("COMPASS", ChatColor.GRAY) + ": " + dir);
     }
 
     public float getCorrectedYaw(Location location) {

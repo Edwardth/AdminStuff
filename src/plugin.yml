@@ -5,150 +5,117 @@ commands:
   afk:
     description: Toggle AFK status
     usage: /afk
-    permission: adminstuff.commands.user.afk
   ban:
     description: Ban a player
     usage: /ban <Player> [Message]   
-    permission: adminstuff.commands.admin.ban
   broadcast:
     description: Broadcast a message
     usage: /broadcast <Message>  
     aliases: ['cast']
-    permission: adminstuff.commands.admin.broadcast
   burn:
     description: Burn a player for x seconds
     usage: /burn <Player> <Time in seconds>
-    permission: adminstuff.commands.admin.burn
   compass:
     description: Show the compassdir
     usage: /compass    
-    permission: adminstuff.commands.user.compass
+  classic:
+    description: Toggle the classicmode
+    usage: /classic      
   chat:
     description: Chat to some people only
     usage: /chat [Player 1 .. Player n]
-    permission: adminstuff.commands.user.chat      
   clearinventory:
     description: Clears an inventory
     usage: /clearinventory [Player]
     aliases: ['cli']
-    permission: adminstuff.commands.user.clearinventory
   fillchest:
     description: Fill a chest with a specified item
-    usage: /fillchest <ItemID or Name>[:SubID]  
-    permission: adminstuff.commands.admin.fillchest    
+    usage: /fillchest <ItemID or Name>[:SubID]    
   flash:
     description: Flash a player or strike a lightning
     usage: /flash [Player]
     aliases: ['lightning']   
-    permission: adminstuff.commands.admin.flash
   give:
     description: Give items to a specific player
     usage: /give <Player> <ItemID or Name>[:SubID]  
-    permission: adminstuff.commands.admin.give
   glue:
     description: Glue a Player
     usage: /glue <Player>
-    permission: adminstuff.commands.admin.glue
   gluehere:
     description: Glue a Player at a specific location
     usage: /gluehere <Player> 
-    permission: adminstuff.commands.admin.gluehere
   god:
     description: Make yourself a god
     usage: /god [Player]
-    permission: adminstuff.commands.admin.god   
   heal:
     description: Heal a player
     usage: /heal [Player]
-    permission: adminstuff.commands.admin.heal  
   help:
     description: Show the help
     usage: /help [Page]
-    permission: adminstuff.commands.help
   hideChat:
     description: Hide the Chat
     usage: /hidechat
-    permission: adminstuff.commands.admin.hidechat    
   i:
     description: Give yourself items
     usage: /i <ItemID or Name>[:SubID]
     aliases: ['item']   
-    permission: adminstuff.commands.admin.i
   invsee:
     description: See a players inventory
     usage: /invsee <Player>
-    permission: adminstuff.commands.admin.invsee
   kill:
     description: Kill a Player
     usage: /kill <Player>  
-    permission: adminstuff.commands.admin.kill  
   kit:
     description: Give yourself a kit
     usage: /kit <Name>  
-    permission: adminstuff.commands.admin.kit 
   kick:
     description: Kick a player
     usage: /kick <Player> [Message]
-    permission: adminstuff.commands.admin.kick
   kickall:
     description: Kick all players
     usage: /kickall <Player> [Message]  
-    permission: adminstuff.commands.admin.kickall  
   listkits:
     description: List the available kits
     usage: /listkits 
-    permission: adminstuff.commands.admin.listkits    
   me:
     description: Shout out your mood
     usage: /me <Message>
-    permission: adminstuff.commands.admin.me    
   msg:
     description: Message a player
     usage: /msg <Player> <Message>
     aliases: ['m', 'message']    
-    permission: adminstuff.commands.user.message
   mute:
     description: Mute a player
     usage: /mute <Player>    
-    permission: adminstuff.commands.admin.mute
   nickname:
     description: Change the nickname
     usage: /nickname <Nickname> [Player] 
     aliases: ['nick']
-    permission: adminstuff.commands.admin.nickname  
   ping:
     description: Ping!
     usage: /ping      
-    permission: adminstuff.commands.admin.ping 
   r:
     description: Reply to a message
     usage: /r <Message>
-    permission: adminstuff.commands.user.reply
   slap:
     description: Slap a player
     usage: /slap <Player>
-    permission: adminstuff.commands.admin.slap
   stack:
     description: Stack your inventory
     usage: /stack
-    permission: adminstuff.commands.user.stack
   tempban:
     description: Temporary ban a player
     usage: /tempban <Player> <Time>  
-    permission: adminstuff.commands.admin.tempban      
   time:
     description: Set the time of your world
     usage: /time <day|night>
-    permission: adminstuff.commands.admin.time
   unban:
     description: Unban a player
     usage: /unban <Player> 
-    permission: adminstuff.commands.admin.unban         
   unlimited:
     description: Toggle unlimited Items
     usage: /unlimited <ItemID or Name> [Player]
-    permission: adminstuff.commands.admin.unlimited
   weather:
     description: Set the weather of your world
     usage: /weather <sun|rain|storm>
-    permission: adminstuff.commands.admin.weather

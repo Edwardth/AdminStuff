@@ -26,6 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
 public class cmdGod extends Command {
@@ -49,11 +50,11 @@ public class cmdGod extends Command {
         ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
         boolean isGod = !thisPlayer.isGod();
         thisPlayer.setGod(isGod);
-        thisPlayer.saveConfig(false, false, false, false, false, false, true);
+        thisPlayer.saveConfig(false, false, false, false, false, false, true, false);
         if (isGod) {
-            player.sendMessage(ChatColor.GRAY + "Godmode enabled.");
+            player.sendMessage(ASLocalizer.format("YOU_ARE_A_GOD", ChatColor.GRAY));
         } else {
-            player.sendMessage(ChatColor.GRAY + "Godmode disabled.");
+            player.sendMessage(ASLocalizer.format("NO_LONGER_A_GOD", ChatColor.GRAY));
         }
     }
 }

@@ -28,6 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.bukkit.Souli.AdminStuff.ASItem;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
 
 public class cmdFillChest extends Command {
@@ -54,9 +55,9 @@ public class cmdFillChest extends Command {
         if (ASItem.isValid(ID, Data)) {
             ItemStack item = ASItem.getItemStack(ID, Data, amount);
             ASPlayerListener.queuedFillChest.put(player.getName(), item);
-            player.sendMessage(ChatColor.GRAY + "Click on a chest to fill it with '" + Material.getMaterial(item.getTypeId()).name().toLowerCase() + "'!");
+            player.sendMessage(ASLocalizer.format("CLICK_ON_A_CHEST_TO_FILL", ChatColor.GRAY, Material.getMaterial(item.getTypeId()).name().toLowerCase()));
         } else {
-            player.sendMessage(ChatColor.RED + "Item '" + args[0] + "' not found!");
+            player.sendMessage(ASLocalizer.format("ITEM_NOT_FOUND", ChatColor.RED, args[0]));
             player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
         }
     }

@@ -44,6 +44,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
+import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 import com.bukkit.Souli.AdminStuff.ASSpawn;
 import com.gemo.utils.BlockUtils;
@@ -83,13 +84,13 @@ public class ASPlayerListener extends PlayerListener {
 
         // IS USER BANNED IN TXT?
         if (ASCore.bannedPlayers.containsKey(event.getPlayer().getName().toLowerCase())) {
-            event.getPlayer().kickPlayer("You are banned!");
+            event.getPlayer().kickPlayer(ASLocalizer.format("YOU_ARE_BANNED"));
             return;
         }
 
         // IS USER BANNED?
         if (thisPlayer.isBanned()) {
-            event.getPlayer().kickPlayer("You are banned!");
+            event.getPlayer().kickPlayer(ASLocalizer.format("YOU_ARE_BANNED"));
             return;
         }
 
@@ -99,11 +100,11 @@ public class ASPlayerListener extends PlayerListener {
             if (endTime < System.currentTimeMillis()) {
                 thisPlayer.setTempBanned(false);
                 thisPlayer.setBanEndTime(0);
-                thisPlayer.saveConfig(false, false, false, false, true, false, false);
+                thisPlayer.saveConfig(false, false, false, false, true, false, false, false);
                 return;
             } else {
                 Date newDate = new Date(endTime + 1000);
-                event.getPlayer().kickPlayer("You are temporary banned until " + newDate.toString() + "!");
+                event.getPlayer().kickPlayer(ASLocalizer.format("TEMPBAN_UNTIL", newDate.toString()));
                 return;
             }
         }
@@ -155,7 +156,6 @@ public class ASPlayerListener extends PlayerListener {
      */
     @Override
     public void onPlayerInteract(PlayerInteractEvent event) {
-
         // ONLY CLICKS ON A BLOCK
         if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK)
             return;
@@ -166,7 +166,7 @@ public class ASPlayerListener extends PlayerListener {
             // CLICKED ON A CHEST?
             if (event.getClickedBlock().getTypeId() != Material.CHEST.getId()) {
                 queuedFillChest.remove(event.getPlayer().getName());
-                event.getPlayer().sendMessage(ChatColor.RED + "Chestfill cancelled.");
+                event.getPlayer().sendMessage(ASLocalizer.format("CHESTFILL_CANCEL", ChatColor.RED));
                 return;
             } else {
                 // CANCEL EVENT
@@ -185,7 +185,7 @@ public class ASPlayerListener extends PlayerListener {
                 }
 
                 // SEND MESSAGE
-                event.getPlayer().sendMessage(ChatColor.GREEN + "Chest filled with '" + Material.getMaterial(item.getTypeId()).name().toLowerCase() + "'.");
+                event.getPlayer().sendMessage(ASLocalizer.format("CHEST_FILLED", ChatColor.GREEN, Material.getMaterial(item.getTypeId()).name().toLowerCase()));
                 queuedFillChest.remove(event.getPlayer().getName());
             }
             return;
@@ -223,12 +223,12 @@ public class ASPlayerListener extends PlayerListener {
             while (it.hasNext()) {
                 Player nextPlayer = it.next();
                 if (nextPlayer.getName().equalsIgnoreCase(event.getPlayer().getName())) {
-                    nextPlayer.sendMessage(ChatColor.RED + "[Muted] " + nick + ChatColor.WHITE + ": " + event.getMessage());
+                    nextPlayer.sendMessage(ChatColor.RED + ASLocalizer.format("MUTED") + " " + nick + ChatColor.WHITE + ": " + event.getMessage());
                     continue;
                 }
 
                 if (UtilPermissions.playerCanUseCommand(nextPlayer, "adminstuff.chat.read.muted")) {
-                    nextPlayer.sendMessage(ChatColor.RED + "[Muted] " + nick + ChatColor.WHITE + ": " + event.getMessage());
+                    nextPlayer.sendMessage(ChatColor.RED + ASLocalizer.format("MUTED") + " " + nick + ChatColor.WHITE + ": " + event.getMessage());
                 }
             }
             event.setCancelled(true);
