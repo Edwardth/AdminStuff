@@ -62,7 +62,7 @@ public class cmdGlueHere extends Command {
                     target.sendMessage(ASLocalizer.format("YOU_ARE_GLUED", ChatColor.BLUE));
                 } else {
                     thisPlayer.setGlueLocation(null);
-                    player.sendMessage(ASLocalizer.format("NO_LONGER__GLUED", ChatColor.GRAY, ASCore.getPlayerName(target)));
+                    player.sendMessage(ASLocalizer.format("NO_LONGER_GLUED", ChatColor.GRAY, ASCore.getPlayerName(target)));
                     target.sendMessage(ASLocalizer.format("YOU_ARE_NO_LONGER_GLUED", ChatColor.BLUE));
                 }
                 thisPlayer.saveConfig(false, false, false, true, false, false, false, false);
