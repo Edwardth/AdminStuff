@@ -60,6 +60,6 @@ public class cmdUnban extends Command {
         }
         ASCore.unbanPlayer(args[0]);
         player.sendMessage(ASLocalizer.format("UNBAN_PLAYER", ChatColor.GRAY, args[0]));
-        ((CraftServer) ASCore.getMCServer()).getHandle().b(args[0]);
+        ((CraftServer) ASCore.getMCServer()).getHandle().removeUserBan(args[0]);
     }
 }

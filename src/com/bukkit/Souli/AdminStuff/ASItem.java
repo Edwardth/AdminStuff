@@ -27,7 +27,7 @@ import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.gemo.utils.BlockUtils;
+import com.bukkit.gemo.utils.BlockUtils;
 
 public class ASItem {
     public static Map<String, Integer> matList = null;

@@ -33,7 +33,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
-import com.gemo.utils.UtilPermissions;
+import com.bukkit.gemo.utils.UtilPermissions;
 
 public class cmdHelp extends Command {
     private static final String DESCRIPTION = "description";

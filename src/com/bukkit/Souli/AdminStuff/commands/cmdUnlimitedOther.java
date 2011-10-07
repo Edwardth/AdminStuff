@@ -30,7 +30,7 @@ import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASItem;
 import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.gemo.utils.BlockUtils;
+import com.bukkit.gemo.utils.BlockUtils;
 
 public class cmdUnlimitedOther extends Command {
 

@@ -27,7 +27,7 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASLocalizer;
-import com.gemo.utils.UtilPermissions;
+import com.bukkit.gemo.utils.UtilPermissions;
 
 public class cmdKit extends Command {
 

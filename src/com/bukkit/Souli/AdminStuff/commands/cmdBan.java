@@ -59,13 +59,13 @@ public class cmdBan extends Command {
                 String message = ASLocalizer.format("YOU_ARE_BANNED");
                 target.kickPlayer(message);
                 player.sendMessage(ASLocalizer.format("PLAYER_IS_BANNED", ChatColor.GRAY, ASCore.getPlayerName(target)));
-                ((CraftServer) ASCore.getMCServer()).getHandle().a(target.getName());
+                ((CraftServer) ASCore.getMCServer()).getHandle().addUserBan(target.getName());
                 ASCore.banPlayer(target.getName());
             }            
         } else {
             ASCore.banPlayer(args[0]);
             player.sendMessage(ASLocalizer.format("PLAYER_IS_BANNED", ChatColor.GRAY, args[0]));
-            ((CraftServer) ASCore.getMCServer()).getHandle().a(args[0]);
+            ((CraftServer) ASCore.getMCServer()).getHandle().addUserBan(args[0]);
         }
     }
 }

@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.bukkit.ChatColor;
-import com.gemo.utils.FlatFile;
+import com.bukkit.gemo.utils.FlatFile;
 
 public class ASLocalizer {
     private static FlatFile config = null;

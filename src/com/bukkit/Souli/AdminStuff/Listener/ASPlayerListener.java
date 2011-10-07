@@ -47,8 +47,8 @@ import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 import com.bukkit.Souli.AdminStuff.ASSpawn;
-import com.gemo.utils.BlockUtils;
-import com.gemo.utils.UtilPermissions;
+import com.bukkit.gemo.utils.BlockUtils;
+import com.bukkit.gemo.utils.UtilPermissions;
 
 public class ASPlayerListener extends PlayerListener {
     private static Map<String, ASPlayer> playerMap = new TreeMap<String, ASPlayer>();
