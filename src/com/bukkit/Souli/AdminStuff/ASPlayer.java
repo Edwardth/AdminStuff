@@ -22,7 +22,9 @@
 package com.bukkit.Souli.AdminStuff;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +54,7 @@ public class ASPlayer {
     private String[] Recipients = null;
     private String nickname = "";
     private ItemStack[] invBackUp = new ItemStack[36];
+    private String lastSeen = "NEVER";
 
     public ASPlayer(String playerName) {
         this.playerName = playerName;
@@ -61,6 +64,32 @@ public class ASPlayer {
     public ASPlayer(Player player) {
         this.playerName = player.getName();
         this.loadConfig();
+    }
+
+    /**
+     * UPDATE LAST SEEN
+     */
+    public void updateLastSeen() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM.dd.yyyy");
+        SimpleDateFormat hourFormat = new SimpleDateFormat("k:m:s");
+        setLastSeen(dateFormat.format(new Date()) + " - " + hourFormat.format(new Date()));
+    }
+
+    /**
+     * GET LAST SEEN
+     */
+    public String getLastSeen() {
+        return lastSeen;
+    }
+
+    /**
+     * SET LAST SEEN
+     */
+    public void setLastSeen(String lastSeen) {
+        if (lastSeen == null) {
+            lastSeen = ASLocalizer.getValue("LAST_SEEN_NEVER");
+        }
+        this.lastSeen = lastSeen;
     }
 
     /**
@@ -111,6 +140,7 @@ public class ASPlayer {
         setBanEndTime(Long.valueOf(config.getString("banEndTime", "0")));
         setNickname(config.getString("Nickname", ""));
         setClassicMode(config.getBoolean("classicMode", false));
+        setLastSeen(config.getString("lastSeen"));
 
         // LOAD INFINITE ITEMS
         List<Integer> newList = new ArrayList<Integer>();
@@ -140,6 +170,9 @@ public class ASPlayer {
         new File("plugins/AdminStuff/userdata/").mkdirs();
         Configuration config = new Configuration(new File("plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml"));
         config.load();
+
+        config.setProperty("lastSeen", getLastSeen());
+
         if (saveBan) {
             config.setProperty("isBanned", isBanned);
             config.setProperty("isTempBanned", isTempBanned);
@@ -152,7 +185,7 @@ public class ASPlayer {
 
         if (saveAFK)
             config.setProperty("isAFK", isAFK);
-        
+
         if (saveClassic)
             config.setProperty("classicMode", classicMode);
 

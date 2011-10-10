@@ -39,7 +39,7 @@ public class CommandList {
         new cmdBurn("/burn", "<Player> <Time in seconds>", "commands.admin.burn", server), new cmdSlap("/slap", "<Player>", "commands.admin.slap", server), new cmdKill("/kill", "<Player>", "commands.admin.kill", server), new cmdGlue("/glue", "<Player>", "commands.admin.glue", server), new cmdGlueHere("/gluehere", "<Player>", "commands.admin.gluehere", server),
 
                 // CLASSICMODE
-        new cmdClassic("/classic", "", "commands.admin.classic", server),
+        new cmdClassic("/classic", "", "commands.admin.classic", server), new cmdClassicPlayer("/classic", "<Player>", "commands.admin.classic", server),
 
                 // FLASH COMMANDS
         new cmdFlash("/flash", "", "commands.admin.flash", server), new cmdFlashPlayer("/flash", "<Player>", "commands.admin.flashplayer", server), new cmdFlash("/lightning", "", "commands.admin.flash", server), new cmdFlashPlayer("/lightning", "<Player>", "commands.admin.flashplayer", server),
@@ -78,7 +78,7 @@ public class CommandList {
         new cmdTime("/time", "<day | night>", "commands.admin.time", server), new cmdWeather("/weather", "<sun | rain | storm>", "commands.admin.weather", server),
 
                 // MISC COMMANDS
-        new cmdPing("/ping", "", "commands.admin.ping", server),};
+        new cmdPing("/ping", "", "commands.admin.ping", server), new cmdSeen("/seen", "<Player>", "commands.admin.seen", server)};
 
         initCommandList(commands);
     }

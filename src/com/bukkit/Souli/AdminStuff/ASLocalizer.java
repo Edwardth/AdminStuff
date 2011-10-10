@@ -77,13 +77,15 @@ public class ASLocalizer {
         predefinedValues.put("INVENTORY_RESTORED", "Restoring your inventory.");
         predefinedValues.put("INVENTORY_SHOW_OF_X", "Showing you the inventory of '%s'.");
         predefinedValues.put("INVENTORY_SHOW_X_OF_Y", "Showing '%s' the inventory of '%s'.");
-        
+
         // CLASSICMODE
         predefinedValues.put("YOU_ARE_IN_CLASSICMODE", "You are now in classicmode.");
         predefinedValues.put("YOU_ARE_NO_LONGER_IN_CLASSICMODE", "You are now in survivalmode.");
+        predefinedValues.put("X_IS_IN_CLASSICMODE", "'%s' is now in classicmode.");       
+        predefinedValues.put("X_IS_NO_LONGER_IN_CLASSICMODE", "'%s' is now in survivalmode.");
         
         // COMPASS
-        predefinedValues.put("COMPASS", "Compass");        
+        predefinedValues.put("COMPASS", "Compass");
 
         // ITEM
         predefinedValues.put("ITEM_NOT_FOUND", "Item '%s' not found!");
@@ -134,43 +136,47 @@ public class ASLocalizer {
         predefinedValues.put("KIT_NOT_ALLOWED", "You are not allowed to use that kit.");
         predefinedValues.put("KIT_GIVE", "Giving you the kit '%s'.");
         predefinedValues.put("KIT_LIST", "List of Kits:");
-        
+
         // MUTE
         predefinedValues.put("MUTE_PLAYER", "Player '%s' is now muted.");
         predefinedValues.put("UNMUTE_PLAYER", "Player '%s' is no longer muted.");
         predefinedValues.put("MUTED", "[Muted]");
-        
+
         // NICKNAME
         predefinedValues.put("NICKNAME", "Your nickname is now '%s'.");
         predefinedValues.put("NICKNAME_PLAYER", "The nickname of '%s' is now '%s'.");
-   
+
+        // SEEN
+        predefinedValues.put("LAST_SEEN", "'%s' was last seen on: %s");
+        predefinedValues.put("LAST_SEEN_NEVER", "NEVER");
+
         // SLAP
         predefinedValues.put("SLAP_PLAYER", "'%s' got slapped by '%s'.");
         predefinedValues.put("SLAP_SUFFIX", " got slapped!");
-        
+
         // STACK
         predefinedValues.put("ITEMS_STACKED", "Items stacked.");
-        
+
         // TIME
         predefinedValues.put("TIME_SET", "Time in your world changed to '%s'.");
         predefinedValues.put("TIME_DAY", "day");
         predefinedValues.put("TIME_NIGHT", "night");
-        
+
         // TEMPBAN
-        predefinedValues.put("TEMPBAN_YOU", "You were temporary banned for %s."); 
-        predefinedValues.put("TEMPBAN_PLAYER", "Player '%s' temporary banned!"); 
-        predefinedValues.put("TEMPBAN_EXAMPLE", "Example");        
-        predefinedValues.put("TEMPBAN_UNTIL", "You are temporary banned until %s!");    
-        
+        predefinedValues.put("TEMPBAN_YOU", "You were temporary banned for %s.");
+        predefinedValues.put("TEMPBAN_PLAYER", "Player '%s' temporary banned!");
+        predefinedValues.put("TEMPBAN_EXAMPLE", "Example");
+        predefinedValues.put("TEMPBAN_UNTIL", "You are temporary banned until %s!");
+
         // UNBAN
-        predefinedValues.put("UNBAN_PLAYER", "Player '%s' unbanned.");        
-        
+        predefinedValues.put("UNBAN_PLAYER", "Player '%s' unbanned.");
+
         // UNLIMITED
         predefinedValues.put("UNLIMITED_ACCESS", "You have now unlimited amount of '%s'.");
         predefinedValues.put("UNLIMITED_DENY", "You do no longer have unlimited amount of '%s'.");
         predefinedValues.put("UNLIMITED_ACCESS_OTHER", "'%s' has now unlimited amount of '%s'.");
         predefinedValues.put("UNLIMITED_DENY_OTHER", "'%s' has no longer have unlimited amount of '%s'.");
-        
+
         // WEATHER
         predefinedValues.put("WEATHER_SET", "Weather in your world changed to '%s'.");
         predefinedValues.put("WEATHER_SUN", "sun");
@@ -251,5 +257,13 @@ public class ASLocalizer {
             e.printStackTrace();
         }
 
+    }
+
+    public static String getValue(String name) {
+        String res = predefinedValues.get(name);
+        if(res != null)
+            return res;
+        else
+            return "NOT DEFINED";
     }
 }

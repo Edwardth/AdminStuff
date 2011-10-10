@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
@@ -40,13 +39,11 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.bukkit.Souli.AdminStuff.ASSpawn;
 import com.bukkit.gemo.utils.BlockUtils;
 import com.bukkit.gemo.utils.UtilPermissions;
 
@@ -110,6 +107,7 @@ public class ASPlayerListener extends PlayerListener {
         }
         // UPDATE NICK
         thisPlayer.updateNick();
+        thisPlayer.updateLastSeen();
     }
 
     /**
@@ -121,6 +119,8 @@ public class ASPlayerListener extends PlayerListener {
     public void onPlayerKick(PlayerKickEvent event) {
         if (event.isCancelled())
             return;
+        ASCore.getOrCreateASPlayer(event.getPlayer()).updateLastSeen();
+        ASCore.getOrCreateASPlayer(event.getPlayer()).saveConfig(true, true, true, true, true, true, true, true);
         playerMap.remove(event.getPlayer().getName().toLowerCase());
     }
 
@@ -131,22 +131,9 @@ public class ASPlayerListener extends PlayerListener {
      */
     @Override
     public void onPlayerQuit(PlayerQuitEvent event) {
+        ASCore.getOrCreateASPlayer(event.getPlayer()).updateLastSeen();
+        ASCore.getOrCreateASPlayer(event.getPlayer()).saveConfig(true, true, true, true, true, true, true, true);
         playerMap.remove(event.getPlayer().getName().toLowerCase());
-    }
-
-    /**
-     * 
-     * ON PLAYER RESPAWN
-     * 
-     */
-    @Override
-    public void onPlayerRespawn(PlayerRespawnEvent event) {
-        // TELEPORT TO WORLDSPAWN
-        Location loc = ASSpawn.getSpawn(ASCore.getMCServer().getWorlds().get(0));
-        Location nloc = loc.getWorld().getHighestBlockAt(loc).getLocation();
-        nloc.setYaw(loc.getYaw());
-        nloc.setPitch(loc.getPitch());
-        event.setRespawnLocation(nloc);
     }
 
     /**

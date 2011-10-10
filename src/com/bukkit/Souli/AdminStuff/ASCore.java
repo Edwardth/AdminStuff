@@ -144,7 +144,6 @@ public class ASCore extends JavaPlugin {
         boolean error = false;
         try {
             loadBannedPlayers();
-            ASSpawn.loadAllSpawns();
 
             bListener = new ASBlockListener();
             eListener = new ASEntityListener();
@@ -164,11 +163,9 @@ public class ASCore extends JavaPlugin {
             pm.registerEvent(Event.Type.PLAYER_JOIN, pListener, Event.Priority.Monitor, this);
             pm.registerEvent(Event.Type.PLAYER_KICK, pListener, Event.Priority.Monitor, this);
             pm.registerEvent(Event.Type.PLAYER_MOVE, pListener, Event.Priority.Normal, this);
-            pm.registerEvent(Event.Type.PLAYER_RESPAWN, pListener, Event.Priority.Normal, this);
             pm.registerEvent(Event.Type.PLAYER_QUIT, pListener, Event.Priority.Monitor, this);
 
-            loadConfig();
-            
+            loadConfig();            
             new ASLocalizer("deutsch");
             
             error = false;

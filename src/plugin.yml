@@ -98,6 +98,9 @@ commands:
   r:
     description: Reply to a message
     usage: /r <Message>
+  seen:
+    description: Show when a player was last seen
+    usage: /seen <Player>
   slap:
     description: Slap a player
     usage: /slap <Player>
