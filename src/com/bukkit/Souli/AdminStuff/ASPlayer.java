@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -149,7 +150,7 @@ public class ASPlayer {
             if (ASItem.isValid(ItemID))
                 this.toggleUnlimitedItem(ItemID);
         }
-
+        
         // LOAD GLUE
         if (isGlued()) {
             World world = ASCore.getMCServer().getWorld(config.getString("glue.Worldname", null));
@@ -161,6 +162,18 @@ public class ASPlayer {
         } else {
             glueLocation = null;
         }
+        
+        // SET THE GAMEMODE, IF NOT EQUAL
+        Player thisPlayer = ASCore.getPlayer(this.playerName);
+        if(thisPlayer != null) {
+            if(thisPlayer.getGameMode() != this.BooleanToGameMode(this.isClassicMode())) {
+                thisPlayer.setGameMode(this.BooleanToGameMode(this.isClassicMode()));
+            }
+        }
+    }
+    
+    public GameMode BooleanToGameMode(boolean inClassic) {
+        return (inClassic ? GameMode.CREATIVE : GameMode.SURVIVAL);
     }
 
     /**
