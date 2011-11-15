@@ -190,6 +190,10 @@ public class ASPlayerListener extends PlayerListener {
      * 
      */
     public void fillChest(Chest chest, ItemStack item) {
+        if(item.getTypeId() == Material.AIR.getId()) {
+            chest.getInventory().clear();
+            return;
+        }
         for (int i = 0; i < chest.getInventory().getSize(); i++)
             chest.getInventory().setItem(i, item.clone());
     }
