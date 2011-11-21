@@ -37,12 +37,12 @@ import java.util.TreeMap;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.config.Configuration;
 import com.bukkit.Souli.AdminStuff.Listener.ASBlockListener;
 import com.bukkit.Souli.AdminStuff.Listener.ASEntityListener;
 import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
@@ -68,8 +68,18 @@ public class ASCore extends JavaPlugin {
         File file = new File("plugins/AdminStuff/banned-adminstuff-players.txt");
         BufferedReader reader = null;
 
-        if (!file.exists())
-            file = new File("banned-players.txt");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+                file = new File("banned-players.txt");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        if (!file.exists()) {
+            return;
+        }
 
         try {
             reader = new BufferedReader(new FileReader(file));
@@ -165,9 +175,9 @@ public class ASCore extends JavaPlugin {
             pm.registerEvent(Event.Type.PLAYER_MOVE, pListener, Event.Priority.Normal, this);
             pm.registerEvent(Event.Type.PLAYER_QUIT, pListener, Event.Priority.Monitor, this);
 
-            loadConfig();            
+            loadConfig();
             new ASLocalizer("deutsch");
-            
+
             error = false;
         } catch (Exception e) {
             error = true;
@@ -193,44 +203,50 @@ public class ASCore extends JavaPlugin {
     @SuppressWarnings("unchecked")
     public void loadConfig() {
         new File("plugins/AdminStuff/").mkdirs();
-        Configuration config = new Configuration(new File("plugins/AdminStuff/config.yml"));
-        config.load();
+        YamlConfiguration config = new YamlConfiguration();
+        try {
+            if (new File("plugins/AdminStuff/config.yml").exists()) {
+                config.load(new File("plugins/AdminStuff/config.yml"));
 
-        Map<String, ArrayList<String>> nodeList = (Map<String, ArrayList<String>>) config.getProperty("kits");
+                Map<String, ArrayList<String>> nodeList = (Map<String, ArrayList<String>>) config.getList("kits");
 
-        if (nodeList == null)
-            return;
+                if (nodeList == null)
+                    return;
 
-        for (Map.Entry<String, ArrayList<String>> entry : nodeList.entrySet()) {
-            ASKit thisKit = new ASKit();
-            for (String part : entry.getValue()) {
-                try {
-                    String[] split = part.split(" ");
+                for (Map.Entry<String, ArrayList<String>> entry : nodeList.entrySet()) {
+                    ASKit thisKit = new ASKit();
+                    for (String part : entry.getValue()) {
+                        try {
+                            String[] split = part.split(" ");
 
-                    int TypeID = 0;
-                    byte Data = 0;
-                    int Amount = 1;
+                            int TypeID = 0;
+                            byte Data = 0;
+                            int Amount = 1;
 
-                    String[] itemSplit = split[0].split(":");
-                    if (split.length > 1) {
-                        Amount = Integer.valueOf(split[1]);
+                            String[] itemSplit = split[0].split(":");
+                            if (split.length > 1) {
+                                Amount = Integer.valueOf(split[1]);
+                            }
+
+                            TypeID = Integer.valueOf(itemSplit[0]);
+                            if (itemSplit.length > 1) {
+                                Data = Byte.valueOf(itemSplit[1]);
+                            }
+
+                            if (ASItem.isValid(TypeID, Data)) {
+                                ItemStack item = new ItemStack(TypeID);
+                                item.setAmount(Amount);
+                                item.setDurability(Data);
+                                thisKit.addItem(item);
+                            }
+                        } catch (Exception e) {
+                        }
                     }
-
-                    TypeID = Integer.valueOf(itemSplit[0]);
-                    if (itemSplit.length > 1) {
-                        Data = Byte.valueOf(itemSplit[1]);
-                    }
-
-                    if (ASItem.isValid(TypeID, Data)) {
-                        ItemStack item = new ItemStack(TypeID);
-                        item.setAmount(Amount);
-                        item.setDurability(Data);
-                        thisKit.addItem(item);
-                    }
-                } catch (Exception e) {
+                    kitList.put(entry.getKey().toLowerCase(), thisKit);
                 }
             }
-            kitList.put(entry.getKey().toLowerCase(), thisKit);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

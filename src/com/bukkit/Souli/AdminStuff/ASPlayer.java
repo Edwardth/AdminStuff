@@ -32,10 +32,10 @@ import java.util.Map;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.config.Configuration;
 
 public class ASPlayer {
     private Map<Integer, ASItem> unlimitedList = new HashMap<Integer, ASItem>();
@@ -127,51 +127,50 @@ public class ASPlayer {
      * 
      * @param playerName
      */
+    @SuppressWarnings("unchecked")
     public void loadConfig() {
-        new File("plugins/AdminStuff/userdata/").mkdirs();
-        Configuration config = new Configuration(new File("plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml"));
+        try {
+            new File("plugins/AdminStuff/userdata/").mkdirs();
+            YamlConfiguration config = new YamlConfiguration();
+            if (new File("plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml").exists()) {
+                config.load(new File("plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml"));
 
-        config.load();
-        setGod(config.getBoolean("isGod", false));
-        setGlued(config.getBoolean("glue.isGlued", false));
-        setAFK(config.getBoolean("isAFK", false));
-        setMuted(config.getBoolean("isMuted", false));
-        setBanned(config.getBoolean("isBanned", false));
-        setTempBanned(config.getBoolean("isTempBanned", false));
-        setBanEndTime(Long.valueOf(config.getString("banEndTime", "0")));
-        setNickname(config.getString("Nickname", ""));
-        setClassicMode(config.getBoolean("classicMode", false));
-        setLastSeen(config.getString("lastSeen"));
+                setGod(config.getBoolean("isGod", false));
+                setGlued(config.getBoolean("glue.isGlued", false));
+                setAFK(config.getBoolean("isAFK", false));
+                setMuted(config.getBoolean("isMuted", false));
+                setBanned(config.getBoolean("isBanned", false));
+                setTempBanned(config.getBoolean("isTempBanned", false));
+                setBanEndTime(Long.valueOf(config.getString("banEndTime", "0")));
+                setNickname(config.getString("Nickname", ""));
+                setClassicMode(config.getBoolean("classicMode", false));
+                setLastSeen(config.getString("lastSeen"));
 
-        // LOAD INFINITE ITEMS
-        List<Integer> newList = new ArrayList<Integer>();
-        newList = config.getIntList("unlimited", new ArrayList<Integer>());
-        for (int ItemID : newList) {
-            if (ASItem.isValid(ItemID))
-                this.toggleUnlimitedItem(ItemID);
-        }
-        
-        // LOAD GLUE
-        if (isGlued()) {
-            World world = ASCore.getMCServer().getWorld(config.getString("glue.Worldname", null));
-            if (world != null) {
-                glueLocation = new Location(world, config.getInt("glue.X", 0), config.getInt("glue.Y", 127), config.getInt("glue.Z", 0), config.getInt("glue.Yaw", 0), config.getInt("glue.Pitch", 0));
-            } else {
-                glueLocation = null;
+                // LOAD INFINITE ITEMS
+                List<Integer> newList = new ArrayList<Integer>();
+                newList = (List<Integer>) config.getList("unlimited", new ArrayList<Integer>());
+                for (int ItemID : newList) {
+                    if (ASItem.isValid(ItemID))
+                        this.toggleUnlimitedItem(ItemID);
+                }
+
+                // LOAD GLUE
+                if (isGlued()) {
+                    World world = ASCore.getMCServer().getWorld(config.getString("glue.Worldname", null));
+                    if (world != null) {
+                        glueLocation = new Location(world, config.getInt("glue.X", 0), config.getInt("glue.Y", 127), config.getInt("glue.Z", 0), config.getInt("glue.Yaw", 0), config.getInt("glue.Pitch", 0));
+                    } else {
+                        glueLocation = null;
+                    }
+                } else {
+                    glueLocation = null;
+                }
             }
-        } else {
-            glueLocation = null;
-        }
-        
-        // SET THE GAMEMODE, IF NOT EQUAL
-        Player thisPlayer = ASCore.getPlayer(this.playerName);
-        if(thisPlayer != null) {
-            if(thisPlayer.getGameMode() != this.BooleanToGameMode(this.isClassicMode())) {
-                thisPlayer.setGameMode(this.BooleanToGameMode(this.isClassicMode()));
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
-    
+
     public GameMode BooleanToGameMode(boolean inClassic) {
         return (inClassic ? GameMode.CREATIVE : GameMode.SURVIVAL);
     }
@@ -181,54 +180,58 @@ public class ASPlayer {
      */
     public void saveConfig(boolean saveAFK, boolean saveMute, boolean saveUnlimited, boolean saveGlue, boolean saveBan, boolean saveNick, boolean saveGod, boolean saveClassic) {
         new File("plugins/AdminStuff/userdata/").mkdirs();
-        Configuration config = new Configuration(new File("plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml"));
-        config.load();
+        YamlConfiguration config = new YamlConfiguration();
+        try {
+            //config.load(new File("plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml"));
 
-        config.setProperty("lastSeen", getLastSeen());
+            config.set("lastSeen", getLastSeen());
 
-        if (saveBan) {
-            config.setProperty("isBanned", isBanned);
-            config.setProperty("isTempBanned", isTempBanned);
-            config.setProperty("banEndTime", String.valueOf(getBanEndTime()));
-        }
-
-        if (saveNick) {
-            config.setProperty("Nickname", nickname);
-        }
-
-        if (saveAFK)
-            config.setProperty("isAFK", isAFK);
-
-        if (saveClassic)
-            config.setProperty("classicMode", classicMode);
-
-        if (saveMute)
-            config.setProperty("isMuted", isMuted);
-
-        if (saveUnlimited) {
-            List<Integer> list = new ArrayList<Integer>();
-            for (int val : unlimitedList.keySet())
-                list.add(val);
-            config.setProperty("unlimited", list);
-        }
-
-        if (saveGlue) {
-            config.setProperty("glue.isGlued", isGlued);
-            if (glueLocation != null) {
-                config.setProperty("glue.X", glueLocation.getBlockX());
-                config.setProperty("glue.Y", glueLocation.getBlockY());
-                config.setProperty("glue.Z", glueLocation.getBlockZ());
-                config.setProperty("glue.Pitch", glueLocation.getPitch());
-                config.setProperty("glue.Yaw", glueLocation.getYaw());
-                config.setProperty("glue.Worldname", glueLocation.getWorld().getName());
+            if (saveBan) {
+                config.set("isBanned", isBanned);
+                config.set("isTempBanned", isTempBanned);
+                config.set("banEndTime", String.valueOf(getBanEndTime()));
             }
-        }
 
-        if (saveGod) {
-            config.setProperty("isGod", isGod);
-        }
+            if (saveNick) {
+                config.set("Nickname", nickname);
+            }
 
-        config.save();
+            if (saveAFK)
+                config.set("isAFK", isAFK);
+
+            if (saveClassic)
+                config.set("classicMode", classicMode);
+
+            if (saveMute)
+                config.set("isMuted", isMuted);
+
+            if (saveUnlimited) {
+                List<Integer> list = new ArrayList<Integer>();
+                for (int val : unlimitedList.keySet())
+                    list.add(val);
+                config.set("unlimited", list);
+            }
+
+            if (saveGlue) {
+                config.set("glue.isGlued", isGlued);
+                if (glueLocation != null) {
+                    config.set("glue.X", glueLocation.getBlockX());
+                    config.set("glue.Y", glueLocation.getBlockY());
+                    config.set("glue.Z", glueLocation.getBlockZ());
+                    config.set("glue.Pitch", glueLocation.getPitch());
+                    config.set("glue.Yaw", glueLocation.getYaw());
+                    config.set("glue.Worldname", glueLocation.getWorld().getName());
+                }
+            }
+
+            if (saveGod) {
+                config.set("isGod", isGod);
+            }
+
+            config.save(new File("plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml"));
+        } catch (Exception e) {
+
+        }
     }
 
     /**
