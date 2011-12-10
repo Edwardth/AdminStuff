@@ -28,8 +28,9 @@ import org.bukkit.entity.Player;
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
+import com.google.common.io.CharStreams;
 
-public class cmdMutePlayer extends Command {
+public class cmdMutePlayer extends ExtendedCommand {
 
     public cmdMutePlayer(String syntax, String arguments, String node, Server server) {
         super(syntax, arguments, node, server);
@@ -47,15 +48,36 @@ public class cmdMutePlayer extends Command {
      *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-        Player target = ASCore.getPlayer(args[0]);
+        Player target=null;
+        boolean one=true;
+        if(args.length==2){
+            if(args[0].equalsIgnoreCase("mute")){
+                target = ASCore.getPlayer(args[1]);
+                one=false;
+            }
+            else
+                player.sendMessage(ASLocalizer.format("WRONG_SYNTAX", ChatColor.RED, args[0]));
+        }
+        else{
+            target = ASCore.getPlayer(args[0]);
+        }
         if (target != null) {
             if (target.isOnline()) {
                 // ADD PLAYER, IF NOT FOUND
                 ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
-                thisTarget.setMuted(!thisTarget.isMuted());
-
-                if (thisTarget.isMuted()) {
-                    player.sendMessage(ASLocalizer.format("MUTE_PLAYER", ChatColor.GRAY, ASCore.getPlayerName(target)));
+                
+                if(one)
+                    if(thisTarget.isMuted()==1||thisTarget.isMuted()==2)
+                        thisTarget.setMuted((byte) 0);
+                    else
+                        thisTarget.setMuted((byte) 1);
+                else
+                    thisTarget.setMuted((byte) 2);
+                
+                if (thisTarget.isMuted()==1) {
+                    player.sendMessage(ASLocalizer.format("MUTE_PLAYER_SOFT", ChatColor.GRAY, ASCore.getPlayerName(target)));
+                } else if (thisTarget.isMuted()==2) {
+                    player.sendMessage(ASLocalizer.format("MUTE_PLAYER_HARD", ChatColor.GRAY, ASCore.getPlayerName(target)));
                 } else {
                     player.sendMessage(ASLocalizer.format("UNMUTE_PLAYER", ChatColor.GRAY, ASCore.getPlayerName(target)));
                 }

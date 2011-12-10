@@ -41,7 +41,7 @@ public class ASPlayer {
     private Map<Integer, ASItem> unlimitedList = new HashMap<Integer, ASItem>();
     private String playerName = "";
     private boolean isAFK = false;
-    private boolean isMuted = false;
+    private byte isMuted = 0; //flag: 0 - unmuted; 1 - soft muted; 2 - hard muted
     private boolean isGlued = false;
     private boolean isSlapped = false;
     private boolean isBanned = false;
@@ -138,7 +138,7 @@ public class ASPlayer {
                 setGod(config.getBoolean("isGod", false));
                 setGlued(config.getBoolean("glue.isGlued", false));
                 setAFK(config.getBoolean("isAFK", false));
-                setMuted(config.getBoolean("isMuted", false));
+                setMuted((byte) config.getInt("isMuted", 0));
                 setBanned(config.getBoolean("isBanned", false));
                 setTempBanned(config.getBoolean("isTempBanned", false));
                 setBanEndTime(Long.valueOf(config.getString("banEndTime", "0")));
@@ -279,7 +279,7 @@ public class ASPlayer {
     /**
      * @return the muted
      */
-    public boolean isMuted() {
+    public byte isMuted() {
         return isMuted;
     }
 
@@ -287,7 +287,7 @@ public class ASPlayer {
      * @param muted
      *            the muted to set
      */
-    public void setMuted(boolean muted) {
+    public void setMuted(byte muted) {
         this.isMuted = muted;
     }
 

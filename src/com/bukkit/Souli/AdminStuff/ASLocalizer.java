@@ -138,7 +138,8 @@ public class ASLocalizer {
         predefinedValues.put("KIT_LIST", "List of Kits:");
 
         // MUTE
-        predefinedValues.put("MUTE_PLAYER", "Player '%s' is now muted.");
+        predefinedValues.put("MUTE_PLAYER_SOFT", "Player '%s' is now soft muted.");
+        predefinedValues.put("MUTE_PLAYER_HARD", "Player '%s' is now hard muted.");
         predefinedValues.put("UNMUTE_PLAYER", "Player '%s' is no longer muted.");
         predefinedValues.put("MUTED", "[Muted]");
 

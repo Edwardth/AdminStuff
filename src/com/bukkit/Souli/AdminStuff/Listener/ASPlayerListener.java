@@ -208,8 +208,8 @@ public class ASPlayerListener extends PlayerListener {
         ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(event.getPlayer());
         String nick = ASCore.getPlayerName(event.getPlayer());
 
-        // PLAYER IS MUTED = ONLY ADMINS/MODS RECEIVE A MESSAGE
-        if (thisPlayer.isMuted()) {
+        // PLAYER IS MUTED SOFT = ONLY ADMINS/MODS RECEIVE A MESSAGE
+        if (thisPlayer.isMuted()==1||thisPlayer.isMuted()==2) {
             Iterator<Player> it = event.getRecipients().iterator();
             while (it.hasNext()) {
                 Player nextPlayer = it.next();
@@ -218,7 +218,7 @@ public class ASPlayerListener extends PlayerListener {
                     continue;
                 }
 
-                if (UtilPermissions.playerCanUseCommand(nextPlayer, "adminstuff.chat.read.muted")) {
+                if (UtilPermissions.playerCanUseCommand(nextPlayer, "adminstuff.chat.read.muted")&&thisPlayer.isMuted()!=2) {
                     nextPlayer.sendMessage(ChatColor.RED + ASLocalizer.format("MUTED") + " " + nick + ChatColor.WHITE + ": " + event.getMessage());
                 }
             }
