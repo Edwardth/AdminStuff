@@ -47,7 +47,10 @@ public class cmdMessage extends ExtendedCommand {
      */
     public void execute(String[] args, Player player) {
         Player target = ASCore.getPlayer(args[0]);
+
         if (target != null) {
+            if (target.getName().toLowerCase().equals(player.getName().toLowerCase()))
+                player.sendMessage(ChatColor.BLACK + "Forever alone...");
             if (target.isOnline()) {
                 // ADD PLAYER, IF NOT FOUND
                 ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
@@ -63,6 +66,9 @@ public class cmdMessage extends ExtendedCommand {
 
                 thisPlayer.setLastSender(target.getName());
                 thisTarget.setLastSender(player.getName());
+
+                if (thisTarget.isAFK())
+                    player.sendMessage(ChatColor.GOLD + "Player is AFK!");
             }
         } else {
             player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found (or is not online!)");
