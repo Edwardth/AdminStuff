@@ -28,7 +28,6 @@ import org.bukkit.entity.Player;
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASLocalizer;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
-import com.google.common.io.CharStreams;
 
 public class cmdMutePlayer extends ExtendedCommand {
 
