@@ -81,9 +81,9 @@ public class ASLocalizer {
         // CLASSICMODE
         predefinedValues.put("YOU_ARE_IN_CLASSICMODE", "You are now in classicmode.");
         predefinedValues.put("YOU_ARE_NO_LONGER_IN_CLASSICMODE", "You are now in survivalmode.");
-        predefinedValues.put("X_IS_IN_CLASSICMODE", "'%s' is now in classicmode.");       
+        predefinedValues.put("X_IS_IN_CLASSICMODE", "'%s' is now in classicmode.");
         predefinedValues.put("X_IS_NO_LONGER_IN_CLASSICMODE", "'%s' is now in survivalmode.");
-        
+
         // COMPASS
         predefinedValues.put("COMPASS", "Compass");
 
@@ -262,7 +262,7 @@ public class ASLocalizer {
 
     public static String getValue(String name) {
         String res = predefinedValues.get(name);
-        if(res != null)
+        if (res != null)
             return res;
         else
             return "NOT DEFINED";

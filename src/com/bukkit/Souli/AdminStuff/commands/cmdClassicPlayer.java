@@ -61,7 +61,7 @@ public class cmdClassicPlayer extends Command {
             } else {
                 target.setGameMode(GameMode.SURVIVAL);
                 target.sendMessage(ASLocalizer.format("YOU_ARE_NO_LONGER_IN_CLASSICMODE", ChatColor.GRAY));
-                player.sendMessage(ASLocalizer.format("X_IS_NO_LONGER_IN_CLASSICMODE", ChatColor.GRAY, ASCore.getPlayerName(target)));     
+                player.sendMessage(ASLocalizer.format("X_IS_NO_LONGER_IN_CLASSICMODE", ChatColor.GRAY, ASCore.getPlayerName(target)));
             }
         } else {
             player.sendMessage(ASLocalizer.format("PLAYER_NOT_FOUND", ChatColor.RED, args[0]));

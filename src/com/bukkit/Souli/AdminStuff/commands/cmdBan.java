@@ -61,7 +61,7 @@ public class cmdBan extends Command {
                 player.sendMessage(ASLocalizer.format("PLAYER_IS_BANNED", ChatColor.GRAY, ASCore.getPlayerName(target)));
                 ((CraftServer) ASCore.getMCServer()).getHandle().addUserBan(target.getName());
                 ASCore.banPlayer(target.getName());
-            }            
+            }
         } else {
             ASCore.banPlayer(args[0]);
             player.sendMessage(ASLocalizer.format("PLAYER_IS_BANNED", ChatColor.GRAY, args[0]));

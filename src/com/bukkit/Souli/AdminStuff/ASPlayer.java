@@ -128,7 +128,6 @@ public class ASPlayer {
      * 
      * @param playerName
      */
-    @SuppressWarnings("unchecked")
     public void loadConfig() {
         try {
             new File("plugins/AdminStuff/userdata/").mkdirs();

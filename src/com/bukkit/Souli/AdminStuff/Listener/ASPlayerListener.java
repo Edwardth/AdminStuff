@@ -31,11 +31,12 @@ import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -46,7 +47,7 @@ import com.bukkit.Souli.AdminStuff.ASPlayer;
 import com.bukkit.gemo.utils.BlockUtils;
 import com.bukkit.gemo.utils.UtilPermissions;
 
-public class ASPlayerListener extends PlayerListener {
+public class ASPlayerListener implements Listener {
     private static Map<String, ASPlayer> playerMap = new TreeMap<String, ASPlayer>();
     public static Map<String, ItemStack> queuedFillChest = new TreeMap<String, ItemStack>();
 
@@ -55,7 +56,7 @@ public class ASPlayerListener extends PlayerListener {
      * ON PLAYER MOVE
      * 
      */
-    @Override
+    @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         if (BlockUtils.LocationEquals(event.getTo(), event.getFrom()))
             return;
@@ -74,7 +75,7 @@ public class ASPlayerListener extends PlayerListener {
      * ON PLAYER JOIN
      * 
      */
-    @Override
+    @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         long start = System.nanoTime();
         ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(event.getPlayer());
@@ -118,7 +119,7 @@ public class ASPlayerListener extends PlayerListener {
      * ON PLAYER KICK
      * 
      */
-    @Override
+    @EventHandler
     public void onPlayerKick(PlayerKickEvent event) {
         if (event.isCancelled())
             return;
@@ -132,7 +133,7 @@ public class ASPlayerListener extends PlayerListener {
      * ON PLAYER QUIT
      * 
      */
-    @Override
+    @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         ASCore.getOrCreateASPlayer(event.getPlayer()).updateLastSeen();
         ASCore.getOrCreateASPlayer(event.getPlayer()).saveConfig(true, true, true, true, true, true, true, true);
@@ -144,7 +145,7 @@ public class ASPlayerListener extends PlayerListener {
      * ON PLAYER INTERACT
      * 
      */
-    @Override
+    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         // ONLY CLICKS ON A BLOCK
         if (!event.hasBlock())
@@ -206,7 +207,7 @@ public class ASPlayerListener extends PlayerListener {
      * ON PLAYER CHAT
      * 
      */
-    @Override
+    @EventHandler
     public void onPlayerChat(PlayerChatEvent event) {
         ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(event.getPlayer());
         String nick = ASCore.getPlayerName(event.getPlayer());

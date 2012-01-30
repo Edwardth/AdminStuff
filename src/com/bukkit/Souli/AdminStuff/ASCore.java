@@ -39,10 +39,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import com.bukkit.Souli.AdminStuff.Listener.ASBlockListener;
 import com.bukkit.Souli.AdminStuff.Listener.ASEntityListener;
 import com.bukkit.Souli.AdminStuff.Listener.ASPlayerListener;
@@ -76,7 +76,7 @@ public class ASCore extends JavaPlugin {
                 e.printStackTrace();
             }
         }
-        
+
         if (!file.exists()) {
             return;
         }
@@ -165,15 +165,9 @@ public class ASCore extends JavaPlugin {
             }
 
             PluginManager pm = server.getPluginManager();
-
-            pm.registerEvent(Event.Type.BLOCK_PLACE, bListener, Event.Priority.Monitor, this);
-            pm.registerEvent(Event.Type.ENTITY_DAMAGE, eListener, Event.Priority.Normal, this);
-            pm.registerEvent(Event.Type.PLAYER_CHAT, pListener, Event.Priority.Normal, this);
-            pm.registerEvent(Event.Type.PLAYER_INTERACT, pListener, Event.Priority.Normal, this);
-            pm.registerEvent(Event.Type.PLAYER_JOIN, pListener, Event.Priority.Monitor, this);
-            pm.registerEvent(Event.Type.PLAYER_KICK, pListener, Event.Priority.Monitor, this);
-            pm.registerEvent(Event.Type.PLAYER_MOVE, pListener, Event.Priority.Normal, this);
-            pm.registerEvent(Event.Type.PLAYER_QUIT, pListener, Event.Priority.Monitor, this);
+            pm.registerEvents(bListener, this);
+            pm.registerEvents(eListener, this);
+            pm.registerEvents(pListener, this);
 
             loadConfig();
             new ASLocalizer("deutsch");

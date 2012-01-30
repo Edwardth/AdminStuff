@@ -22,13 +22,14 @@
 package com.bukkit.Souli.AdminStuff.Listener;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockListener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
-public class ASBlockListener extends BlockListener {
+public class ASBlockListener implements Listener {
 
     /**
      * 
@@ -36,7 +37,7 @@ public class ASBlockListener extends BlockListener {
      * 
      */
     @SuppressWarnings("deprecation")
-    @Override
+    @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         if (event.isCancelled())
             return;

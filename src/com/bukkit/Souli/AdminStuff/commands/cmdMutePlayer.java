@@ -47,35 +47,33 @@ public class cmdMutePlayer extends ExtendedCommand {
      *            split[0] is the targets name
      */
     public void execute(String[] args, Player player) {
-        Player target=null;
-        boolean one=true;
-        if(args.length==2){
-            if(args[0].equalsIgnoreCase("mute")){
+        Player target = null;
+        boolean one = true;
+        if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("mute")) {
                 target = ASCore.getPlayer(args[1]);
-                one=false;
-            }
-            else
+                one = false;
+            } else
                 player.sendMessage(ASLocalizer.format("WRONG_SYNTAX", ChatColor.RED, args[0]));
-        }
-        else{
+        } else {
             target = ASCore.getPlayer(args[0]);
         }
         if (target != null) {
             if (target.isOnline()) {
                 // ADD PLAYER, IF NOT FOUND
                 ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
-                
-                if(one)
-                    if(thisTarget.isMuted()==1||thisTarget.isMuted()==2)
+
+                if (one)
+                    if (thisTarget.isMuted() == 1 || thisTarget.isMuted() == 2)
                         thisTarget.setMuted((byte) 0);
                     else
                         thisTarget.setMuted((byte) 1);
                 else
                     thisTarget.setMuted((byte) 2);
-                
-                if (thisTarget.isMuted()==1) {
+
+                if (thisTarget.isMuted() == 1) {
                     player.sendMessage(ASLocalizer.format("MUTE_PLAYER_SOFT", ChatColor.GRAY, ASCore.getPlayerName(target)));
-                } else if (thisTarget.isMuted()==2) {
+                } else if (thisTarget.isMuted() == 2) {
                     player.sendMessage(ASLocalizer.format("MUTE_PLAYER_HARD", ChatColor.GRAY, ASCore.getPlayerName(target)));
                 } else {
                     player.sendMessage(ASLocalizer.format("UNMUTE_PLAYER", ChatColor.GRAY, ASCore.getPlayerName(target)));

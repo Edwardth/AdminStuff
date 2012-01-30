@@ -22,18 +22,20 @@
 package com.bukkit.Souli.AdminStuff.Listener;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityListener;
+
 import com.bukkit.Souli.AdminStuff.ASCore;
 import com.bukkit.Souli.AdminStuff.ASPlayer;
 
-public class ASEntityListener extends EntityListener {
+public class ASEntityListener implements Listener {
     /**
      * 
      * ON ENTITY DAMAGE
      * 
      */
-    @Override
+    @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.isCancelled())
             return;
@@ -53,5 +55,4 @@ public class ASEntityListener extends EntityListener {
             return;
         }
     }
-
 }

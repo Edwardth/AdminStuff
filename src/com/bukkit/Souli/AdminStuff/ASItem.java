@@ -173,7 +173,7 @@ public class ASItem {
 
         if (mat.getId() == Material.WOOL.getId() || mat.getId() == Material.INK_SACK.getId()) {
             return true;
-        } else if (mat.getId() == Material.LOG.getId() || mat.getId() == Material.MONSTER_EGGS.getId() ||mat.getId() == Material.SMOOTH_BRICK.getId() || mat.getId() == Material.LEAVES.getId() || mat.getId() == Material.JUKEBOX.getId() || mat.getId() == Material.SAPLING.getId() || mat.getId() == Material.LONG_GRASS.getId() || mat.getId() == Material.DEAD_BUSH.getId()) {
+        } else if (mat.getId() == Material.LOG.getId() || mat.getId() == Material.MONSTER_EGGS.getId() || mat.getId() == Material.SMOOTH_BRICK.getId() || mat.getId() == Material.LEAVES.getId() || mat.getId() == Material.JUKEBOX.getId() || mat.getId() == Material.SAPLING.getId() || mat.getId() == Material.LONG_GRASS.getId() || mat.getId() == Material.DEAD_BUSH.getId()) {
             if (Data > 2)
                 return false;
             return true;

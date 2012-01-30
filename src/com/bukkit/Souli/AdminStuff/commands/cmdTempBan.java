@@ -59,7 +59,7 @@ public class cmdTempBan extends Command {
         int mins = 0;
         try {
             args[1] = args[1].toLowerCase();
-            args[1] = " " + args[1]; 
+            args[1] = " " + args[1];
 
             // GET DAYS
             int dIndex = args[1].indexOf('d');
