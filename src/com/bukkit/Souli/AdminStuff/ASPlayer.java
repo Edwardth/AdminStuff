@@ -41,7 +41,8 @@ public class ASPlayer {
     private Map<Integer, ASItem> unlimitedList = new HashMap<Integer, ASItem>();
     private String playerName = "";
     private boolean isAFK = false;
-    private byte isMuted = 0; //flag: 0 - unmuted; 1 - soft muted; 2 - hard muted
+    private byte isMuted = 0; // flag: 0 - unmuted; 1 - soft muted; 2 - hard
+                              // muted
     private boolean isGlued = false;
     private boolean isSlapped = false;
     private boolean isBanned = false;
@@ -147,8 +148,10 @@ public class ASPlayer {
                 setLastSeen(config.getString("lastSeen"));
 
                 // LOAD INFINITE ITEMS
+                List<Object> objList = config.getList("unlimited", new ArrayList<Integer>());
                 List<Integer> newList = new ArrayList<Integer>();
-                newList = (List<Integer>) config.getList("unlimited", new ArrayList<Integer>());
+                for (Object obj : objList)
+                    newList.add((Integer) obj);
                 for (int ItemID : newList) {
                     if (ASItem.isValid(ItemID))
                         this.toggleUnlimitedItem(ItemID);
@@ -182,7 +185,8 @@ public class ASPlayer {
         new File("plugins/AdminStuff/userdata/").mkdirs();
         YamlConfiguration config = new YamlConfiguration();
         try {
-            //config.load(new File("plugins/AdminStuff/userdata/" + this.playerName.toLowerCase() + ".yml"));
+            // config.load(new File("plugins/AdminStuff/userdata/" +
+            // this.playerName.toLowerCase() + ".yml"));
 
             config.set("lastSeen", getLastSeen());
 

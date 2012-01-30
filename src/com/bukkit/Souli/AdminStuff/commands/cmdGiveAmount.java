@@ -66,6 +66,7 @@ public class cmdGiveAmount extends Command {
                     player.updateInventory();
                     player.sendMessage(ASLocalizer.format("GIVING_TO", ChatColor.GRAY, String.valueOf(amount), Material.getMaterial(item.getTypeId()) + ((Data > 0) ? (":" + Data) : ""), ASCore.getPlayerName(target)));
                     target.sendMessage(ASLocalizer.format("GIVING_YOU", ChatColor.GRAY, String.valueOf(amount), Material.getMaterial(item.getTypeId()) + ((Data > 0) ? (":" + Data) : "")));
+                    System.out.println("GIVE: von " + player.getName() +" AN " + target.getName() + " : " + amount + " x " + Material.getMaterial(item.getTypeId()));
                 } else {
                     player.sendMessage(ASLocalizer.format("ITEM_NOT_FOUND", ChatColor.RED, args[0]));
                     player.sendMessage(ChatColor.GRAY + this.getSyntax() + " " + this.getArguments());
