@@ -1,0 +1,121 @@
+name: AdminStuff
+main: com.bukkit.Souli.AdminStuff.ASCore
+version: 1.0
+commands:
+  afk:
+    description: Toggle AFK status
+    usage: /afk
+  ban:
+    description: Ban a player
+    usage: /ban <Player> [Message]   
+  broadcast:
+    description: Broadcast a message
+    usage: /broadcast <Message>  
+    aliases: ['cast']
+  burn:
+    description: Burn a player for x seconds
+    usage: /burn <Player> <Time in seconds>
+  compass:
+    description: Show the compassdir
+    usage: /compass    
+  classic:
+    description: Toggle the classicmode
+    usage: /classic      
+  chat:
+    description: Chat to some people only
+    usage: /chat [Player 1 .. Player n]
+  clearinventory:
+    description: Clears an inventory
+    usage: /clearinventory [Player]
+    aliases: ['cli']
+  fillchest:
+    description: Fill a chest with a specified item
+    usage: /fillchest <ItemID or Name>[:SubID]    
+  flash:
+    description: Flash a player or strike a lightning
+    usage: /flash [Player]
+    aliases: ['lightning']   
+  give:
+    description: Give items to a specific player
+    usage: /give <Player> <ItemID or Name>[:SubID]  
+  glue:
+    description: Glue a Player
+    usage: /glue <Player>
+  gluehere:
+    description: Glue a Player at a specific location
+    usage: /gluehere <Player> 
+  god:
+    description: Make yourself a god
+    usage: /god [Player]
+  heal:
+    description: Heal a player
+    usage: /heal [Player]
+  help:
+    description: Show the help
+    usage: /help [Page]
+  hideChat:
+    description: Hide the Chat
+    usage: /hidechat
+  i:
+    description: Give yourself items
+    usage: /i <ItemID or Name>[:SubID]
+    aliases: ['item']   
+  invsee:
+    description: See a players inventory
+    usage: /invsee <Player>
+  kill:
+    description: Kill a Player
+    usage: /kill <Player>  
+  kit:
+    description: Give yourself a kit
+    usage: /kit <Name>  
+  kick:
+    description: Kick a player
+    usage: /kick <Player> [Message]
+  kickall:
+    description: Kick all players
+    usage: /kickall <Player> [Message]  
+  listkits:
+    description: List the available kits
+    usage: /listkits 
+  me:
+    description: Shout out your mood
+    usage: /me <Message>
+  msg:
+    description: Message a player
+    usage: /msg <Player> <Message>
+    aliases: ['m', 'message']    
+  mute:
+    description: Mute a player
+    usage: /mute <Player>    
+  nickname:
+    description: Change the nickname
+    usage: /nickname <Nickname> [Player] 
+    aliases: ['nick']
+  ping:
+    description: Ping!
+    usage: /ping      
+  r:
+    description: Reply to a message
+    usage: /r <Message>
+  seen:
+    description: Show when a player was last seen
+    usage: /seen <Player>
+  slap:
+    description: Slap a player
+    usage: /slap <Player>
+  stack:
+    description: Stack your inventory
+    usage: /stack
+  tempban:
+    description: Temporary ban a player
+    usage: /tempban <Player> <Time>  
+  time:
+    description: Set the time of your world
+    usage: /time <day|night>
+  unban:
+    description: Unban a player
+    usage: /unban <Player> 
+  weather:
+    description: Set the weather of your world
+    usage: /weather <sun|rain|storm>
