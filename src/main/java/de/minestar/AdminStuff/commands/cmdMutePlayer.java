@@ -82,6 +82,6 @@ public class cmdMutePlayer extends AbstractExtendedCommand {
             ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + target.getName() + "' ist nicht länger gemuted!");
         }
 
-        thisTarget.saveConfig(false, true, false, false, false, false, false, false);
+        thisTarget.saveConfig(false, true, false, false, false, false, false);
     }
 }

@@ -64,7 +64,7 @@ public class cmdBan extends AbstractExtendedCommand {
             ASPlayer thisTarget = Core.getOrCreateASPlayer(target);
             thisTarget.setBanned(true);
             target.setBanned(true);
-            thisTarget.saveConfig(false, false, false, false, true, false, false, false);
+            thisTarget.saveConfig(false, false, false, true, false, false, false);
 
             Core.banPlayer(playerName);
             target.kickPlayer(getMessage(args));

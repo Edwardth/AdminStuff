@@ -83,7 +83,7 @@ public class cmdGod extends AbstractExtendedCommand {
         ASPlayer thisPlayer = Core.getOrCreateASPlayer(target);
         boolean isGod = !thisPlayer.isGod();
         thisPlayer.setGod(isGod);
-        thisPlayer.saveConfig(false, false, false, false, false, false, true, false);
+        thisPlayer.saveConfig(false, false, false, false, false, true, false);
         if (isGod) {
             ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + target.getName() + "' ist jetzt unsterblich!");
             PlayerUtils.sendInfo(target, pluginName, "Unsterblichkeit aktiviert!");

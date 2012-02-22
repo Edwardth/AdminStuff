@@ -80,7 +80,7 @@ public class cmdGlue extends AbstractExtendedCommand {
                     ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + target.getName() + "' ist wieder frei!");
                     PlayerUtils.sendInfo(target, pluginName, "Du bist wieder frei!");
                 }
-                thisPlayer.saveConfig(false, false, false, true, false, false, false, false);
+                thisPlayer.saveConfig(false, false, true, false, false, false, false);
             }
         }
     }

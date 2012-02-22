@@ -79,7 +79,7 @@ public class cmdNickname extends AbstractCommand {
     private void changeNickname(String name, Player player, CommandSender sender) {
         ASPlayer thisPlayer = Core.getOrCreateASPlayer(player);
         thisPlayer.setNickname(name);
-        thisPlayer.saveConfig(false, false, false, false, false, true, false, false);
+        thisPlayer.saveConfig(false, false, false, false, true, false, false);
         thisPlayer.updateNick();
         PlayerUtils.sendInfo(player, pluginName, "Dein Nickname ist jetzt '" + name + "'!");
         ChatUtils.writeSuccess(sender, pluginName, "Der Nickname von '" + player.getName() + "' ist '" + name + "'!");

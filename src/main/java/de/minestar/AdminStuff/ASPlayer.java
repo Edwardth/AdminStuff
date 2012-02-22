@@ -23,11 +23,7 @@ package de.minestar.AdminStuff;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -42,7 +38,7 @@ import org.bukkit.inventory.ItemStack;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class ASPlayer {
-    private Map<Integer, ASItem> unlimitedList = new HashMap<Integer, ASItem>();
+
     private String playerName = "";
     private boolean isAFK = false;
     private boolean isMuted = false;
@@ -142,16 +138,6 @@ public class ASPlayer {
                 setClassicMode(config.getBoolean("classicMode", false));
                 setLastSeen(config.getString("lastSeen"));
 
-                // LOAD INFINITE ITEMS
-                List<Object> objList = config.getList("unlimited", new ArrayList<Integer>());
-                List<Integer> newList = new ArrayList<Integer>();
-                for (Object obj : objList)
-                    newList.add((Integer) obj);
-                for (int ItemID : newList) {
-                    if (ASItem.isValid(ItemID))
-                        this.toggleUnlimitedItem(ItemID);
-                }
-
                 // LOAD GLUE
                 if (isGlued()) {
                     World world = Bukkit.getWorld(config.getString("glue.Worldname", null));
@@ -176,7 +162,7 @@ public class ASPlayer {
     /**
      * SAVE PLAYERDATA TO A FILE
      */
-    public void saveConfig(boolean saveAFK, boolean saveMute, boolean saveUnlimited, boolean saveGlue, boolean saveBan, boolean saveNick, boolean saveGod, boolean saveClassic) {
+    public void saveConfig(boolean saveAFK, boolean saveMute, boolean saveGlue, boolean saveBan, boolean saveNick, boolean saveGod, boolean saveClassic) {
         // TODO: Always call this method when a change is done IN this class
         new File("plugins/AdminStuff/userdata/").mkdirs();
         YamlConfiguration config = new YamlConfiguration();
@@ -205,13 +191,6 @@ public class ASPlayer {
             if (saveMute)
                 config.set("isMuted", isMuted);
 
-            if (saveUnlimited) {
-                List<Integer> list = new ArrayList<Integer>();
-                for (int val : unlimitedList.keySet())
-                    list.add(val);
-                config.set("unlimited", list);
-            }
-
             if (saveGlue) {
                 config.set("glue.isGlued", isGlued);
                 if (glueLocation != null) {
@@ -232,33 +211,6 @@ public class ASPlayer {
         } catch (Exception e) {
 
         }
-    }
-
-    /**
-     * TOGGLE UNLIMITED ITEM
-     * 
-     * @param TypeID
-     * @return true, if added (false, if removed)
-     */
-    public boolean toggleUnlimitedItem(int TypeID) {
-        if (!hasUnlimitedItem(TypeID)) {
-            // ADD ITEM
-            unlimitedList.put(TypeID, new ASItem(TypeID));
-            return true;
-        } else {
-            // REMOVE ITEM
-            unlimitedList.remove(TypeID);
-            return false;
-        }
-    }
-
-    /**
-     * 
-     * @param TypeID
-     * @return true, if found
-     */
-    public boolean hasUnlimitedItem(int TypeID) {
-        return unlimitedList.containsKey(TypeID);
     }
 
     /**
@@ -344,24 +296,6 @@ public class ASPlayer {
             nick = nick + "was fished!";
 
         player.setDisplayName(nick);
-    }
-    /**
-     * GET UNLIMITED LIST
-     * 
-     * @return the unlimitedList
-     */
-    public Map<Integer, ASItem> getUnlimitedList() {
-        return unlimitedList;
-    }
-
-    /**
-     * SET UNLIMITED LIST
-     * 
-     * @param unlimitedList
-     *            the unlimitedList to set
-     */
-    public void setUnlimitedList(Map<Integer, ASItem> unlimitedList) {
-        this.unlimitedList = unlimitedList;
     }
 
     /**

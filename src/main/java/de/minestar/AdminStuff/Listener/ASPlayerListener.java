@@ -89,7 +89,7 @@ public class ASPlayerListener implements Listener {
             if (endTime <= System.currentTimeMillis()) {
                 thisPlayer.setTempBanned(false);
                 thisPlayer.setBanEndTime(0);
-                thisPlayer.saveConfig(false, false, false, false, true, false, false, false);
+                thisPlayer.saveConfig(false, false,  false, true, false, false, false);
             } else {
                 event.disallow(Result.KICK_BANNED, ("Du bist temporaer gebannt bis " + new Date(endTime + 1000)));
                 return;
@@ -130,7 +130,7 @@ public class ASPlayerListener implements Listener {
             return;
         ASPlayer thisPlayer = Core.getOrCreateASPlayer(event.getPlayer());
         thisPlayer.updateLastSeen();
-        thisPlayer.saveConfig(true, true, true, true, true, true, true, true);
+        thisPlayer.saveConfig(true, true, true, true, true, true, true);
         playerMap.remove(event.getPlayer().getName().toLowerCase());
     }
 
@@ -143,7 +143,7 @@ public class ASPlayerListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         ASPlayer thisPlayer = Core.getOrCreateASPlayer(event.getPlayer());
         thisPlayer.updateLastSeen();
-        thisPlayer.saveConfig(true, true, true, true, true, true, true, true);
+        thisPlayer.saveConfig(true, true, true, true, true, true, true);
         playerMap.remove(event.getPlayer().getName().toLowerCase());
     }
 

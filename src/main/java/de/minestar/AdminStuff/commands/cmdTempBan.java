@@ -91,7 +91,7 @@ public class cmdTempBan extends AbstractCommand {
 
         thisTarget.setTempBanned(true);
         thisTarget.setBanEndTime(System.currentTimeMillis() + (24 * 60 * 60 * 1000 * dates[0]) + (60 * 60 * 1000 * dates[1]) + (60 * 1000 * dates[2]));
-        thisTarget.saveConfig(false, false, false, false, true, false, false, false);
+        thisTarget.saveConfig(false, false, false, true, false, false, false);
         String message = "gebannt fuer " + dates[0] + " Tage, " + dates[1] + " Stunden, " + dates[2] + " Minuten!";
 
         if (target != null)

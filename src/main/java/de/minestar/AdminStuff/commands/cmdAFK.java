@@ -51,7 +51,7 @@ public class cmdAFK extends AbstractCommand {
         boolean isAFK = !thisPlayer.isAFK();
 
         thisPlayer.setAFK(isAFK);
-        thisPlayer.saveConfig(true, false, false, false, false, false, false, false);
+        thisPlayer.saveConfig(true, false, false, false, false, false, false);
         thisPlayer.updateNick();
 
         if (isAFK) {

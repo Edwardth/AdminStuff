@@ -82,7 +82,7 @@ public class cmdClassic extends AbstractExtendedCommand {
 
             // Flip modus
             thisPlayer.setClassicMode(!isClassic);
-            thisPlayer.saveConfig(true, false, false, false, false, false, false, true);
+            thisPlayer.saveConfig(true, false, false, false, false, false, true);
 
             if (isClassic) {
                 target.setGameMode(GameMode.CREATIVE);

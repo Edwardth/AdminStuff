@@ -57,7 +57,7 @@ public class cmdUnban extends AbstractCommand {
             thisTarget.setBanned(false);
             thisTarget.setTempBanned(false);
             thisTarget.setBanEndTime(0);
-            thisTarget.saveConfig(false, false, false, false, true, false, false, false);
+            thisTarget.saveConfig(false, false, false, true, false, false, false);
             Core.unbanPlayer(targetName);
             ((CraftServer) Bukkit.getServer()).getHandle().removeUserBan(targetName);
             ChatUtils.writeSuccess(player, pluginName, "Spieler '" + targetName + "' wurde entbannt!");
