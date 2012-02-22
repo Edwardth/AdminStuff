@@ -24,7 +24,7 @@ package de.minestar.AdminStuff.commands;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.data.Direction;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
@@ -32,7 +32,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdCompass extends AbstractCommand {
 
     public cmdCompass(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override

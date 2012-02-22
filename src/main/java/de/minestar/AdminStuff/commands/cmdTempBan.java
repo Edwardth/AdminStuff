@@ -28,7 +28,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASPlayer;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
@@ -39,7 +39,7 @@ public class cmdTempBan extends AbstractCommand {
     private static final String[] examples = {"1d30h40m", "1d30h", "1d40m", "30h40m", "1d", "30h", "40m"};
 
     public cmdTempBan(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
@@ -72,15 +72,15 @@ public class cmdTempBan extends AbstractCommand {
             // player doesn't exist in offline player
             if (targetName == null) {
                 ChatUtils.writeInfo(sender, pluginName, "Es existiert kein Spieler '" + args[0] + "'! Er wurde vorrausschend dennoch gebannt!");
-                thisTarget = ASCore.getOrCreateASPlayer(args[0].toLowerCase());
+                thisTarget = Core.getOrCreateASPlayer(args[0].toLowerCase());
             }
             // found offline player
             else
-                thisTarget = ASCore.getOrCreateASPlayer(targetName);
+                thisTarget = Core.getOrCreateASPlayer(targetName);
         }
         // player is online
         else {
-            thisTarget = ASCore.getOrCreateASPlayer(target);
+            thisTarget = Core.getOrCreateASPlayer(target);
             targetName = target.getName();
         }
 

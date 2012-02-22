@@ -24,7 +24,7 @@ package de.minestar.AdminStuff.commands;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASItem;
 import de.minestar.AdminStuff.Listener.ASPlayerListener;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
@@ -33,7 +33,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdFillChest extends AbstractCommand {
 
     public cmdFillChest(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override

@@ -24,7 +24,7 @@ package de.minestar.AdminStuff.commands;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASPlayer;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
@@ -32,7 +32,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdGlueHere extends AbstractExtendedCommand {
 
     public cmdGlueHere(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class cmdGlueHere extends AbstractExtendedCommand {
             else if (target.isDead() || !target.isOnline())
                 PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + "' ist tot oder offline!");
             else {
-                thisPlayer = ASCore.getOrCreateASPlayer(target);
+                thisPlayer = Core.getOrCreateASPlayer(target);
                 // toogle glue mode
                 thisPlayer.setGlued(!thisPlayer.isGlued());
 

@@ -47,7 +47,7 @@ import org.bukkit.inventory.ItemStack;
 import com.bukkit.gemo.utils.BlockUtils;
 import com.bukkit.gemo.utils.UtilPermissions;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASPlayer;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
@@ -66,7 +66,7 @@ public class ASPlayerListener implements Listener {
             return;
 
         // ADD PLAYER, IF NOT FOUND
-        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(event.getPlayer());
+        ASPlayer thisPlayer = Core.getOrCreateASPlayer(event.getPlayer());
 
         // IS PLAYER GLUED = RETURN TO GLUELOCATION
         if (thisPlayer.isGlued() && thisPlayer.getGlueLocation() != null)
@@ -77,9 +77,9 @@ public class ASPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerPreLogin(PlayerPreLoginEvent event) {
         String name = event.getName().toLowerCase();
-        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(event.getName());
+        ASPlayer thisPlayer = Core.getOrCreateASPlayer(event.getName());
         // IS USER BANNED IN TXT?
-        if (ASCore.bannedPlayers.containsKey(name) || thisPlayer.isBanned()) {
+        if (Core.bannedPlayers.containsKey(name) || thisPlayer.isBanned()) {
             event.disallow(Result.KICK_BANNED, "Du bist gebannt!");
             return;
         }
@@ -104,10 +104,10 @@ public class ASPlayerListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+        ASPlayer thisPlayer = Core.getOrCreateASPlayer(player);
 
         // IS USER BANNED IN TXT?
-        if (ASCore.bannedPlayers.containsKey(player.getName().toLowerCase()) || thisPlayer.isBanned()) {
+        if (Core.bannedPlayers.containsKey(player.getName().toLowerCase()) || thisPlayer.isBanned()) {
             player.kickPlayer("Du bist gebannt!");
             return;
         }
@@ -128,7 +128,7 @@ public class ASPlayerListener implements Listener {
     public void onPlayerKick(PlayerKickEvent event) {
         if (event.isCancelled())
             return;
-        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(event.getPlayer());
+        ASPlayer thisPlayer = Core.getOrCreateASPlayer(event.getPlayer());
         thisPlayer.updateLastSeen();
         thisPlayer.saveConfig(true, true, true, true, true, true, true, true);
         playerMap.remove(event.getPlayer().getName().toLowerCase());
@@ -141,7 +141,7 @@ public class ASPlayerListener implements Listener {
      */
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(event.getPlayer());
+        ASPlayer thisPlayer = Core.getOrCreateASPlayer(event.getPlayer());
         thisPlayer.updateLastSeen();
         thisPlayer.saveConfig(true, true, true, true, true, true, true, true);
         playerMap.remove(event.getPlayer().getName().toLowerCase());
@@ -165,7 +165,7 @@ public class ASPlayerListener implements Listener {
             // CLICKED ON A CHEST?
             if (event.getClickedBlock().getTypeId() != Material.CHEST.getId()) {
                 queuedFillChest.remove(player.getName());
-                PlayerUtils.sendError(player, ASCore.NAME, "Chestfill abgebrochen!");
+                PlayerUtils.sendError(player, Core.NAME, "Chestfill abgebrochen!");
                 return;
             } else {
                 event.setUseInteractedBlock(Event.Result.DENY);
@@ -182,7 +182,7 @@ public class ASPlayerListener implements Listener {
                     fillChest(dChest, item);
 
                 // SEND MESSAGE
-                PlayerUtils.sendSuccess(player, ASCore.NAME, "Kiste wurde mit '" + item.getType().name() + "' gefuellt!");
+                PlayerUtils.sendSuccess(player, Core.NAME, "Kiste wurde mit '" + item.getType().name() + "' gefuellt!");
                 queuedFillChest.remove(event.getPlayer().getName());
             }
             return;
@@ -215,11 +215,11 @@ public class ASPlayerListener implements Listener {
      */
     @EventHandler
     public void onPlayerChat(PlayerChatEvent event) {
-        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(event.getPlayer());
+        ASPlayer thisPlayer = Core.getOrCreateASPlayer(event.getPlayer());
 
         // Player is muted -> only ops and player with right permission can read
         if (thisPlayer.isMuted()) {
-            String nick = ASCore.getPlayerName(event.getPlayer());
+            String nick = Core.getPlayerName(event.getPlayer());
             String message = ChatColor.RED + "[STUMM] " + nick + ChatColor.WHITE + ": " + event.getMessage();
             Player current = null;
 

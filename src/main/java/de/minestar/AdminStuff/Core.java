@@ -84,7 +84,7 @@ import de.minestar.AdminStuff.commands.cmdWeather;
 import de.minestar.minestarlibrary.commands.CommandList;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
 
-public class ASCore extends JavaPlugin {
+public class Core extends JavaPlugin {
 
     /** GLOBAL VARS */
     public final static String NAME = "";
@@ -143,13 +143,13 @@ public class ASCore extends JavaPlugin {
     public static void banPlayer(String name) {
         name = name.toLowerCase();
         bannedPlayers.put(name, 0);
-        ASCore.saveBannedPlayers();
+        Core.saveBannedPlayers();
     }
 
     public static void unbanPlayer(String name) {
         name = name.toLowerCase();
         bannedPlayers.remove(name);
-        ASCore.saveBannedPlayers();
+        Core.saveBannedPlayers();
     }
 
     public static void saveBannedPlayers() {
@@ -190,7 +190,7 @@ public class ASCore extends JavaPlugin {
             pListener = new ASPlayerListener();
 
             for (Player player : getServer().getOnlinePlayers()) {
-                ASCore.getOrCreateASPlayer(player);
+                Core.getOrCreateASPlayer(player);
             }
 
             PluginManager pm = getServer().getPluginManager();

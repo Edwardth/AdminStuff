@@ -26,7 +26,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASPlayer;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
@@ -36,7 +36,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdClassic extends AbstractExtendedCommand {
 
     public cmdClassic(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class cmdClassic extends AbstractExtendedCommand {
             }
 
             // ADD PLAYER, IF NOT FOUND
-            thisPlayer = ASCore.getOrCreateASPlayer(targetName);
+            thisPlayer = Core.getOrCreateASPlayer(targetName);
             isClassic = thisPlayer.isClassicMode();
 
             // Flip modus

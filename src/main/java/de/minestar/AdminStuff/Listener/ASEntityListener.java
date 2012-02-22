@@ -26,7 +26,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASPlayer;
 
 public class ASEntityListener implements Listener {
@@ -42,7 +42,7 @@ public class ASEntityListener implements Listener {
 
         // ADD PLAYER, IF NOT FOUND
         Player player = (Player) event.getEntity();
-        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+        ASPlayer thisPlayer = Core.getOrCreateASPlayer(player);
 
         // IS PLAYER GOD = NO DAMAGE
         if (thisPlayer.isGod()) {

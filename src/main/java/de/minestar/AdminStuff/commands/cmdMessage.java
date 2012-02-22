@@ -24,7 +24,7 @@ package de.minestar.AdminStuff.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASPlayer;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
@@ -32,7 +32,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdMessage extends AbstractExtendedCommand {
 
     public cmdMessage(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
@@ -64,12 +64,12 @@ public class cmdMessage extends AbstractExtendedCommand {
             return;
         }
 
-        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
-        ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
+        ASPlayer thisPlayer = Core.getOrCreateASPlayer(player);
+        ASPlayer thisTarget = Core.getOrCreateASPlayer(target);
 
         String message = "] : " + ChatColor.GRAY + getMessage(args);
-        PlayerUtils.sendBlankMessage(player, ChatColor.GOLD + "[ me -> " + ASCore.getPlayerName(target) + message);
-        PlayerUtils.sendBlankMessage(target, ChatColor.GOLD + "[ " + ASCore.getPlayerName(player) + " -> me" + message);
+        PlayerUtils.sendBlankMessage(player, ChatColor.GOLD + "[ me -> " + Core.getPlayerName(target) + message);
+        PlayerUtils.sendBlankMessage(target, ChatColor.GOLD + "[ " + Core.getPlayerName(player) + " -> me" + message);
 
         thisPlayer.setLastSender(target.getName());
         thisTarget.setLastSender(player.getName());

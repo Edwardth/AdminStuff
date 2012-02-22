@@ -24,7 +24,7 @@ package de.minestar.AdminStuff.commands;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASItem;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
@@ -33,7 +33,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdGiveAmount extends AbstractExtendedCommand {
 
     public cmdGiveAmount(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override

@@ -23,14 +23,14 @@ package de.minestar.AdminStuff.commands;
 
 import org.bukkit.entity.Player;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdKick extends AbstractExtendedCommand {
 
     public cmdKick(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class cmdKick extends AbstractExtendedCommand {
         else if (!target.isOnline())
             PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + "' ist nicht online!");
         else {
-            ASCore.getOrCreateASPlayer(target);
+            Core.getOrCreateASPlayer(target);
             target.kickPlayer(msg);
             PlayerUtils.sendSuccess(player, pluginName, "Spieler '" + targetName + "' wurde gekickt!");
         }

@@ -23,7 +23,7 @@ package de.minestar.AdminStuff.commands;
 
 import org.bukkit.entity.Player;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASPlayer;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
@@ -31,7 +31,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdBan extends AbstractExtendedCommand {
 
     public cmdBan(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
@@ -55,18 +55,18 @@ public class cmdBan extends AbstractExtendedCommand {
                 PlayerUtils.sendError(player, pluginName, "Spieler '" + args[0] + "' wurde nicht gefunden!");
                 return;
             } else {
-                ASCore.banPlayer(playerName);
+                Core.banPlayer(playerName);
                 PlayerUtils.sendSuccess(player, pluginName, "Der Spieler '" + playerName + "' wurde gebannt!");
             }
         } else if (target.isOnline()) {
 
             playerName = target.getName();
-            ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
+            ASPlayer thisTarget = Core.getOrCreateASPlayer(target);
             thisTarget.setBanned(true);
             target.setBanned(true);
             thisTarget.saveConfig(false, false, false, false, true, false, false, false);
 
-            ASCore.banPlayer(playerName);
+            Core.banPlayer(playerName);
             target.kickPlayer(getMessage(args));
             PlayerUtils.sendSuccess(player, pluginName, "Der Spieler '" + playerName + "' wurde gebannt!");
         } else

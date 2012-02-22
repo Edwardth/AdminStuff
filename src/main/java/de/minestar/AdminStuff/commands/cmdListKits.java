@@ -27,7 +27,7 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.gemo.utils.UtilPermissions;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASKit;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
@@ -35,7 +35,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdListKits extends AbstractCommand {
 
     public cmdListKits(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class cmdListKits extends AbstractCommand {
     public void execute(String[] args, Player player) {
         PlayerUtils.sendInfo(player, pluginName, "Kitliste:");
         int count = 1;
-        for (Entry<String, ASKit> entry : ASCore.kitList.entrySet()) {
+        for (Entry<String, ASKit> entry : Core.kitList.entrySet()) {
             if (UtilPermissions.playerCanUseCommand(player, "adminstuff.commands.admin.kit." + entry.getKey()))
                 PlayerUtils.sendInfo(player, "#" + count++ + " : " + entry.getKey());
         }

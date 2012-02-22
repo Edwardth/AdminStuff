@@ -25,7 +25,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASPlayer;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
@@ -35,7 +35,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdNickname extends AbstractCommand {
 
     public cmdNickname(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class cmdNickname extends AbstractCommand {
     }
 
     private void changeNickname(String name, Player player, CommandSender sender) {
-        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+        ASPlayer thisPlayer = Core.getOrCreateASPlayer(player);
         thisPlayer.setNickname(name);
         thisPlayer.saveConfig(false, false, false, false, false, true, false, false);
         thisPlayer.updateNick();

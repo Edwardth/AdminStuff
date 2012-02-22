@@ -25,7 +25,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASPlayer;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
@@ -34,7 +34,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdMutePlayer extends AbstractExtendedCommand {
 
     public cmdMutePlayer(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class cmdMutePlayer extends AbstractExtendedCommand {
 
     private void mutePlayer(Player target, CommandSender sender) {
         // ADD PLAYER, IF NOT FOUND
-        ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
+        ASPlayer thisTarget = Core.getOrCreateASPlayer(target);
         boolean isMuted = !thisTarget.isMuted();
         thisTarget.setMuted(isMuted);
 

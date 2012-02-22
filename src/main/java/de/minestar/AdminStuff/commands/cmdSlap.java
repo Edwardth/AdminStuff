@@ -26,7 +26,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASPlayer;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
@@ -35,7 +35,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdSlap extends AbstractCommand {
 
     public cmdSlap(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
@@ -65,9 +65,9 @@ public class cmdSlap extends AbstractCommand {
         else if (target.isDead() || !target.isOnline())
             ChatUtils.writeError(sender, pluginName, "Spieler '" + target.getName() + "' ist tot oder nicht online!");
         else {
-            ASPlayer thisTarget = ASCore.getOrCreateASPlayer(target);
+            ASPlayer thisTarget = Core.getOrCreateASPlayer(target);
             thisTarget.setSlapped(true);
-            Bukkit.broadcastMessage(sender.getName() + " schlaegt " + ASCore.getPlayerName(target) + " mit einem kalten Fisch ins Gesicht!");
+            Bukkit.broadcastMessage(sender.getName() + " schlaegt " + Core.getPlayerName(target) + " mit einem kalten Fisch ins Gesicht!");
         }
     }
 }

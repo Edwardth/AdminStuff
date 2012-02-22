@@ -23,7 +23,7 @@ package de.minestar.AdminStuff.commands;
 
 import org.bukkit.entity.Player;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASPlayer;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
@@ -31,7 +31,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdHideChat extends AbstractCommand {
 
     public cmdHideChat(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class cmdHideChat extends AbstractCommand {
      */
     public void execute(String[] args, Player player) {
         // ADD PLAYER, IF NOT FOUND
-        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+        ASPlayer thisPlayer = Core.getOrCreateASPlayer(player);
         boolean hide = !thisPlayer.isHideChat();
         thisPlayer.setHideChat(hide);
 

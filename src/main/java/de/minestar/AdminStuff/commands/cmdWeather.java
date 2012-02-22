@@ -24,7 +24,7 @@ package de.minestar.AdminStuff.commands;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.data.Weather;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
@@ -32,7 +32,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdWeather extends AbstractCommand {
 
     public cmdWeather(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     /**

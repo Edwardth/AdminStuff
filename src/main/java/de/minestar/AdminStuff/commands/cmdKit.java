@@ -27,7 +27,7 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.gemo.utils.UtilPermissions;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASKit;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
@@ -37,7 +37,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdKit extends AbstractCommand {
 
     public cmdKit(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class cmdKit extends AbstractCommand {
      */
     public void execute(String[] args, Player player) {
         if (args.length == 1) {
-            ASKit kit = ASCore.kitList.get(args[0]);
+            ASKit kit = Core.kitList.get(args[0]);
             if (kit == null)
                 PlayerUtils.sendError(player, pluginName, "Das Kit '" + args[0] + "' wurde nicht gefunden!");
             else
@@ -75,7 +75,7 @@ public class cmdKit extends AbstractCommand {
 
     private void giveKits(String[] args, CommandSender sender) {
         String kitName = args[0];
-        ASKit kit = ASCore.kitList.get(kitName);
+        ASKit kit = Core.kitList.get(kitName);
         if (kit == null) {
             ChatUtils.writeError(sender, pluginName, "Das Kit '" + kitName + "' wurde nicht gefunden!");
             return;

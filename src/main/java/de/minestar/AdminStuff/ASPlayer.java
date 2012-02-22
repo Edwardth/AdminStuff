@@ -332,7 +332,7 @@ public class ASPlayer {
         if (player == null)
             return;
 
-        String nick = ASCore.getPlayerName(player);
+        String nick = Core.getPlayerName(player);
         if (!getNickname().equalsIgnoreCase("")) {
             nick = getNickname();
         }

@@ -25,7 +25,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASPlayer;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
@@ -35,7 +35,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdGod extends AbstractExtendedCommand {
 
     public cmdGod(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class cmdGod extends AbstractExtendedCommand {
     // function to make them god
     private void changeGodMode(CommandSender sender, Player target) {
         // ADD PLAYER, IF NOT FOUND
-        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(target);
+        ASPlayer thisPlayer = Core.getOrCreateASPlayer(target);
         boolean isGod = !thisPlayer.isGod();
         thisPlayer.setGod(isGod);
         thisPlayer.saveConfig(false, false, false, false, false, false, true, false);

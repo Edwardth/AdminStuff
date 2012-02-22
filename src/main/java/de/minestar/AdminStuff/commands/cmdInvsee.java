@@ -25,7 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASPlayer;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
@@ -33,7 +33,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdInvsee extends AbstractExtendedCommand {
 
     public cmdInvsee(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class cmdInvsee extends AbstractExtendedCommand {
         else if (target.isDead() || !target.isOnline())
             PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + "' ist tot oder nicht online!");
         else {
-            ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+            ASPlayer thisPlayer = Core.getOrCreateASPlayer(player);
             Inventory inv = player.getInventory();
             // backup players inventory
             thisPlayer.saveInventory(inv);
@@ -77,7 +77,7 @@ public class cmdInvsee extends AbstractExtendedCommand {
     }
 
     private void restoreInventory(Player player) {
-        ASPlayer thisPlayer = ASCore.getOrCreateASPlayer(player);
+        ASPlayer thisPlayer = Core.getOrCreateASPlayer(player);
         // CLEAR INVENTORY
         player.getInventory().clear();
         // RESTORE INVENTORY

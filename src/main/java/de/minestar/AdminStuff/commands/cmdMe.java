@@ -25,13 +25,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 
 public class cmdMe extends AbstractExtendedCommand {
 
     public cmdMe(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
@@ -48,8 +48,8 @@ public class cmdMe extends AbstractExtendedCommand {
         String msg = getMessage(args);
 
         // ADD PLAYER, IF NOT FOUND
-        ASCore.getOrCreateASPlayer(player);
-        Bukkit.broadcastMessage(ChatColor.WHITE + " * " + ASCore.getPlayerName(player) + " " + msg);
+        Core.getOrCreateASPlayer(player);
+        Bukkit.broadcastMessage(ChatColor.WHITE + " * " + Core.getPlayerName(player) + " " + msg);
     }
 
     private String getMessage(String[] args) {

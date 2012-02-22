@@ -25,7 +25,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import de.minestar.AdminStuff.ASCore;
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASPlayer;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
@@ -34,7 +34,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdSeen extends AbstractCommand {
 
     public cmdSeen(String syntax, String arguments, String node) {
-        super(ASCore.NAME, syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class cmdSeen extends AbstractCommand {
         if (correct == null)
             ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + "' wurde nicht gefunden!");
         else {
-            ASPlayer thisTarget = ASCore.getOrCreateASPlayer(correct);
+            ASPlayer thisTarget = Core.getOrCreateASPlayer(correct);
             ChatUtils.writeInfo(sender, pluginName, "Spieler '" + correct + "' wurde zuletzt " + thisTarget.getLastSeen() + " gesehen!");
         }
     }
