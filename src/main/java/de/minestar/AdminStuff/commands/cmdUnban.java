@@ -21,20 +21,22 @@
 
 package de.minestar.AdminStuff.commands;
 
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.ASPlayer;
+import de.minestar.AdminStuff.manager.ASPlayer;
+import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdUnban extends AbstractCommand {
 
-    public cmdUnban(String syntax, String arguments, String node) {
+    private PlayerManager pManager;
+
+    public cmdUnban(String syntax, String arguments, String node, PlayerManager pManager) {
         super(Core.NAME, syntax, arguments, node);
+        this.pManager = pManager;
     }
 
     @Override
@@ -53,13 +55,8 @@ public class cmdUnban extends AbstractCommand {
         if (targetName == null) {
             ChatUtils.writeError(player, pluginName, "Spieler '" + args[0] + "' existiert nicht!");
         } else {
-            ASPlayer thisTarget = Core.getOrCreateASPlayer(targetName);
-            thisTarget.setBanned(false);
-            thisTarget.setTempBanned(false);
-            thisTarget.setBanEndTime(0);
-            thisTarget.saveConfig(false, false, false, true, false, false, false);
-            Core.unbanPlayer(targetName);
-            ((CraftServer) Bukkit.getServer()).getHandle().removeUserBan(targetName);
+            ASPlayer thisTarget = pManager.getPlayer(targetName);
+            pManager.unbannPlayer(thisTarget, player);
             ChatUtils.writeSuccess(player, pluginName, "Spieler '" + targetName + "' wurde entbannt!");
         }
     }

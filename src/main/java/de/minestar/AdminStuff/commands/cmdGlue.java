@@ -25,16 +25,20 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import de.minestar.AdminStuff.manager.ASPlayer;
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.ASPlayer;
+import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdGlue extends AbstractExtendedCommand {
 
-    public cmdGlue(String syntax, String arguments, String node) {
+    private PlayerManager pManager;
+
+    public cmdGlue(String syntax, String arguments, String node, PlayerManager pManager) {
         super(Core.NAME, syntax, arguments, node);
+        this.pManager = pManager;
     }
 
     @Override
@@ -68,19 +72,18 @@ public class cmdGlue extends AbstractExtendedCommand {
             else if (target.isDead() || !target.isOnline())
                 ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + "' ist tot oder offline!");
             else {
-                thisPlayer = Core.getOrCreateASPlayer(target);
-                // toogle glue mode
-                thisPlayer.setGlued(!thisPlayer.isGlued());
+                thisPlayer = pManager.getPlayer(target);
 
+                // player is glued -> unglue him
                 if (thisPlayer.isGlued()) {
-                    thisPlayer.setGlueLocation(target.getLocation());
-                    ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + target.getName() + "' ist festgeklebt!");
-                    PlayerUtils.sendInfo(target, pluginName, "Du bist festgeklebt!");
-                } else {
+                    pManager.setGlue(thisPlayer, null);
                     ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + target.getName() + "' ist wieder frei!");
                     PlayerUtils.sendInfo(target, pluginName, "Du bist wieder frei!");
+                } else {
+                    pManager.setGlue(thisPlayer, target.getLocation());
+                    ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + target.getName() + "' ist festgeklebt!");
+                    PlayerUtils.sendInfo(target, pluginName, "Du bist festgeklebt!");
                 }
-                thisPlayer.saveConfig(false, false, true, false, false, false, false);
             }
         }
     }

@@ -27,15 +27,19 @@ import java.util.Set;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.ASPlayer;
+import de.minestar.AdminStuff.manager.ASPlayer;
+import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 // TODO: Rename
 public class cmdChatAdd extends AbstractExtendedCommand {
 
-    public cmdChatAdd(String syntax, String arguments, String node) {
+    private PlayerManager pManager;
+    
+    public cmdChatAdd(String syntax, String arguments, String node, PlayerManager pManager) {
         super(Core.NAME, syntax, arguments, node);
+        this.pManager = pManager;
     }
 
     @Override
@@ -59,7 +63,7 @@ public class cmdChatAdd extends AbstractExtendedCommand {
 
     private void deleteRecipientList(Player player) {
         // ADD PLAYER, IF NOT FOUND
-        ASPlayer thisPlayer = Core.getOrCreateASPlayer(player);
+        ASPlayer thisPlayer = pManager.getPlayer(player);
 
         // DELETE RECIPIENTLIST
         thisPlayer.clearRecipients();
@@ -68,7 +72,7 @@ public class cmdChatAdd extends AbstractExtendedCommand {
 
     private void createRecipientList(String[] args, Player player) {
         // ADD PLAYER, IF NOT FOUND
-        ASPlayer thisASPlayer = Core.getOrCreateASPlayer(player);
+        ASPlayer thisASPlayer = pManager.getPlayer(player);
 
         // ADD RECIPIENTLIST
         StringBuilder output = new StringBuilder(256);

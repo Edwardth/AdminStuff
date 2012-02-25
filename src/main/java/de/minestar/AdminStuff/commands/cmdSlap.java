@@ -22,20 +22,25 @@
 package de.minestar.AdminStuff.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.ASPlayer;
+import de.minestar.AdminStuff.manager.ASPlayer;
+import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdSlap extends AbstractCommand {
 
-    public cmdSlap(String syntax, String arguments, String node) {
+    private PlayerManager pManager;
+
+    public cmdSlap(String syntax, String arguments, String node, PlayerManager pManager) {
         super(Core.NAME, syntax, arguments, node);
+        this.pManager = pManager;
     }
 
     @Override
@@ -65,9 +70,13 @@ public class cmdSlap extends AbstractCommand {
         else if (target.isDead() || !target.isOnline())
             ChatUtils.writeError(sender, pluginName, "Spieler '" + target.getName() + "' ist tot oder nicht online!");
         else {
-            ASPlayer thisTarget = Core.getOrCreateASPlayer(target);
-            thisTarget.setSlapped(true);
-            Bukkit.broadcastMessage(sender.getName() + " schlaegt " + Core.getPlayerName(target) + " mit einem kalten Fisch ins Gesicht!");
+            ASPlayer thisTarget = pManager.getPlayer(target);
+            boolean isSlapped = !thisTarget.isSlapped();
+            pManager.setSlapped(thisTarget, target, isSlapped);
+            if (isSlapped)
+                Bukkit.broadcastMessage(ChatColor.BLUE + sender.getName() + " schlaegt " + thisTarget.getNickname() + " mit einem kalten Fisch ins Gesicht!");
+            else
+                Bukkit.broadcastMessage(ChatColor.BLUE + thisTarget.getNickname() + "s Fisch wurde von einer Sturmmoeve gefressen!");
         }
     }
 }

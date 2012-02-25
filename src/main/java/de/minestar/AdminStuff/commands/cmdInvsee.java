@@ -26,14 +26,18 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.ASPlayer;
+import de.minestar.AdminStuff.manager.ASPlayer;
+import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdInvsee extends AbstractExtendedCommand {
 
-    public cmdInvsee(String syntax, String arguments, String node) {
+    private PlayerManager pManager;
+
+    public cmdInvsee(String syntax, String arguments, String node, PlayerManager pManager) {
         super(Core.NAME, syntax, arguments, node);
+        this.pManager = pManager;
     }
 
     @Override
@@ -62,10 +66,10 @@ public class cmdInvsee extends AbstractExtendedCommand {
         else if (target.isDead() || !target.isOnline())
             PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + "' ist tot oder nicht online!");
         else {
-            ASPlayer thisPlayer = Core.getOrCreateASPlayer(player);
+            ASPlayer thisPlayer = pManager.getPlayer(target);
             Inventory inv = player.getInventory();
             // backup players inventory
-            thisPlayer.saveInventory(inv);
+            pManager.backupInventory(thisPlayer, inv.getContents());
 
             inv.clear();
 
@@ -77,11 +81,11 @@ public class cmdInvsee extends AbstractExtendedCommand {
     }
 
     private void restoreInventory(Player player) {
-        ASPlayer thisPlayer = Core.getOrCreateASPlayer(player);
+        ASPlayer thisPlayer = pManager.getPlayer(player);
         // CLEAR INVENTORY
         player.getInventory().clear();
         // RESTORE INVENTORY
-        ItemStack[] inv = thisPlayer.getInvBackUp();
+        ItemStack[] inv = pManager.restoreInventory(thisPlayer);
         player.getInventory().addItem(inv);
         PlayerUtils.sendSuccess(player, pluginName, "Inventar wiederhergestellt");
 

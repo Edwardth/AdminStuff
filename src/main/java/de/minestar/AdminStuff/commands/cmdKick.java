@@ -25,6 +25,7 @@ import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
+import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdKick extends AbstractExtendedCommand {
@@ -54,7 +55,6 @@ public class cmdKick extends AbstractExtendedCommand {
         else if (!target.isOnline())
             PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + "' ist nicht online!");
         else {
-            Core.getOrCreateASPlayer(target);
             target.kickPlayer(msg);
             PlayerUtils.sendSuccess(player, pluginName, "Spieler '" + targetName + "' wurde gekickt!");
         }
@@ -65,13 +65,6 @@ public class cmdKick extends AbstractExtendedCommand {
         if (args.length == 1)
             return "Du wurdest gekickt.";
 
-        // create message string
-        StringBuilder sBuilder = new StringBuilder(256);
-        for (int i = 1; i < args.length; ++i) {
-            sBuilder.append(args[i]);
-            sBuilder.append(' ');
-        }
-        sBuilder.deleteCharAt(sBuilder.length() - 1);
-        return sBuilder.toString();
+        return ChatUtils.getMessage(args, " ", 1);
     }
 }

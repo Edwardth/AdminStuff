@@ -27,7 +27,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.ASPlayer;
+import de.minestar.AdminStuff.manager.ASPlayer;
+import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
@@ -35,8 +36,11 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdClassic extends AbstractExtendedCommand {
 
-    public cmdClassic(String syntax, String arguments, String node) {
+    private PlayerManager pManager;
+
+    public cmdClassic(String syntax, String arguments, String node, PlayerManager pManager) {
         super(Core.NAME, syntax, arguments, node);
+        this.pManager = pManager;
     }
 
     @Override
@@ -76,20 +80,15 @@ public class cmdClassic extends AbstractExtendedCommand {
                 return;
             }
 
-            // ADD PLAYER, IF NOT FOUND
-            thisPlayer = Core.getOrCreateASPlayer(targetName);
-            isClassic = thisPlayer.isClassicMode();
+            thisPlayer = pManager.getPlayer(target);
+            isClassic = thisPlayer.getGameMode() == GameMode.CREATIVE;
 
-            // Flip modus
-            thisPlayer.setClassicMode(!isClassic);
-            thisPlayer.saveConfig(true, false, false, false, false, false, true);
-
-            if (isClassic) {
-                target.setGameMode(GameMode.CREATIVE);
+            if (!isClassic) {
+                pManager.setGameMode(thisPlayer, target, GameMode.CREATIVE);
                 ChatUtils.writeSuccess(target, pluginName, "Du bist nun im Creative Modus!");
             } else {
+                pManager.setGameMode(thisPlayer, target, GameMode.SURVIVAL);
                 ChatUtils.writeSuccess(target, pluginName, "Du bist nun im Survival Modus!");
-                target.setGameMode(GameMode.SURVIVAL);
             }
         }
     }

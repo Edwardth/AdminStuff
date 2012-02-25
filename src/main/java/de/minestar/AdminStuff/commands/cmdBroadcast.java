@@ -28,6 +28,7 @@ import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
+import de.minestar.minestarlibrary.utils.ChatUtils;
 
 public class cmdBroadcast extends AbstractExtendedCommand {
 
@@ -55,15 +56,6 @@ public class cmdBroadcast extends AbstractExtendedCommand {
     }
 
     private void broadCast(String[] args) {
-
-        StringBuilder sBuilder = new StringBuilder(256);
-        int i = 0;
-        for (; i < args.length; ++i) {
-            sBuilder.append(args[i]);
-            sBuilder.append(' ');
-        }
-        sBuilder.append(args[i]);
-
-        Bukkit.broadcastMessage(ChatColor.RED + "[BROADCAST] : " + ChatColor.GREEN + sBuilder.toString());
+        Bukkit.broadcastMessage(ChatColor.RED + "[BROADCAST] : " + ChatColor.GREEN + ChatUtils.getMessage(args));
     }
 }

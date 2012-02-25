@@ -26,7 +26,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.ASPlayer;
+import de.minestar.AdminStuff.manager.ASPlayer;
+import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
@@ -34,8 +35,11 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdGod extends AbstractExtendedCommand {
 
-    public cmdGod(String syntax, String arguments, String node) {
+    private PlayerManager pManager;
+
+    public cmdGod(String syntax, String arguments, String node, PlayerManager pManager) {
         super(Core.NAME, syntax, arguments, node);
+        this.pManager = pManager;
     }
 
     @Override
@@ -80,10 +84,9 @@ public class cmdGod extends AbstractExtendedCommand {
     // function to make them god
     private void changeGodMode(CommandSender sender, Player target) {
         // ADD PLAYER, IF NOT FOUND
-        ASPlayer thisPlayer = Core.getOrCreateASPlayer(target);
+        ASPlayer thisPlayer = pManager.getPlayer(target);
         boolean isGod = !thisPlayer.isGod();
-        thisPlayer.setGod(isGod);
-        thisPlayer.saveConfig(false, false, false, false, false, true, false);
+        pManager.setGodMode(thisPlayer, isGod);
         if (isGod) {
             ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + target.getName() + "' ist jetzt unsterblich!");
             PlayerUtils.sendInfo(target, pluginName, "Unsterblichkeit aktiviert!");

@@ -29,7 +29,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.ASPlayer;
+import de.minestar.AdminStuff.manager.ASPlayer;
+import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
@@ -38,8 +39,11 @@ public class cmdTempBan extends AbstractCommand {
 
     private static final String[] examples = {"1d30h40m", "1d30h", "1d40m", "30h40m", "1d", "30h", "40m"};
 
-    public cmdTempBan(String syntax, String arguments, String node) {
+    private PlayerManager pManager;
+
+    public cmdTempBan(String syntax, String arguments, String node, PlayerManager pManager) {
         super(Core.NAME, syntax, arguments, node);
+        this.pManager = pManager;
     }
 
     @Override
@@ -63,25 +67,22 @@ public class cmdTempBan extends AbstractCommand {
     }
 
     private void tempBann(String[] args, CommandSender sender) {
-        Player target = PlayerUtils.getOnlinePlayer(args[0]);
-        ASPlayer thisTarget = null;
-        String targetName = null;
-        // player is not online
-        if (target == null) {
-            targetName = PlayerUtils.getOfflinePlayerName(args[0]);
-            // player doesn't exist in offline player
-            if (targetName == null) {
-                ChatUtils.writeInfo(sender, pluginName, "Es existiert kein Spieler '" + args[0] + "'! Er wurde vorrausschend dennoch gebannt!");
-                thisTarget = Core.getOrCreateASPlayer(args[0].toLowerCase());
-            }
-            // found offline player
-            else
-                thisTarget = Core.getOrCreateASPlayer(targetName);
-        }
+        String playerName = args[0];
+        Player target = PlayerUtils.getOnlinePlayer(playerName);
         // player is online
+        if (target != null)
+            playerName = target.getName();
         else {
-            thisTarget = Core.getOrCreateASPlayer(target);
-            targetName = target.getName();
+            // player is maybe offline?
+            playerName = PlayerUtils.getOfflinePlayerName(playerName);
+            // player was never on the server
+            if (playerName == null) {
+                playerName = args[0];
+                ChatUtils.writeError(sender, pluginName, "Spieler '" + playerName + "' existiert nicht, wird dennoch praeventiv gebannt!");
+            }
+            // player is offline
+            else
+                ChatUtils.writeError(sender, pluginName, "Spieler '" + playerName + "' ist nicht online, wird dennoch gebannt!");
         }
 
         int[] dates = parseString(" " + args[1].toLowerCase(), sender);
@@ -89,14 +90,14 @@ public class cmdTempBan extends AbstractCommand {
         if (dates == null)
             return;
 
-        thisTarget.setTempBanned(true);
-        thisTarget.setBanEndTime(System.currentTimeMillis() + (24 * 60 * 60 * 1000 * dates[0]) + (60 * 60 * 1000 * dates[1]) + (60 * 1000 * dates[2]));
-        thisTarget.saveConfig(false, false, false, true, false, false, false);
+        ASPlayer thisTarget = pManager.getPlayer(playerName);
+        // end time = current time + day in milliseconds + hours in milliseconds
+        // + mins in milliseconds
+        long time = System.currentTimeMillis() + (24 * 60 * 60 * 1000 * dates[0]) + (60 * 60 * 1000 * dates[1]) + (60 * 1000 * dates[2]);
         String message = "gebannt fuer " + dates[0] + " Tage, " + dates[1] + " Stunden, " + dates[2] + " Minuten!";
+        pManager.tempBanPlayer(thisTarget, target, time, message);
 
-        if (target != null)
-            target.kickPlayer("Du bist " + message);
-        ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + targetName + "' ist " + message);
+        ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + playerName + "' ist " + message);
     }
 
     private int[] parseString(String date, CommandSender sender) {

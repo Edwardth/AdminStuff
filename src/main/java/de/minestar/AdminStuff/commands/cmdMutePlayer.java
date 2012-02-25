@@ -26,15 +26,19 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.ASPlayer;
+import de.minestar.AdminStuff.manager.ASPlayer;
+import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdMutePlayer extends AbstractExtendedCommand {
 
-    public cmdMutePlayer(String syntax, String arguments, String node) {
+    private PlayerManager pManager;
+
+    public cmdMutePlayer(String syntax, String arguments, String node, PlayerManager pManager) {
         super(Core.NAME, syntax, arguments, node);
+        this.pManager = pManager;
     }
 
     @Override
@@ -72,16 +76,13 @@ public class cmdMutePlayer extends AbstractExtendedCommand {
 
     private void mutePlayer(Player target, CommandSender sender) {
         // ADD PLAYER, IF NOT FOUND
-        ASPlayer thisTarget = Core.getOrCreateASPlayer(target);
+        ASPlayer thisTarget = pManager.getPlayer(target);
         boolean isMuted = !thisTarget.isMuted();
-        thisTarget.setMuted(isMuted);
-
+        pManager.setMuted(thisTarget, isMuted);
         if (isMuted) {
             ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + target.getName() + "' ist jetzt gemuted!");
         } else {
             ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + target.getName() + "' ist nicht länger gemuted!");
         }
-
-        thisTarget.saveConfig(false, true, false, false, false, false, false);
     }
 }

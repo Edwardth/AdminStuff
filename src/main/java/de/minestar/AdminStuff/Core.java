@@ -21,22 +21,14 @@
 
 package de.minestar.AdminStuff;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -81,13 +73,15 @@ import de.minestar.AdminStuff.commands.cmdTempBan;
 import de.minestar.AdminStuff.commands.cmdTime;
 import de.minestar.AdminStuff.commands.cmdUnban;
 import de.minestar.AdminStuff.commands.cmdWeather;
+import de.minestar.AdminStuff.database.DatabaseHandler;
+import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.commands.CommandList;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
 
 public class Core extends JavaPlugin {
 
     /** GLOBAL VARS */
-    public final static String NAME = "";
+    public final static String NAME = "AdminStuff";
 
     /** LISTENERS */
     private ASEntityListener eListener;
@@ -96,78 +90,9 @@ public class Core extends JavaPlugin {
     private CommandList cmdList;
 
     public static HashMap<String, ASKit> kitList = new HashMap<String, ASKit>();
-    public static Map<String, Integer> bannedPlayers = new TreeMap<String, Integer>();
 
-    public static void loadBannedPlayers() {
-        File file = new File("plugins/AdminStuff/banned-adminstuff-players.txt");
-        BufferedReader reader = null;
-
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-                file = new File("banned-players.txt");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (!file.exists()) {
-            return;
-        }
-
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            String text = null;
-
-            // repeat until all lines is read
-            while ((text = reader.readLine()) != null) {
-                bannedPlayers.put(text.replace(" ", "").replace("\r\n", "").toLowerCase(), 0);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        saveBannedPlayers();
-    }
-
-    public static void banPlayer(String name) {
-        name = name.toLowerCase();
-        bannedPlayers.put(name, 0);
-        Core.saveBannedPlayers();
-    }
-
-    public static void unbanPlayer(String name) {
-        name = name.toLowerCase();
-        bannedPlayers.remove(name);
-        Core.saveBannedPlayers();
-    }
-
-    public static void saveBannedPlayers() {
-        File file = new File("plugins/AdminStuff/banned-adminstuff-players.txt");
-        if (file.exists())
-            file.delete();
-
-        try {
-            BufferedWriter out = new BufferedWriter(new FileWriter("plugins/AdminStuff/banned-adminstuff-players.txt", true));
-            for (String str : bannedPlayers.keySet()) {
-                out.write(str);
-                out.newLine();
-            }
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private DatabaseHandler dbHandler;
+    private PlayerManager pManager;
 
     /**
      * ON DISABLE
@@ -184,14 +109,14 @@ public class Core extends JavaPlugin {
     public void onEnable() {
 
         try {
-            loadBannedPlayers();
+            File dataFolder = getDataFolder();
+            dataFolder.mkdirs();
 
-            eListener = new ASEntityListener();
-            pListener = new ASPlayerListener();
+            dbHandler = new DatabaseHandler(NAME, dataFolder);
+            pManager = new PlayerManager(dbHandler, dataFolder);
 
-            for (Player player : getServer().getOnlinePlayers()) {
-                Core.getOrCreateASPlayer(player);
-            }
+            eListener = new ASEntityListener(pManager);
+            pListener = new ASPlayerListener(pManager);
 
             PluginManager pm = getServer().getPluginManager();
             pm.registerEvents(eListener, this);
@@ -210,13 +135,13 @@ public class Core extends JavaPlugin {
         cmdList = new CommandList(NAME,
             // USER PUNISH COMMANDS
             new cmdBurn             ("/burn",       "<Player> <Time in seconds>",   "commands.admin.burn"),
-            new cmdSlap             ("/slap",       "<Player>",                     "commands.admin.slap"),
+            new cmdSlap             ("/slap",       "<Player>",                     "commands.admin.slap", pManager),
             new cmdKill             ("/kill",       "[Player_1] ... [Player_N]",    "commands.admin.kill"),
-            new cmdGlue             ("/glue",       "<Player>",                     "commands.admin.glue"),
-            new cmdGlueHere         ("/gluehere",   "<Player>",                     "commands.admin.gluehere"),
+            new cmdGlue             ("/glue",       "<Player>",                     "commands.admin.glue", pManager),
+            new cmdGlueHere         ("/gluehere",   "<Player>",                     "commands.admin.gluehere", pManager),
 
             // CLASSICMODE
-            new cmdClassic          ("/classic", "[Player_1] ... [Player_N]",            "commands.admin.classic"),
+            new cmdClassic          ("/classic", "[Player_1] ... [Player_N]",            "commands.admin.classic", pManager),
 
             // FLASH COMMANDS
             new cmdFlash            ("/flash",      "",         "commands.admin.flash"),
@@ -227,9 +152,9 @@ public class Core extends JavaPlugin {
             new cmdKickAll          ("/kickall",    "[Message]",                     "commands.admin.kickall"),
 
             // BAN COMMANDS
-            new cmdUnban            ("/unban",      "<Player>",             "commands.admin.unban"),
-            new cmdBan              ("/ban",        "<Player> [Message]",   "commands.admin.ban"),
-            new cmdTempBan          ("/tempban",    "<Player> <Time>",      "commands.admin.tempban"),
+            new cmdUnban            ("/unban",      "<Player>",             "commands.admin.unban", pManager),
+            new cmdBan              ("/ban",        "<Player> [Message]",   "commands.admin.ban", pManager),
+            new cmdTempBan          ("/tempban",    "<Player> <Time>",      "commands.admin.tempban", pManager),
 
              // GIVE COMMANDS
             new cmdIAmount          ("/i",      "<ItemID or Name>[:SubID] [Amount]",            "commands.admin.i"),
@@ -241,37 +166,37 @@ public class Core extends JavaPlugin {
             new cmdListKits         ("/listkits",   "",         "commands.admin.listkits"),
 
             // GOD & HEAL COMMANDS
-            new cmdGod              ("/god",    "",         "commands.admin.god"),
+            new cmdGod              ("/god",    "",         "commands.admin.god", pManager),
             new cmdHeal             ("/heal",   "",         "commands.admin.heal"),
 
             // INVENTORY COMMANDS
             new cmdClearInventory   ("/clearinventory", "",                         "commands.user.clearinventory"),
             new cmdClearInventory   ("/cli",            "",                         "commands.user.clearinventory"),
-            new cmdInvsee           ("/invsee",         "",                         "commands.admin.invsee"),
+            new cmdInvsee           ("/invsee",         "",                         "commands.admin.invsee", pManager),
             new cmdFillChest        ("/fillchest",      "<ItemID or Name>[:SubID]", "commands.admin.fillchest"),
             new cmdStack            ("/stack",          "",                         "commands.user.stack"),
 
             // MESSAGE COMMANDS
             new cmdBroadcast        ("/broadcast",  "<Message>",            "commands.admin.broadcast"),
             new cmdBroadcast        ("/cast",       "<Message>",            "commands.admin.broadcast"), 
-            new cmdMutePlayer       ("/mute",       "<Player>",             "commands.admin.mute"), 
-            new cmdMessage          ("/message",    "<Player> <Message>",   "commands.user.message"), 
-            new cmdMessage          ("/msg",        "<Player> <Message>",   "commands.user.message"), 
-            new cmdMessage          ("/m",          "<Player> <Message>",   "commands.user.message"), 
-            new cmdReply            ("/r",          "<Message>",            "commands.user.reply"), 
-            new cmdMe               ("/me",         "<Message>",            "commands.admin.me"), 
-            new cmdHideChat         ("/hidechat",   "",                     "commands.admin.hidechat"),
+            new cmdMutePlayer       ("/mute",       "<Player>",             "commands.admin.mute", pManager),
+            new cmdMessage          ("/message",    "<Player> <Message>",   "commands.user.message", pManager),
+            new cmdMessage          ("/msg",        "<Player> <Message>",   "commands.user.message", pManager),
+            new cmdMessage          ("/m",          "<Player> <Message>",   "commands.user.message", pManager),
+            new cmdReply            ("/r",          "<Message>",            "commands.user.reply", pManager),
+            new cmdMe               ("/me",         "<Message>",            "commands.admin.me", pManager),
+            new cmdHideChat         ("/hidechat",   "",                     "commands.admin.hidechat", pManager),
 
             // RECIPIENT COMMANDS
-            new cmdChatAdd          ("/chat", "",                           "commands.user.chat"),
+            new cmdChatAdd          ("/chat", "",                           "commands.user.chat", pManager),
 
             // USER COMMANDS
             new cmdHelp             ("/help",       "",                     "commands.user.help"),
             new cmdHelpPage         ("/help",       "<Page>",               "commands.user.help"),
-            new cmdAFK              ("/afk",        "",                     "commands.user.afk"),
+            new cmdAFK              ("/afk",        "",                     "commands.user.afk", pManager),
             new cmdCompass          ("/compass",    "",                     "commands.user.compass"), 
-            new cmdNickname         ("/nickname",   "<Nickname> [Player]",  "commands.admin.nickname"),
-            new cmdNickname         ("/nick",       "<Nickname> [Player]",  "commands.admin.nickname"),
+            new cmdNickname         ("/nickname",   "<Nickname> [Player]",  "commands.admin.nickname", pManager),
+            new cmdNickname         ("/nick",       "<Nickname> [Player]",  "commands.admin.nickname", pManager),
 
             // TIME & WEATHER COMMAND
             new cmdTime             ("/time",       "<Time>",               "commands.admin.time"),
@@ -279,7 +204,7 @@ public class Core extends JavaPlugin {
 
             // MISC COMMANDS
             new cmdPing             ("/ping",       "",         "commands.admin.ping"),
-            new cmdSeen             ("/seen",       "<Player>", "commands.admin.seen")
+            new cmdSeen             ("/seen",       "<Player>", "commands.admin.seen", pManager)
         );
         //@formatter:on
     }
@@ -337,37 +262,5 @@ public class Core extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * 
-     * GET THE PLAYERS NAME
-     * 
-     * @param player
-     *            the player
-     * @return the players name
-     */
-    public static String getPlayerName(Player player) {
-        if (player == null)
-            return "PLAYER NOT FOUND";
-        String nick = player.getName();
-        if (player.getDisplayName() != null)
-            nick = player.getDisplayName();
-
-        nick = nick.replace("[AFK] ", "").replace("was fished!", "");
-        return nick;
-    }
-
-    public static ASPlayer getOrCreateASPlayer(Player player) {
-        return getOrCreateASPlayer(player.getName());
-    }
-
-    public static ASPlayer getOrCreateASPlayer(String playerName) {
-        ASPlayer result = ASPlayerListener.getPlayerMap().get(playerName.toLowerCase());
-        if (result == null) {
-            result = new ASPlayer(playerName);
-            ASPlayerListener.getPlayerMap().put(playerName.toLowerCase(), result);
-        }
-        return result;
     }
 }

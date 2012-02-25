@@ -26,10 +26,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.ASPlayer;
+import de.minestar.AdminStuff.manager.ASPlayer;
+import de.minestar.AdminStuff.manager.PlayerManager;
 
 public class ASEntityListener implements Listener {
+
+    private PlayerManager pManager;
+
+    public ASEntityListener(PlayerManager pManager) {
+        this.pManager = pManager;
+    }
     /**
      * 
      * ON ENTITY DAMAGE
@@ -41,8 +47,7 @@ public class ASEntityListener implements Listener {
             return;
 
         // ADD PLAYER, IF NOT FOUND
-        Player player = (Player) event.getEntity();
-        ASPlayer thisPlayer = Core.getOrCreateASPlayer(player);
+        ASPlayer thisPlayer = pManager.getPlayer((Player) event.getEntity());
 
         // IS PLAYER GOD = NO DAMAGE
         if (thisPlayer.isGod()) {

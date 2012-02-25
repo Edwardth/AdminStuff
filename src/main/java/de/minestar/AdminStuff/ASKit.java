@@ -39,8 +39,4 @@ public class ASKit {
     public void addItem(ItemStack item) {
         kitList.put(item.getTypeId() + "_" + item.getData(), item);
     }
-
-    public void removeItem(ItemStack item) {
-        kitList.remove(item.getTypeId() + "_" + item.getData());
-    }
 }

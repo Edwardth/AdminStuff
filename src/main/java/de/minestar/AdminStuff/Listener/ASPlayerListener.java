@@ -47,111 +47,73 @@ import org.bukkit.inventory.ItemStack;
 import com.bukkit.gemo.utils.BlockUtils;
 import com.bukkit.gemo.utils.UtilPermissions;
 
+import de.minestar.AdminStuff.manager.ASPlayer;
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.ASPlayer;
+import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class ASPlayerListener implements Listener {
-    private static Map<String, ASPlayer> playerMap = new TreeMap<String, ASPlayer>();
+
+    private PlayerManager pManager;
     public static Map<String, ItemStack> queuedFillChest = new TreeMap<String, ItemStack>();
 
-    /**
-     * 
-     * ON PLAYER MOVE
-     * 
-     */
+    public ASPlayerListener(PlayerManager pManager) {
+        this.pManager = pManager;
+    }
+
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         if (BlockUtils.LocationEquals(event.getTo(), event.getFrom()))
             return;
 
-        // ADD PLAYER, IF NOT FOUND
-        ASPlayer thisPlayer = Core.getOrCreateASPlayer(event.getPlayer());
-
-        // IS PLAYER GLUED = RETURN TO GLUELOCATION
-        if (thisPlayer.isGlued() && thisPlayer.getGlueLocation() != null)
-            event.setTo(thisPlayer.getGlueLocation());
+        ASPlayer target = pManager.getPlayer(event.getPlayer());
+        if (target.isGlued())
+            event.setTo(target.getGlueLocation());
     }
 
-    // ON PLAYER PRELOGIN
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerPreLogin(PlayerPreLoginEvent event) {
         String name = event.getName().toLowerCase();
-        ASPlayer thisPlayer = Core.getOrCreateASPlayer(event.getName());
+        ASPlayer thisPlayer = pManager.getPlayer(name);
+
         // IS USER BANNED IN TXT?
-        if (Core.bannedPlayers.containsKey(name) || thisPlayer.isBanned()) {
+        if (pManager.isPermBanned(name) || thisPlayer.isBanned()) {
             event.disallow(Result.KICK_BANNED, "Du bist gebannt!");
             return;
         }
 
-        if (thisPlayer.isTempBanned()) {
-            long endTime = thisPlayer.getBanEndTime();
-            if (endTime <= System.currentTimeMillis()) {
-                thisPlayer.setTempBanned(false);
-                thisPlayer.setBanEndTime(0);
-                thisPlayer.saveConfig(false, false,  false, true, false, false, false);
-            } else {
-                event.disallow(Result.KICK_BANNED, ("Du bist temporaer gebannt bis " + new Date(endTime + 1000)));
-                return;
-            }
-        }
+        if (thisPlayer.isTempBanned())
+            event.disallow(Result.KICK_BANNED, ("Du bist temporaer gebannt bis " + new Date(thisPlayer.getBanEndTime() + 1000)));
     }
-    /**
-     * 
-     * ON PLAYER JOIN
-     * 
-     */
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        ASPlayer thisPlayer = Core.getOrCreateASPlayer(player);
+        ASPlayer thisPlayer = pManager.getPlayer(player);
 
-        // IS USER BANNED IN TXT?
-        if (Core.bannedPlayers.containsKey(player.getName().toLowerCase()) || thisPlayer.isBanned()) {
+        // IS USER BANNED IN TXT OR TEMPBANNED
+        if (pManager.isPermBanned(player.getName()) || thisPlayer.isBanned()) {
             player.kickPlayer("Du bist gebannt!");
             return;
         }
-
-        // IS USER TEMPBANNED?
-
         // UPDATE NICK
-        thisPlayer.updateNick();
-        thisPlayer.updateLastSeen();
+        pManager.updateLastSeen(thisPlayer);
     }
 
-    /**
-     * 
-     * ON PLAYER KICK
-     * 
-     */
     @EventHandler
     public void onPlayerKick(PlayerKickEvent event) {
         if (event.isCancelled())
             return;
-        ASPlayer thisPlayer = Core.getOrCreateASPlayer(event.getPlayer());
-        thisPlayer.updateLastSeen();
-        thisPlayer.saveConfig(true, true, true, true, true, true, true);
-        playerMap.remove(event.getPlayer().getName().toLowerCase());
+        ASPlayer thisPlayer = pManager.getPlayer(event.getPlayer());
+        pManager.updateLastSeen(thisPlayer);
     }
 
-    /**
-     * 
-     * ON PLAYER QUIT
-     * 
-     */
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        ASPlayer thisPlayer = Core.getOrCreateASPlayer(event.getPlayer());
-        thisPlayer.updateLastSeen();
-        thisPlayer.saveConfig(true, true, true, true, true, true, true);
-        playerMap.remove(event.getPlayer().getName().toLowerCase());
+        ASPlayer thisPlayer = pManager.getPlayer(event.getPlayer());
+        pManager.updateLastSeen(thisPlayer);
     }
 
-    /**
-     * 
-     * ON PLAYER INTERACT
-     * 
-     */
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         // ONLY CLICKS ON A BLOCK
@@ -189,17 +151,7 @@ public class ASPlayerListener implements Listener {
         }
     }
 
-    /**
-     * 
-     * FILL CHEST
-     * 
-     * @param chest
-     *            chestblock to be filled
-     * @param item
-     *            item to fill the chest with
-     * 
-     */
-    public void fillChest(Chest chest, ItemStack item) {
+    private void fillChest(Chest chest, ItemStack item) {
         if (item.getTypeId() == Material.AIR.getId()) {
             chest.getInventory().clear();
             return;
@@ -208,18 +160,15 @@ public class ASPlayerListener implements Listener {
             chest.getInventory().addItem(item);
     }
 
-    /**
-     * 
-     * ON PLAYER CHAT
-     * 
-     */
     @EventHandler
     public void onPlayerChat(PlayerChatEvent event) {
-        ASPlayer thisPlayer = Core.getOrCreateASPlayer(event.getPlayer());
+        ASPlayer thisPlayer = pManager.getPlayer(event.getPlayer());
 
         // Player is muted -> only ops and player with right permission can read
         if (thisPlayer.isMuted()) {
-            String nick = Core.getPlayerName(event.getPlayer());
+            event.setCancelled(true);
+
+            String nick = thisPlayer.getNickname();
             String message = ChatColor.RED + "[STUMM] " + nick + ChatColor.WHITE + ": " + event.getMessage();
             Player current = null;
 
@@ -228,24 +177,7 @@ public class ASPlayerListener implements Listener {
                 current = i.next();
                 if (UtilPermissions.playerCanUseCommand(current, "adminstuff.chat.read.muted"))
                     PlayerUtils.sendBlankMessage(current, message);
-
             }
-            event.setCancelled(true);
         }
     }
-    /**
-     * @return the playerMap
-     */
-    public static Map<String, ASPlayer> getPlayerMap() {
-        return playerMap;
-    }
-
-    /**
-     * @param playerMap
-     *            the playerMap to set
-     */
-    public static void setPlayerMap(Map<String, ASPlayer> playerMap) {
-        ASPlayerListener.playerMap = playerMap;
-    }
-
 }

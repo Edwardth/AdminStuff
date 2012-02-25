@@ -24,14 +24,19 @@ package de.minestar.AdminStuff.commands;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.ASPlayer;
+import de.minestar.AdminStuff.manager.ASPlayer;
+import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
+import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdBan extends AbstractExtendedCommand {
 
-    public cmdBan(String syntax, String arguments, String node) {
+    private PlayerManager pManager;
+
+    public cmdBan(String syntax, String arguments, String node, PlayerManager pManager) {
         super(Core.NAME, syntax, arguments, node);
+        this.pManager = pManager;
     }
 
     @Override
@@ -47,30 +52,27 @@ public class cmdBan extends AbstractExtendedCommand {
      */
     public void execute(String[] args, Player player) {
         String playerName = args[0];
-
         Player target = PlayerUtils.getOnlinePlayer(playerName);
-        if (target == null) {
-            playerName = PlayerUtils.getOfflinePlayerName(playerName);
-            if (playerName == null) {
-                PlayerUtils.sendError(player, pluginName, "Spieler '" + args[0] + "' wurde nicht gefunden!");
-                return;
-            } else {
-                Core.banPlayer(playerName);
-                PlayerUtils.sendSuccess(player, pluginName, "Der Spieler '" + playerName + "' wurde gebannt!");
-            }
-        } else if (target.isOnline()) {
-
+        // player is online
+        if (target != null)
             playerName = target.getName();
-            ASPlayer thisTarget = Core.getOrCreateASPlayer(target);
-            thisTarget.setBanned(true);
-            target.setBanned(true);
-            thisTarget.saveConfig(false, false, false, true, false, false, false);
+        else {
+            // player is maybe offline?
+            playerName = PlayerUtils.getOfflinePlayerName(playerName);
+            // player was never on the server
+            if (playerName == null) {
+                playerName = args[0];
+                PlayerUtils.sendError(player, pluginName, "Spieler '" + playerName + "' existiert nicht, wird dennoch praeventiv gebannt!");
+            }
+            // player is offline
+            else
+                PlayerUtils.sendInfo(player, pluginName, "Spieler '" + playerName + "' ist nicht online, wird dennoch gebannt!");
+        }
+        ASPlayer thisTarget = pManager.getPlayer(playerName);
+        String message = target != null ? getMessage(args) : null;
+        pManager.bannPlayer(thisTarget, target, message);
 
-            Core.banPlayer(playerName);
-            target.kickPlayer(getMessage(args));
-            PlayerUtils.sendSuccess(player, pluginName, "Der Spieler '" + playerName + "' wurde gebannt!");
-        } else
-            PlayerUtils.sendError(player, pluginName, "Spieler '" + target.getName() + "' existiert, ist aber nicht online!");
+        PlayerUtils.sendSuccess(player, pluginName, "Spieler '" + playerName + "' wurde gebannt!");
     }
 
     // Create message from arguments
@@ -78,14 +80,7 @@ public class cmdBan extends AbstractExtendedCommand {
         // if no message was given
         if (args.length == 1)
             return "Du bist gebannt!";
-
-        StringBuilder sBuilder = new StringBuilder(256);
-        int i = 1;
-        for (; i < args.length - 1; ++i) {
-            sBuilder.append(args[i]);
-            sBuilder.append(' ');
-        }
-        sBuilder.append(args[i]);
-        return sBuilder.toString();
+        else
+            return ChatUtils.getMessage(args, " ", 1);
     }
 }

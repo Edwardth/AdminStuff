@@ -26,12 +26,18 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
+import de.minestar.AdminStuff.manager.ASPlayer;
+import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
+import de.minestar.minestarlibrary.utils.ChatUtils;
 
 public class cmdMe extends AbstractExtendedCommand {
 
-    public cmdMe(String syntax, String arguments, String node) {
+    private PlayerManager pManager;
+
+    public cmdMe(String syntax, String arguments, String node, PlayerManager pManager) {
         super(Core.NAME, syntax, arguments, node);
+        this.pManager = pManager;
     }
 
     @Override
@@ -45,22 +51,8 @@ public class cmdMe extends AbstractExtendedCommand {
      * @param split
      */
     public void execute(String[] args, Player player) {
-        String msg = getMessage(args);
+        ASPlayer thisPlayer = pManager.getPlayer(player);
 
-        // ADD PLAYER, IF NOT FOUND
-        Core.getOrCreateASPlayer(player);
-        Bukkit.broadcastMessage(ChatColor.WHITE + " * " + Core.getPlayerName(player) + " " + msg);
+        Bukkit.broadcastMessage(ChatColor.WHITE + " * " + thisPlayer.getNickname() + " " + ChatUtils.getMessage(args));
     }
-
-    private String getMessage(String[] args) {
-        StringBuilder sBuilder = new StringBuilder(256);
-        int i = 0;
-        for (; i < args.length - 1; ++i) {
-            sBuilder.append(args[i]);
-            sBuilder.append(' ');
-        }
-        sBuilder.append(args[i]);
-        return sBuilder.toString();
-    }
-
 }
