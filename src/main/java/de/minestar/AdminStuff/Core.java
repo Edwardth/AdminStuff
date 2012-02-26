@@ -208,6 +208,7 @@ public class Core extends JavaPlugin {
         );
         //@formatter:on
     }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         cmdList.handleCommand(sender, label, args);
