@@ -19,7 +19,7 @@
  * 
  */
 
-package de.minestar.AdminStuff.Listener;
+package de.minestar.AdminStuff.listener;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -52,12 +52,12 @@ import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
-public class ASPlayerListener implements Listener {
+public class PlayerListener implements Listener {
 
     private PlayerManager pManager;
     public static Map<String, ItemStack> queuedFillChest = new TreeMap<String, ItemStack>();
 
-    public ASPlayerListener(PlayerManager pManager) {
+    public PlayerListener(PlayerManager pManager) {
         this.pManager = pManager;
     }
 

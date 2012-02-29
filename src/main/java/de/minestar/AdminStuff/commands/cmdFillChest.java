@@ -26,7 +26,7 @@ import org.bukkit.inventory.ItemStack;
 
 import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.ASItem;
-import de.minestar.AdminStuff.Listener.ASPlayerListener;
+import de.minestar.AdminStuff.listener.PlayerListener;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
@@ -52,7 +52,7 @@ public class cmdFillChest extends AbstractCommand {
         byte Data = ASItem.getDataPart(args[0]);
         ItemStack item = ASItem.getItemStack(ID, Data, 64);
         if (item != null) {
-            ASPlayerListener.queuedFillChest.put(player.getName(), item);
+            PlayerListener.queuedFillChest.put(player.getName(), item);
             PlayerUtils.sendInfo(player, pluginName, "Klicke auf eine Kiste um diese mit '" + item.getType().name() + "' zu fuellen!");
         } else {
             PlayerUtils.sendError(player, pluginName, "'" + args[0] + "' wurde nicht gefunden");

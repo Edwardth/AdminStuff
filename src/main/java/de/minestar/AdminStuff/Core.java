@@ -33,8 +33,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.minestar.AdminStuff.Listener.ASEntityListener;
-import de.minestar.AdminStuff.Listener.ASPlayerListener;
 import de.minestar.AdminStuff.commands.cmdAFK;
 import de.minestar.AdminStuff.commands.cmdBan;
 import de.minestar.AdminStuff.commands.cmdBroadcast;
@@ -74,6 +72,8 @@ import de.minestar.AdminStuff.commands.cmdTime;
 import de.minestar.AdminStuff.commands.cmdUnban;
 import de.minestar.AdminStuff.commands.cmdWeather;
 import de.minestar.AdminStuff.database.DatabaseHandler;
+import de.minestar.AdminStuff.listener.PlayerListener;
+import de.minestar.AdminStuff.listener.EntityListener;
 import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.commands.CommandList;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
@@ -84,8 +84,8 @@ public class Core extends JavaPlugin {
     public final static String NAME = "AdminStuff";
 
     /** LISTENERS */
-    private ASEntityListener eListener;
-    private ASPlayerListener pListener;
+    private EntityListener eListener;
+    private PlayerListener pListener;
 
     private CommandList cmdList;
 
@@ -115,8 +115,8 @@ public class Core extends JavaPlugin {
             dbHandler = new DatabaseHandler(NAME, dataFolder);
             pManager = new PlayerManager(dbHandler, dataFolder);
 
-            eListener = new ASEntityListener(pManager);
-            pListener = new ASPlayerListener(pManager);
+            eListener = new EntityListener(pManager);
+            pListener = new PlayerListener(pManager);
 
             PluginManager pm = getServer().getPluginManager();
             pm.registerEvents(eListener, this);

@@ -19,7 +19,7 @@
  * 
  */
 
-package de.minestar.AdminStuff.Listener;
+package de.minestar.AdminStuff.listener;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,11 +29,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import de.minestar.AdminStuff.manager.ASPlayer;
 import de.minestar.AdminStuff.manager.PlayerManager;
 
-public class ASEntityListener implements Listener {
+public class EntityListener implements Listener {
 
     private PlayerManager pManager;
 
-    public ASEntityListener(PlayerManager pManager) {
+    public EntityListener(PlayerManager pManager) {
         this.pManager = pManager;
     }
     /**
