@@ -1,5 +1,5 @@
 name: AdminStuff
-main: com.bukkit.Souli.AdminStuff.ASCore
+main: de.minestar.AdminStuff.Core
 version: 1.0
 commands:
   afk:
