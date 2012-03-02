@@ -32,7 +32,7 @@ public class cmdHelpPage extends AbstractCommand {
 //    private static final String PERMISSIONS = "permissions";
 
     public cmdHelpPage(String syntax, String arguments, String node) {
-        super(Core.NAME,syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
