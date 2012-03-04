@@ -49,7 +49,7 @@ public class PlayerManager {
     private File dataFolder = null;
 
     public PlayerManager(DatabaseHandler dbHandler, File dataFolder) {
-
+        this.dbHandler = dbHandler;
         this.dataFolder = dataFolder;
         players = dbHandler.loadPlayer();
         loadBanList();

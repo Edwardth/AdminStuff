@@ -101,9 +101,9 @@ public class DatabaseHandler extends AbstractDatabaseHandler {
         getPlayerId = con.prepareStatement(     "SELECT idplayer FROM player WHERE accountName = ?");
         
         addPlayer = con.prepareStatement(       "INSERT INTO player" +
-        		                                "(accountName, displayNam, afk, muted, banned, god, mode, tempBann, lastSeen, glueLocation)" +
+        		                                "(accountName, displayName, afk, muted, banned, god, mode, tempBann, lastSeen, glueLocation)" +
         		                                "VALUES (" +
-        		                                "?,?,FALSE,FALSE,FALSE,FALSE,"+GameMode.SURVIVAL.getValue()+", 0, 'Niemals', NULL)");
+        		                                "?,?,FALSE,FALSE,FALSE,FALSE,"+GameMode.SURVIVAL.getValue()+", 0, NULL, NULL)");
         
         deleteInventory = con.prepareStatement( "DELETE FROM inventorybackup WHERE `player_has_inventorybackup`.`player` = ? AND `player_has_inventorybackup`.`inventory` = `inventorybackup`.`idinventory`");
         getInventory = con.prepareStatement(    "SELECT itemId, amount, subId FROM inventorybackup WHERE `player_has_inventorybackup`.`player` = ? AND `player_has_inventorybackup`.`inventory` = `inventorybackup`.`idinventory`");
@@ -130,6 +130,7 @@ public class DatabaseHandler extends AbstractDatabaseHandler {
     public boolean addPlayer(String playerName) {
         try {
             addPlayer.setString(1, playerName);
+            addPlayer.setString(2, playerName);
             return addPlayer.executeUpdate() == 1;
         } catch (Exception e) {
             ConsoleUtils.printException(e, Core.NAME, "Can't add player to database!");
