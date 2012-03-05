@@ -53,7 +53,7 @@ import de.minestar.AdminStuff.commands.cmdHeal;
 import de.minestar.AdminStuff.commands.cmdHelp;
 import de.minestar.AdminStuff.commands.cmdHelpPage;
 import de.minestar.AdminStuff.commands.cmdHideChat;
-import de.minestar.AdminStuff.commands.cmdIAmount;
+import de.minestar.AdminStuff.commands.cmdI;
 import de.minestar.AdminStuff.commands.cmdInvsee;
 import de.minestar.AdminStuff.commands.cmdKick;
 import de.minestar.AdminStuff.commands.cmdKickAll;
@@ -157,8 +157,8 @@ public class Core extends JavaPlugin {
             new cmdTempBan          ("/tempban",    "<Player> <Time>",      "commands.admin.tempban", pManager),
 
              // GIVE COMMANDS
-            new cmdIAmount          ("/i",      "<ItemID or Name>[:SubID] [Amount]",            "commands.admin.i"),
-            new cmdIAmount          ("/item",   "<ItemID or Name>[:SubID] [Amount]",            "commands.admin.i"),
+            new cmdI          ("/i",      "<ItemID or Name>[:SubID] [Amount]",            "commands.admin.i"),
+            new cmdI          ("/item",   "<ItemID or Name>[:SubID] [Amount]",            "commands.admin.i"),
             new cmdGiveAmount       ("/give",   "<Player> <ItemID or Name>[:SubID] [Amount]",   "commands.admin.give"),
 
             // KIT COMMAND
