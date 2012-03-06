@@ -1,6 +1,6 @@
 name: AdminStuff
 main: de.minestar.AdminStuff.Core
-version: 1.0
+version: 1.2
 commands:
   afk:
     description: Toggle AFK status

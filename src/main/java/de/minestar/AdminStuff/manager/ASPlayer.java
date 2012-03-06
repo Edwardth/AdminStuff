@@ -30,13 +30,13 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import de.minestar.core.MinestarCore;
+
 public class ASPlayer {
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
     private String playerName = "";
-    // displayname without any prefix
-    private String nickName = "";
 
     private String lastSender = null;
 
@@ -60,7 +60,6 @@ public class ASPlayer {
     // load from database
     public ASPlayer(String accountName, String nickName, boolean muted, boolean banned, boolean god, GameMode mode, long tempBanned, String lastSeen, Location glueLocation) {
         this.playerName = accountName;
-        this.nickName = nickName;
         this.isMuted = muted;
         this.isBanned = banned;
         this.mode = mode;
@@ -95,6 +94,10 @@ public class ASPlayer {
         invBackup = null;
         return temp;
     }
+    // *********************** NICK **************************
+    public String getNickname() {
+        return MinestarCore.getPlayer(this.playerName).getNickName();
+    }
 
     // *********************** AFK **************************
     public boolean isAFK() {
@@ -123,34 +126,18 @@ public class ASPlayer {
         this.lastSender = lastSender;
     }
 
-    // ****************** NICK NAME ************************
-    public String getNickname() {
-        return nickName;
-    }
-
     public String getPlayerName() {
         return playerName;
     }
 
-    protected void setNickname(String nickname) {
-        this.nickName = nickname;
-    }
-
     protected void updateNick(Player player) {
-
-        String nick = null;
-        // when player has a changed display name
-        if (!getNickname().isEmpty())
-            nick = getNickname();
-        else
-            nick = player.getDisplayName();
-        nick = nick.replace("[AFK] ", "").replace("was fished!", "");
-        if (isAFK)
-            nick = "[AFK] " + nick;
-        if (isSlapped)
-            nick = nick + "was fished!";
-
-        player.setDisplayName(nick);
+//        String nick = MinestarCore.getPlayer(this.playerName).getNickName();
+//        nick = nick.replace("[AFK] ", "").replace("was fished!", "");
+//        if (isAFK)
+//            nick = "[AFK] " + nick;
+//        if (isSlapped)
+//            nick = nick + "was fished!";
+//        MinestarCore.getPlayer(this.playerName).setNickName(nick);
     }
 
     // ********************* GLUE **************************

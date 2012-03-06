@@ -114,9 +114,9 @@ public class PlayerManager {
     }
 
     public void updateNickName(ASPlayer target, String name, Player player) {
-        target.setNickname(name);
-        target.updateNick(player);
-        dbHandler.saveDisplayName(target.getPlayerName(), name);
+//        target.setNickname(name);
+//        target.updateNick(player);
+//        dbHandler.saveDisplayName(target.getPlayerName(), name);
     }
 
     public void setGodMode(ASPlayer target, boolean isGod) {

@@ -195,8 +195,8 @@ public class Core extends JavaPlugin {
             new cmdHelpPage         ("/help",       "<Page>",               "commands.user.help"),
             new cmdAFK              ("/afk",        "",                     "commands.user.afk", pManager),
             new cmdCompass          ("/compass",    "",                     "commands.user.compass"), 
-            new cmdNickname         ("/nickname",   "<Nickname> [Player]",  "commands.admin.nickname", pManager),
-            new cmdNickname         ("/nick",       "<Nickname> [Player]",  "commands.admin.nickname", pManager),
+            new cmdNickname         ("/nickname",   "<Nickname> [Player]",  "commands.admin.nickname"),
+            new cmdNickname         ("/nick",       "<Nickname> [Player]",  "commands.admin.nickname"),
 
             // TIME & WEATHER COMMAND
             new cmdTime             ("/time",       "<Time>",               "commands.admin.time"),
