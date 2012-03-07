@@ -27,12 +27,12 @@ import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
 import de.minestar.core.MinestarCore;
-import de.minestar.minestarlibrary.commands.AbstractCommand;
+import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
-public class cmdNickname extends AbstractCommand {
+public class cmdNickname extends AbstractExtendedCommand {
 
     public cmdNickname(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);

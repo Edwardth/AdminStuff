@@ -63,12 +63,12 @@ public class cmdI extends AbstractExtendedCommand {
             }
         }
         byte data = ASItem.getDataPart(args[0]);
-        ItemStack item = ASItem.getItemStack(ID, data);
+        ItemStack item = ASItem.getItemStack(ID, amount);
         if (item == null) {
             PlayerUtils.sendError(player, pluginName, "'" + args[0] + "' wurde nicht gefunden");
             return;
         }
-        item.setAmount(amount);
+        item.setDurability(data);
         player.getInventory().addItem(item);
 
         // when item has a sub id
