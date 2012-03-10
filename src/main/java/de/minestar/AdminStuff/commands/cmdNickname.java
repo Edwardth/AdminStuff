@@ -26,20 +26,16 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.manager.ASPlayer;
-import de.minestar.AdminStuff.manager.PlayerManager;
-import de.minestar.minestarlibrary.commands.AbstractCommand;
+import de.minestar.core.MinestarCore;
+import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
-public class cmdNickname extends AbstractCommand {
+public class cmdNickname extends AbstractExtendedCommand {
 
-    private PlayerManager pManager;
-
-    public cmdNickname(String syntax, String arguments, String node, PlayerManager pManager) {
+    public cmdNickname(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.pManager = pManager;
     }
 
     @Override
@@ -81,8 +77,9 @@ public class cmdNickname extends AbstractCommand {
     }
 
     private void changeNickname(String name, Player player, CommandSender sender) {
-        ASPlayer thisPlayer = pManager.getPlayer(player);
-        pManager.updateNickName(thisPlayer, name, player);
+//        ASPlayer thisPlayer = pManager.getPlayer(player);
+//        pManager.updateNickName(thisPlayer, name, player);
+        MinestarCore.getPlayer(player).setNickName(name);
         PlayerUtils.sendInfo(player, pluginName, "Dein Nickname ist jetzt '" + name + "'!");
         ChatUtils.writeSuccess(sender, pluginName, "Der Nickname von '" + player.getName() + "' ist '" + name + "'!");
     }

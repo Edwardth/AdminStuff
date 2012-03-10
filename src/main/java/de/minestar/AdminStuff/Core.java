@@ -134,77 +134,77 @@ public class Core extends JavaPlugin {
         //@formatter:off
         cmdList = new CommandList(NAME,
             // USER PUNISH COMMANDS
-            new cmdBurn             ("/burn",       "<Player> <Time in seconds>",   "commands.admin.burn"),
-            new cmdSlap             ("/slap",       "<Player>",                     "commands.admin.slap", pManager),
-            new cmdKill             ("/kill",       "[Player_1] ... [Player_N]",    "commands.admin.kill"),
-            new cmdGlue             ("/glue",       "<Player>",                     "commands.admin.glue", pManager),
-            new cmdGlueHere         ("/gluehere",   "<Player>",                     "commands.admin.gluehere", pManager),
+            new cmdBurn             ("/burn",       "<Player> <Time in seconds>",   "adminstuff.commands.admin.burn"),
+            new cmdSlap             ("/slap",       "<Player>",                     "adminstuff.commands.admin.slap", pManager),
+            new cmdKill             ("/kill",       "[Player_1] ... [Player_N]",    "adminstuff.commands.admin.kill"),
+            new cmdGlue             ("/glue",       "<Player>",                     "adminstuff.commands.admin.glue", pManager),
+            new cmdGlueHere         ("/gluehere",   "<Player>",                     "adminstuff.commands.admin.gluehere", pManager),
 
             // CLASSICMODE
-            new cmdClassic          ("/classic", "[Player_1] ... [Player_N]",            "commands.admin.classic", pManager),
+            new cmdClassic          ("/classic", "[Player_1] ... [Player_N]",            "adminstuff.commands.admin.classic", pManager),
 
             // FLASH COMMANDS
-            new cmdFlash            ("/flash",      "",         "commands.admin.flash"),
-            new cmdFlash            ("/lightning",  "",         "commands.admin.flash"),
+            new cmdFlash            ("/flash",      "",         "adminstuff.commands.admin.flash"),
+            new cmdFlash            ("/lightning",  "",         "adminstuff.commands.admin.flash"),
 
             // KICK COMMANDS
-            new cmdKick             ("/kick",       "<Player> [Message]",             "commands.admin.kick"),
-            new cmdKickAll          ("/kickall",    "[Message]",                     "commands.admin.kickall"),
+            new cmdKick             ("/kick",       "<Player> [Message]",             "adminstuff.commands.admin.kick"),
+            new cmdKickAll          ("/kickall",    "[Message]",                     "adminstuff.commands.admin.kickall"),
 
             // BAN COMMANDS
-            new cmdUnban            ("/unban",      "<Player>",             "commands.admin.unban", pManager),
-            new cmdBan              ("/ban",        "<Player> [Message]",   "commands.admin.ban", pManager),
-            new cmdTempBan          ("/tempban",    "<Player> <Time>",      "commands.admin.tempban", pManager),
+            new cmdUnban            ("/unban",      "<Player>",             "adminstuff.commands.admin.unban", pManager),
+            new cmdBan              ("/ban",        "<Player> [Message]",   "adminstuff.commands.admin.ban", pManager),
+            new cmdTempBan          ("/tempban",    "<Player> <Time>",      "adminstuff.commands.admin.tempban", pManager),
 
              // GIVE COMMANDS
-            new cmdI          ("/i",      "<ItemID or Name>[:SubID] [Amount]",            "commands.admin.i"),
-            new cmdI          ("/item",   "<ItemID or Name>[:SubID] [Amount]",            "commands.admin.i"),
-            new cmdGiveAmount       ("/give",   "<Player> <ItemID or Name>[:SubID] [Amount]",   "commands.admin.give"),
+            new cmdI          ("/i",      "<ItemID or Name>[:SubID] [Amount]",            "adminstuff.commands.admin.i"),
+            new cmdI          ("/item",   "<ItemID or Name>[:SubID] [Amount]",            "adminstuff.commands.admin.i"),
+            new cmdGiveAmount       ("/give",   "<Player> <ItemID or Name>[:SubID] [Amount]",   "adminstuff.commands.admin.give"),
 
             // KIT COMMAND
-            new cmdKit              ("/kit",        "<Name>",   "commands.admin.usekit"),
-            new cmdListKits         ("/listkits",   "",         "commands.admin.listkits"),
+            new cmdKit              ("/kit",        "<Name>",   "adminstuff.commands.admin.usekit"),
+            new cmdListKits         ("/listkits",   "",         "adminstuff.commands.admin.listkits"),
 
             // GOD & HEAL COMMANDS
-            new cmdGod              ("/god",    "",         "commands.admin.god", pManager),
-            new cmdHeal             ("/heal",   "",         "commands.admin.heal"),
+            new cmdGod              ("/god",    "",         "adminstuff.commands.admin.god", pManager),
+            new cmdHeal             ("/heal",   "",         "adminstuff.commands.admin.heal"),
 
             // INVENTORY COMMANDS
-            new cmdClearInventory   ("/clearinventory", "",                         "commands.user.clearinventory"),
-            new cmdClearInventory   ("/cli",            "",                         "commands.user.clearinventory"),
-            new cmdInvsee           ("/invsee",         "",                         "commands.admin.invsee", pManager),
-            new cmdFillChest        ("/fillchest",      "<ItemID or Name>[:SubID]", "commands.admin.fillchest"),
-            new cmdStack            ("/stack",          "",                         "commands.user.stack"),
+            new cmdClearInventory   ("/clearinventory", "",                         "adminstuff.commands.user.clearinventory"),
+            new cmdClearInventory   ("/cli",            "",                         "adminstuff.commands.user.clearinventory"),
+            new cmdInvsee           ("/invsee",         "",                         "adminstuff.commands.admin.invsee", pManager),
+            new cmdFillChest        ("/fillchest",      "<ItemID or Name>[:SubID]", "adminstuff.commands.admin.fillchest"),
+            new cmdStack            ("/stack",          "",                         "adminstuff.commands.user.stack"),
 
             // MESSAGE COMMANDS
-            new cmdBroadcast        ("/broadcast",  "<Message>",            "commands.admin.broadcast"),
-            new cmdBroadcast        ("/cast",       "<Message>",            "commands.admin.broadcast"), 
-            new cmdMutePlayer       ("/mute",       "<Player>",             "commands.admin.mute", pManager),
-            new cmdMessage          ("/message",    "<Player> <Message>",   "commands.user.message", pManager),
-            new cmdMessage          ("/msg",        "<Player> <Message>",   "commands.user.message", pManager),
-            new cmdMessage          ("/m",          "<Player> <Message>",   "commands.user.message", pManager),
-            new cmdReply            ("/r",          "<Message>",            "commands.user.reply", pManager),
-            new cmdMe               ("/me",         "<Message>",            "commands.admin.me", pManager),
-            new cmdHideChat         ("/hidechat",   "",                     "commands.admin.hidechat", pManager),
+            new cmdBroadcast        ("/broadcast",  "<Message>",            "adminstuff.commands.admin.broadcast"),
+            new cmdBroadcast        ("/cast",       "<Message>",            "adminstuff.commands.admin.broadcast"), 
+            new cmdMutePlayer       ("/mute",       "<Player>",             "adminstuff.commands.admin.mute", pManager),
+            new cmdMessage          ("/message",    "<Player> <Message>",   "adminstuff.commands.user.message", pManager),
+            new cmdMessage          ("/msg",        "<Player> <Message>",   "adminstuff.commands.user.message", pManager),
+            new cmdMessage          ("/m",          "<Player> <Message>",   "adminstuff.commands.user.message", pManager),
+            new cmdReply            ("/r",          "<Message>",            "adminstuff.commands.user.reply", pManager),
+            new cmdMe               ("/me",         "<Message>",            "adminstuff.commands.admin.me", pManager),
+            new cmdHideChat         ("/hidechat",   "",                     "adminstuff.commands.admin.hidechat", pManager),
 
             // RECIPIENT COMMANDS
-            new cmdChatAdd          ("/chat", "",                           "commands.user.chat", pManager),
+            new cmdChatAdd          ("/chat", "",                           "adminstuff.commands.user.chat", pManager),
 
             // USER COMMANDS
-            new cmdHelp             ("/help",       "",                     "commands.user.help"),
-            new cmdHelpPage         ("/help",       "<Page>",               "commands.user.help"),
-            new cmdAFK              ("/afk",        "",                     "commands.user.afk", pManager),
-            new cmdCompass          ("/compass",    "",                     "commands.user.compass"), 
-            new cmdNickname         ("/nickname",   "<Nickname> [Player]",  "commands.admin.nickname", pManager),
-            new cmdNickname         ("/nick",       "<Nickname> [Player]",  "commands.admin.nickname", pManager),
+            new cmdHelp             ("/help",       "",                     "adminstuff.commands.user.help"),
+            new cmdHelpPage         ("/help",       "<Page>",               "adminstuff.commands.user.help"),
+            new cmdAFK              ("/afk",        "",                     "adminstuff.commands.user.afk", pManager),
+            new cmdCompass          ("/compass",    "",                     "adminstuff.commands.user.compass"), 
+            new cmdNickname         ("/nickname",   "<Nickname> [Player]",  "adminstuff.commands.admin.nickname"),
+            new cmdNickname         ("/nick",       "<Nickname> [Player]",  "adminstuff.commands.admin.nickname"),
 
             // TIME & WEATHER COMMAND
-            new cmdTime             ("/time",       "<Time>",               "commands.admin.time"),
-            new cmdWeather          ("/weather",    "<Weather>",            "commands.admin.weather"),
+            new cmdTime             ("/time",       "<Time>",               "adminstuff.commands.admin.time"),
+            new cmdWeather          ("/weather",    "<Weather>",            "adminstuff.commands.admin.weather"),
 
             // MISC COMMANDS
-            new cmdPing             ("/ping",       "",         "commands.admin.ping"),
-            new cmdSeen             ("/seen",       "<Player>", "commands.admin.seen", pManager)
+            new cmdPing             ("/ping",       "",         "adminstuff.commands.admin.ping"),
+            new cmdSeen             ("/seen",       "<Player>", "adminstuff.commands.admin.seen", pManager)
         );
         //@formatter:on
     }

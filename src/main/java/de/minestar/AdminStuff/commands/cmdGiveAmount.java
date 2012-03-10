@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 MineStar.de 
+b * Copyright (C) 2011 MineStar.de 
  * 
  * This file is part of 'AdminStuff'.
  * 
@@ -71,11 +71,12 @@ public class cmdGiveAmount extends AbstractExtendedCommand {
             }
         }
         byte data = ASItem.getDataPart(args[1]);
-        ItemStack item = ASItem.getItemStack(ID, data);
+        ItemStack item = ASItem.getItemStack(ID, amount);
         if (item == null) {
             PlayerUtils.sendError(player, pluginName, "'" + args[0] + "' wurde nicht gefunden");
             return;
         }
+        item.setDurability(data);
         target.getInventory().addItem(item);
 
         // when item has a sub id
