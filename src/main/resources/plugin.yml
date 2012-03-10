@@ -119,3 +119,6 @@ commands:
   weather:
     description: Set the weather of your world
     usage: /weather <sun|rain|storm>
+  bcount:
+    description: Count blocks in one area
+    usage: /bcount

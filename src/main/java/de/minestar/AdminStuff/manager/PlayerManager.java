@@ -23,6 +23,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -30,6 +31,7 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -94,7 +96,40 @@ public class PlayerManager {
     }
 
     // ******************************************************
-    // ************* COMMOND USER MODIFACTION ***************
+    // *************** BLOCK COUNTING ***********************
+    // ******************************************************
+
+    private Map<String, Location[]> blockCountSel = new HashMap<String, Location[]>();
+
+    public boolean isInSelectionMode(Player player) {
+        return blockCountSel.containsKey(player.getName().toLowerCase());
+    }
+
+    public void setSelectionMode(Player player, boolean isIn) {
+        if (isIn)
+            blockCountSel.put(player.getName().toLowerCase(), new Location[2]);
+        else
+            blockCountSel.remove(player.getName().toLowerCase());
+    }
+
+    public void setSelectedBlock(Player player, Block target, boolean leftClick) {
+        String pName = player.getName().toLowerCase();
+        Location[] corners = blockCountSel.get(pName);
+        if (corners != null) {
+            if (leftClick)
+                corners[0] = target.getLocation();
+            else
+                corners[1] = target.getLocation();
+        }
+        blockCountSel.put(pName, corners);
+    }
+
+    public Location[] getSelectedBlocks(Player player) {
+        return blockCountSel.get(player.getName().toLowerCase());
+    }
+
+    // ******************************************************
+    // ************** COMMON USER MODIFACTION ***************
     // ******************************************************
 
     // glue or unglue the player and store it in database

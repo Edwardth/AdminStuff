@@ -37,6 +37,7 @@ import de.minestar.AdminStuff.Listener.ASEntityListener;
 import de.minestar.AdminStuff.Listener.ASPlayerListener;
 import de.minestar.AdminStuff.commands.cmdAFK;
 import de.minestar.AdminStuff.commands.cmdBan;
+import de.minestar.AdminStuff.commands.cmdBlockCount;
 import de.minestar.AdminStuff.commands.cmdBroadcast;
 import de.minestar.AdminStuff.commands.cmdBurn;
 import de.minestar.AdminStuff.commands.cmdChatAdd;
@@ -204,7 +205,9 @@ public class Core extends JavaPlugin {
 
             // MISC COMMANDS
             new cmdPing             ("/ping",       "",         "adminstuff.commands.admin.ping"),
-            new cmdSeen             ("/seen",       "<Player>", "adminstuff.commands.admin.seen", pManager)
+            new cmdSeen             ("/seen",       "<Player>", "adminstuff.commands.admin.seen", pManager),
+            
+            new cmdBlockCount       ("/bcount",     "",         "adminstuff.commands.admin.count", pManager)
         );
         //@formatter:on
     }
