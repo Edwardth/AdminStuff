@@ -33,7 +33,7 @@ import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdSeen extends AbstractCommand {
-    
+
     private PlayerManager pManager;
 
     public cmdSeen(String syntax, String arguments, String node, PlayerManager pManager) {

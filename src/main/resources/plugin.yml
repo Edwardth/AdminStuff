@@ -1,6 +1,6 @@
 name: AdminStuff
-main: com.bukkit.Souli.AdminStuff.ASCore
-version: 1.0
+main: de.minestar.AdminStuff.Core
+version: 1.2
 commands:
   afk:
     description: Toggle AFK status
@@ -119,3 +119,6 @@ commands:
   weather:
     description: Set the weather of your world
     usage: /weather <sun|rain|storm>
+  bcount:
+    description: Count blocks in one area
+    usage: /bcount

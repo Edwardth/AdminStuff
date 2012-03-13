@@ -30,9 +30,9 @@ import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
-public class cmdIAmount extends AbstractExtendedCommand {
+public class cmdI extends AbstractExtendedCommand {
 
-    public cmdIAmount(String syntax, String arguments, String node) {
+    public cmdI(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
     }
 
@@ -49,27 +49,26 @@ public class cmdIAmount extends AbstractExtendedCommand {
      *            split[1] is the itemamount
      */
     public void execute(String[] args, Player player) {
-        String ID = ASItem.getIDPart(args[1]);
-        int amount = 1;
-        if (args.length == 2)
-            amount = 64;
-        else if (args.length == 3) {
+        String ID = ASItem.getIDPart(args[0]);
+        int amount = 64;
+        if (args.length == 2) {
             try {
-                amount = Integer.parseInt(args[2]);
+                amount = Integer.parseInt(args[1]);
             } catch (Exception e) {
-                PlayerUtils.sendError(player, ID, args[2] + " ist keine Zahl! Itemanzahl auf Eins gesetzt!");
+                PlayerUtils.sendError(player, ID, args[1] + " ist keine Zahl! Itemanzahl auf Eins gesetzt!");
             }
             if (amount < 1) {
-                PlayerUtils.sendError(player, pluginName, args[2] + "ist kleiner als Eins! Itemanzahl auf Eins gesetzt!");
+                PlayerUtils.sendError(player, pluginName, args[1] + "ist kleiner als Eins! Itemanzahl auf Eins gesetzt!");
                 amount = 1;
             }
         }
-        byte data = ASItem.getDataPart(args[1]);
-        ItemStack item = ASItem.getItemStack(ID, data);
+        byte data = ASItem.getDataPart(args[0]);
+        ItemStack item = ASItem.getItemStack(ID, amount);
         if (item == null) {
             PlayerUtils.sendError(player, pluginName, "'" + args[0] + "' wurde nicht gefunden");
             return;
         }
+        item.setDurability(data);
         player.getInventory().addItem(item);
 
         // when item has a sub id

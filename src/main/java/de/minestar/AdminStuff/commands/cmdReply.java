@@ -28,7 +28,6 @@ import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.manager.ASPlayer;
 import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
-import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdReply extends AbstractExtendedCommand {
@@ -67,7 +66,12 @@ public class cmdReply extends AbstractExtendedCommand {
 
             ASPlayer thisTarget = pManager.getPlayer(target);
 
-            String message = "] : " + ChatColor.GRAY + ChatUtils.getMessage(args, " ", 1);
+            String text = "";
+            for (String txt : args) {
+                text += txt + " ";
+            }
+
+            String message = "] : " + ChatColor.GRAY + text;
             PlayerUtils.sendBlankMessage(player, ChatColor.GOLD + "[ me -> " + thisTarget.getNickname() + message);
             PlayerUtils.sendBlankMessage(target, ChatColor.GOLD + "[ " + thisPlayer.getNickname() + " -> me" + message);
             thisPlayer.setLastSender(target.getName());

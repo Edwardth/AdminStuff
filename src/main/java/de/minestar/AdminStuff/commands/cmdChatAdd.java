@@ -36,7 +36,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdChatAdd extends AbstractExtendedCommand {
 
     private PlayerManager pManager;
-    
+
     public cmdChatAdd(String syntax, String arguments, String node, PlayerManager pManager) {
         super(Core.NAME, syntax, arguments, node);
         this.pManager = pManager;

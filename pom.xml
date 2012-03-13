@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.minestar</groupId>
 	<artifactId>AdminStuff</artifactId>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.2</version>
 	<dependencies>
 		<dependency>
 			<groupId>de.minestar</groupId>
@@ -13,7 +13,7 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.1-R4</version>
+			<version>1.1-R5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.bukkit</groupId>
@@ -24,6 +24,11 @@
 			<groupId>de.minestar</groupId>
 			<artifactId>FalseBookCore</artifactId>
 			<version>0.92.3alpha</version>
+		</dependency>
+		<dependency>
+			<groupId>de.minestar</groupId>
+			<artifactId>MinestarCore</artifactId>
+			<version>1.2</version>
 		</dependency>
 	</dependencies>
 	<build>
