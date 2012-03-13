@@ -85,7 +85,7 @@ public class cmdTempBan extends AbstractCommand {
                 ChatUtils.writeError(sender, pluginName, "Spieler '" + playerName + "' ist nicht online, wird dennoch gebannt!");
         }
 
-        int[] dates = parseString(" " + args[1].toLowerCase(), sender);
+        int[] dates = parseString(args[1].toLowerCase(), sender);
         // an error occured
         if (dates == null)
             return;

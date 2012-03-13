@@ -38,10 +38,12 @@ import de.minestar.AdminStuff.commands.cmdBan;
 import de.minestar.AdminStuff.commands.cmdBlockCount;
 import de.minestar.AdminStuff.commands.cmdBroadcast;
 import de.minestar.AdminStuff.commands.cmdBurn;
+import de.minestar.AdminStuff.commands.cmdButcher;
 import de.minestar.AdminStuff.commands.cmdChatAdd;
 import de.minestar.AdminStuff.commands.cmdClassic;
 import de.minestar.AdminStuff.commands.cmdClearInventory;
 import de.minestar.AdminStuff.commands.cmdCompass;
+import de.minestar.AdminStuff.commands.cmdDeleteItem;
 import de.minestar.AdminStuff.commands.cmdFillChest;
 import de.minestar.AdminStuff.commands.cmdFlash;
 import de.minestar.AdminStuff.commands.cmdGiveAmount;
@@ -73,8 +75,8 @@ import de.minestar.AdminStuff.commands.cmdTime;
 import de.minestar.AdminStuff.commands.cmdUnban;
 import de.minestar.AdminStuff.commands.cmdWeather;
 import de.minestar.AdminStuff.database.DatabaseHandler;
-import de.minestar.AdminStuff.listener.PlayerListener;
 import de.minestar.AdminStuff.listener.EntityListener;
+import de.minestar.AdminStuff.listener.PlayerListener;
 import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.commands.CommandList;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
@@ -206,8 +208,13 @@ public class Core extends JavaPlugin {
             // MISC COMMANDS
             new cmdPing             ("/ping",       "",         "adminstuff.commands.admin.ping"),
             new cmdSeen             ("/seen",       "<Player>", "adminstuff.commands.admin.seen", pManager),
-            
-            new cmdBlockCount       ("/bcount",     "",         "adminstuff.commands.admin.count", pManager)
+
+            // BLOCK COUNT
+            new cmdBlockCount       ("/bcount",     "",         "adminstuff.commands.admin.count", pManager),
+
+            // REMOVE ENTITYS
+            new cmdDeleteItem       ("/delitem",    "i[ItemID] r[Radius]",    "adminstuff.commands.admin.delitem"),
+            new cmdButcher          ("/butcher",    "m[MobName] r[Radius]",    "adminstuff.commands.admin.butcher")
         );
         //@formatter:on
     }

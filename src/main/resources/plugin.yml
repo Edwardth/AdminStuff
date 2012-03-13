@@ -115,10 +115,16 @@ commands:
     usage: /time <day|night>
   unban:
     description: Unban a player
-    usage: /unban <Player> 
+    usage: /unban <Player>
   weather:
     description: Set the weather of your world
     usage: /weather <sun|rain|storm>
   bcount:
     description: Count blocks in one area
     usage: /bcount
+  delitem:
+    description: Remove items from world
+    usage: /delitem i[ItemID] r[Radius]
+  butcher:
+    description: Remove mobs from  world
+    usage: /butcher m[MobName] r[Radius]
