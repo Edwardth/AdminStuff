@@ -23,18 +23,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.persistence.NoResultException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
 
 import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.manager.ASPlayer;
@@ -57,11 +53,6 @@ public class DatabaseHandler extends AbstractDatabaseHandler {
     private PreparedStatement setGlueLoc;
 
     private PreparedStatement addPlayer;
-
-    private PreparedStatement getPlayerId;
-
-    private PreparedStatement getInventory;
-    private PreparedStatement deleteInventory;
     // /Prepared Statements
 
     public DatabaseHandler(String pluginName, File dataFolder) {
@@ -98,15 +89,10 @@ public class DatabaseHandler extends AbstractDatabaseHandler {
         setLastseen = con.prepareStatement(     "UPDATE player SET lastSeen = NOW() WHERE accountName = ?");
         setGlueLoc = con.prepareStatement(      "UPDATE player SET glueLocation = ? WHERE accountName = ?");
         
-        getPlayerId = con.prepareStatement(     "SELECT idplayer FROM player WHERE accountName = ?");
-        
         addPlayer = con.prepareStatement(       "INSERT INTO player" +
         		                                "(accountName, displayName, afk, muted, banned, god, mode, tempBann, lastSeen, glueLocation)" +
         		                                "VALUES (" +
         		                                "?,?,FALSE,FALSE,FALSE,FALSE,"+GameMode.SURVIVAL.getValue()+", 0, NULL, NULL)");
-        
-        deleteInventory = con.prepareStatement( "DELETE FROM inventorybackup WHERE `player_has_inventorybackup`.`player` = ? AND `player_has_inventorybackup`.`inventory` = `inventorybackup`.`idinventory`");
-        getInventory = con.prepareStatement(    "SELECT itemId, amount, subId FROM inventorybackup WHERE `player_has_inventorybackup`.`player` = ? AND `player_has_inventorybackup`.`inventory` = `inventorybackup`.`idinventory`");
         //@formatter:on
     }
 
@@ -224,117 +210,6 @@ public class DatabaseHandler extends AbstractDatabaseHandler {
             ConsoleUtils.printException(e, Core.NAME, "Can't update glue location for player '" + playerName + "'!");
             return false;
         }
-    }
-
-    // ******************************************************
-    // ************** INVENTORY HANDLING ********************
-    // ******************************************************
-
-    public boolean saveInventory(String playerName, ItemStack[] items) {
-        try {
-            // add items to database
-            String query = getItemQuery(items);
-            Statement s = dbConnection.getConnection().createStatement();
-            if (s.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) == 0) {
-                ConsoleUtils.printError(Core.NAME, "No item was saved in database!");
-                return false;
-            }
-            ResultSet rs = s.getGeneratedKeys();
-
-            // get player id
-            int playerId = getPlayerId(playerName);
-
-            // connect items and player
-            query = getInvQuery(rs, playerId);
-
-            return s.executeUpdate(query) > 0;
-        } catch (Exception e) {
-            ConsoleUtils.printException(e, Core.NAME, "Can't save inventory backup in database!");
-            return false;
-        }
-    }
-    // building a dynamic query to connecting items and player
-    private String getInvQuery(ResultSet rs, int playerId) throws Exception {
-        StringBuilder sBuilder = new StringBuilder("INSERT INTO player_has_inventorybackup() VALUES ");
-        while (rs.next()) {
-            sBuilder.append('(');
-            sBuilder.append(playerId);
-            sBuilder.append(',');
-            sBuilder.append(rs.getInt(1));
-            sBuilder.append(')');
-            sBuilder.append(',');
-        }
-        sBuilder.setCharAt(sBuilder.length() - 1, ';');
-        return sBuilder.toString();
-    }
-
-    // building a dynamic query to store items
-    private String getItemQuery(ItemStack[] items) {
-        StringBuilder sBuilder = new StringBuilder("INSERT INTO inventorybackup (itemId, subId, amount) VALUES ");
-        for (ItemStack item : items) {
-            sBuilder.append('(');
-            sBuilder.append(item.getTypeId());
-            sBuilder.append(',');
-            sBuilder.append(item.getDurability());
-            sBuilder.append(',');
-            sBuilder.append(item.getAmount());
-            sBuilder.append(')');
-            sBuilder.append(',');
-        }
-        sBuilder.setCharAt(sBuilder.length() - 1, ';');
-        return sBuilder.toString();
-    }
-
-    public ItemStack[] loadInventory(String playerName) {
-        try {
-
-            int id = getPlayerId(playerName);
-
-            // SELECT itemId, subId, amount
-            getInventory.setInt(1, id);
-            ResultSet rs = getInventory.executeQuery();
-            ArrayList<ItemStack> list = new ArrayList<ItemStack>(36);
-            while (rs.next())
-                list.add(new ItemStack(rs.getInt(1), rs.getInt(2), rs.getByte(3)));
-
-            if (list.size() == 0)
-                return null;
-
-            ItemStack[] items = new ItemStack[list.size()];
-            items = list.toArray(items);
-            deleteInventory(id);
-
-            return items;
-        } catch (Exception e) {
-            ConsoleUtils.printException(e, Core.NAME, "Can't load inventory from database!");
-            return null;
-        }
-    }
-
-    private boolean deleteInventory(int id) throws Exception {
-        deleteInventory.setInt(1, id);
-        return deleteInventory.executeUpdate() != 0;
-    }
-
-    public boolean deleteInventory(String playerName) {
-        try {
-            int id = getPlayerId(playerName);
-
-            return deleteInventory(id);
-        } catch (Exception e) {
-            ConsoleUtils.printException(e, Core.NAME, "Can't delete inventory from database!");
-            return false;
-        }
-    }
-
-    private int getPlayerId(String playerName) throws Exception {
-
-        getPlayerId.setString(1, playerName);
-        ResultSet rs = getPlayerId.executeQuery();
-        if (!rs.next())
-            throw new NoResultException("Can't find player id for player '" + playerName + "'!");
-
-        return rs.getInt(1);
     }
 
     // ******************************************************

@@ -175,7 +175,7 @@ public class Core extends JavaPlugin {
             // INVENTORY COMMANDS
             new cmdClearInventory   ("/clearinventory", "",                         "adminstuff.commands.user.clearinventory"),
             new cmdClearInventory   ("/cli",            "",                         "adminstuff.commands.user.clearinventory"),
-            new cmdInvsee           ("/invsee",         "",                         "adminstuff.commands.admin.invsee", pManager),
+            new cmdInvsee           ("/invsee",         "",                         "adminstuff.commands.admin.invsee"),
             new cmdFillChest        ("/fillchest",      "<ItemID or Name>[:SubID]", "adminstuff.commands.admin.fillchest"),
             new cmdStack            ("/stack",          "",                         "adminstuff.commands.user.stack"),
 

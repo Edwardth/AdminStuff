@@ -23,21 +23,15 @@ package de.minestar.AdminStuff.commands;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.manager.ASPlayer;
-import de.minestar.AdminStuff.manager.PlayerManager;
-import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
+import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
-public class cmdInvsee extends AbstractExtendedCommand {
+public class cmdInvsee extends AbstractCommand {
 
-    private PlayerManager pManager;
-
-    public cmdInvsee(String syntax, String arguments, String node, PlayerManager pManager) {
+    public cmdInvsee(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.pManager = pManager;
     }
 
     @Override
@@ -51,25 +45,14 @@ public class cmdInvsee extends AbstractExtendedCommand {
      * @param split
      */
     public void execute(String[] args, Player player) {
-        if (args.length == 0)
-            restoreInventory(player);
-        else if (args.length == 1)
-            seeInventory(player, args[0]);
-        else
-            PlayerUtils.sendError(player, pluginName, getHelpMessage());
-    }
-
-    private void seeInventory(Player player, String targetName) {
+        String targetName = args[0];
         Player target = PlayerUtils.getOnlinePlayer(targetName);
         if (target == null)
             PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + "' wurde nicht gefunden!");
         else if (target.isDead() || !target.isOnline())
             PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + "' ist tot oder nicht online!");
         else {
-            ASPlayer thisPlayer = pManager.getPlayer(target);
             Inventory inv = player.getInventory();
-            // backup players inventory
-            pManager.backupInventory(thisPlayer, inv.getContents());
 
             inv.clear();
 
@@ -78,16 +61,5 @@ public class cmdInvsee extends AbstractExtendedCommand {
 
             PlayerUtils.sendSuccess(player, pluginName, "Zeige dir das Inventar von  '" + targetName + "'");
         }
-    }
-
-    private void restoreInventory(Player player) {
-        ASPlayer thisPlayer = pManager.getPlayer(player);
-        // CLEAR INVENTORY
-        player.getInventory().clear();
-        // RESTORE INVENTORY
-        ItemStack[] inv = pManager.restoreInventory(thisPlayer);
-        player.getInventory().addItem(inv);
-        PlayerUtils.sendSuccess(player, pluginName, "Inventar wiederhergestellt");
-
     }
 }

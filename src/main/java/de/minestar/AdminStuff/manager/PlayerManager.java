@@ -34,7 +34,6 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.database.DatabaseHandler;
@@ -173,27 +172,6 @@ public class PlayerManager {
     public void setSlapped(ASPlayer target, Player player, boolean isSlapped) {
         target.setSlapped(isSlapped);
         target.updateNick(player);
-    }
-
-    // ******************************************************
-    // *************** INVENTORY HANDLING *******************
-    // ******************************************************
-
-    public void backupInventory(ASPlayer target, ItemStack[] content) {
-        target.saveInventory(content);
-        dbHandler.saveInventory(target.getPlayerName(), content);
-    }
-
-    public ItemStack[] restoreInventory(ASPlayer target) {
-        ItemStack[] backUp = target.getInvBackUp();
-        // use local copy and delete from database
-        if (backUp != null)
-            dbHandler.deleteInventory(target.getPlayerName());
-        // load from database and delete it
-        else
-            backUp = dbHandler.loadInventory(target.getPlayerName());
-
-        return backUp;
     }
 
     // ******************************************************
