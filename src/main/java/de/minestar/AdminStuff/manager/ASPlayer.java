@@ -28,7 +28,6 @@ import java.util.Set;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import de.minestar.core.MinestarCore;
 
@@ -55,7 +54,6 @@ public class ASPlayer {
 
     private Location glueLocation = null;
     private Set<String> Recipients = null;
-    private ItemStack[] invBackup = new ItemStack[36];
 
     // load from database
     public ASPlayer(String accountName, String nickName, boolean muted, boolean banned, boolean god, GameMode mode, long tempBanned, String lastSeen, Location glueLocation) {
@@ -84,16 +82,6 @@ public class ASPlayer {
         lastSeen = dateFormat.format(new Date());
     }
 
-    // **************** INVENTORY BACKUP ********************
-    protected void saveInventory(ItemStack[] content) {
-        invBackup = content;
-    }
-
-    protected ItemStack[] getInvBackUp() {
-        ItemStack[] temp = invBackup;
-        invBackup = null;
-        return temp;
-    }
     // *********************** NICK **************************
     public String getNickname() {
         return MinestarCore.getPlayer(this.playerName).getNickName();
