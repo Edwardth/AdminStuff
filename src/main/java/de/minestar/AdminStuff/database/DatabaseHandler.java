@@ -55,8 +55,8 @@ public class DatabaseHandler extends AbstractDatabaseHandler {
     private PreparedStatement addPlayer;
     // /Prepared Statements
 
-    public DatabaseHandler(String pluginName, File dataFolder) {
-        super(pluginName, dataFolder);
+    public DatabaseHandler(File dataFolder) {
+        super(Core.NAME, dataFolder);
     }
 
     @Override

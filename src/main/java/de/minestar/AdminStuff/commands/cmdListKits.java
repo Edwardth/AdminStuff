@@ -21,21 +21,22 @@
 
 package de.minestar.AdminStuff.commands;
 
-import java.util.Map.Entry;
-
 import org.bukkit.entity.Player;
 
 import com.bukkit.gemo.utils.UtilPermissions;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.ASKit;
+import de.minestar.AdminStuff.manager.KitManager;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdListKits extends AbstractCommand {
 
-    public cmdListKits(String syntax, String arguments, String node) {
+    private KitManager kManager;
+
+    public cmdListKits(String syntax, String arguments, String node, KitManager kMAnager) {
         super(Core.NAME, syntax, arguments, node);
+        this.kManager = kMAnager;
     }
 
     @Override
@@ -51,9 +52,10 @@ public class cmdListKits extends AbstractCommand {
     public void execute(String[] args, Player player) {
         PlayerUtils.sendInfo(player, pluginName, "Kitliste:");
         int count = 1;
-        for (Entry<String, ASKit> entry : Core.kitList.entrySet()) {
-            if (UtilPermissions.playerCanUseCommand(player, "adminstuff.commands.admin.kit." + entry.getKey()))
-                PlayerUtils.sendInfo(player, "#" + count++ + " : " + entry.getKey());
+        Iterable<String> kitNames = kManager.getNames();
+        for (String kitName : kitNames) {
+            if (UtilPermissions.playerCanUseCommand(player, "adminstuff.commands.admin.kit." + kitName))
+                PlayerUtils.sendInfo(player, "#" + count++ + " : " + kitName);
         }
     }
 }

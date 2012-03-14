@@ -21,14 +21,18 @@
 
 package de.minestar.AdminStuff.commands;
 
+import java.util.List;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import com.bukkit.gemo.utils.UtilPermissions;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.ASKit;
+import de.minestar.AdminStuff.manager.KitManager;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
@@ -36,8 +40,11 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdKit extends AbstractCommand {
 
-    public cmdKit(String syntax, String arguments, String node) {
+    private KitManager kManager;
+
+    public cmdKit(String syntax, String arguments, String node, KitManager kManager) {
         super(Core.NAME, syntax, arguments, node);
+        this.kManager = kManager;
     }
 
     @Override
@@ -52,7 +59,7 @@ public class cmdKit extends AbstractCommand {
      */
     public void execute(String[] args, Player player) {
         if (args.length == 1) {
-            ASKit kit = Core.kitList.get(args[0]);
+            List<ItemStack> kit = kManager.getKit(args[0]);
             if (kit == null)
                 PlayerUtils.sendError(player, pluginName, "Das Kit '" + args[0] + "' wurde nicht gefunden!");
             else
@@ -75,7 +82,7 @@ public class cmdKit extends AbstractCommand {
 
     private void giveKits(String[] args, CommandSender sender) {
         String kitName = args[0];
-        ASKit kit = Core.kitList.get(kitName);
+        List<ItemStack> kit = kManager.getKit(kitName);
         if (kit == null) {
             ChatUtils.writeError(sender, pluginName, "Das Kit '" + kitName + "' wurde nicht gefunden!");
             return;
@@ -98,8 +105,10 @@ public class cmdKit extends AbstractCommand {
         }
     }
 
-    private void giveKit(Player target, ASKit kit, String kitName) {
-        kit.giveKit(target);
+    private void giveKit(Player target, List<ItemStack> kit, String kitName) {
+        Inventory inv = target.getInventory();
+        for (ItemStack item : kit)
+            inv.addItem(item);
         PlayerUtils.sendInfo(target, pluginName, "Du hast Kit '" + kitName + "' erhalten!");
     }
 }
