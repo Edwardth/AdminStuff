@@ -26,31 +26,22 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import de.minestar.AdminStuff.manager.ASPlayer;
-import de.minestar.AdminStuff.manager.PlayerManager;
+import de.minestar.core.MinestarCore;
+import de.minestar.core.units.MinestarPlayer;
 
 public class EntityListener implements Listener {
 
-    private PlayerManager pManager;
-
-    public EntityListener(PlayerManager pManager) {
-        this.pManager = pManager;
+    public EntityListener() {
     }
-    /**
-     * 
-     * ON ENTITY DAMAGE
-     * 
-     */
+
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.isCancelled() || !(event.getEntity() instanceof Player))
             return;
 
-        // ADD PLAYER, IF NOT FOUND
-        ASPlayer thisPlayer = pManager.getPlayer((Player) event.getEntity());
-
-        // IS PLAYER GOD = NO DAMAGE
-        if (thisPlayer.isGod()) {
+        MinestarPlayer mPlayer = MinestarCore.getPlayer((Player) event.getEntity());
+        Boolean godMode = mPlayer.getBoolean("adminstuff.god");
+        if (godMode != null && godMode == true) {
             event.setDamage(0);
             event.setCancelled(true);
             return;

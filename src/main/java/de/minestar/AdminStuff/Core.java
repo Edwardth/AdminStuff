@@ -96,7 +96,7 @@ public class Core extends AbstractCore {
 
     @Override
     protected boolean createListener() {
-        entityListener = new EntityListener(pManager);
+        entityListener = new EntityListener();
         playerListener = new PlayerListener(pManager);
         return true;
     }
@@ -145,7 +145,7 @@ public class Core extends AbstractCore {
                 new cmdListKits         ("/listkits",   "",         "adminstuff.commands.admin.listkits", kManager),
 
                 // GOD & HEAL COMMANDS
-                new cmdGod              ("/god",    "",         "adminstuff.commands.admin.god", pManager),
+                new cmdGod              ("/god",    "",         "adminstuff.commands.admin.god"),
                 new cmdHeal             ("/heal",   "",         "adminstuff.commands.admin.heal"),
 
                 // INVENTORY COMMANDS
@@ -181,7 +181,7 @@ public class Core extends AbstractCore {
 
                 // MISC COMMANDS
                 new cmdPing             ("/ping",       "",         "adminstuff.commands.admin.ping"),
-                new cmdSeen             ("/seen",       "<Player>", "adminstuff.commands.admin.seen", pManager),
+                new cmdSeen             ("/seen",       "<Player>", "adminstuff.commands.admin.seen"),
 
                 // BLOCK COUNT
                 new cmdBlockCount       ("/bcount",     "",         "adminstuff.commands.admin.count", pManager),

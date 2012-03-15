@@ -21,8 +21,6 @@
 
 package de.minestar.AdminStuff.manager;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Set;
 
 import org.bukkit.GameMode;
@@ -33,22 +31,14 @@ import de.minestar.core.MinestarCore;
 
 public class ASPlayer {
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-
     private String playerName = "";
 
     private String lastSender = null;
 
-    private String lastSeen = "Niemals";
-
     private boolean isAFK = false;
     private boolean isMuted = false;
     private boolean isSlapped = false;
-    private boolean isBanned = false;
     private boolean hideChat = false;
-    private boolean isGod = false;
-
-    private long banEndTime = 0;
 
     private GameMode mode = GameMode.SURVIVAL;
 
@@ -59,27 +49,13 @@ public class ASPlayer {
     public ASPlayer(String accountName, String nickName, boolean muted, boolean banned, boolean god, GameMode mode, long tempBanned, String lastSeen, Location glueLocation) {
         this.playerName = accountName;
         this.isMuted = muted;
-        this.isBanned = banned;
         this.mode = mode;
-        this.banEndTime = tempBanned;
-        // check time ban expire
-        isTempBanned();
-        this.lastSeen = lastSeen;
         this.glueLocation = glueLocation;
     }
 
     // call when a new player is creating
     protected ASPlayer(String playerName) {
         this.playerName = playerName;
-    }
-
-    // ******************* LAST SEEN ************************
-    public String getLastSeen() {
-        return lastSeen;
-    }
-
-    protected void updateLastSeen() {
-        lastSeen = dateFormat.format(new Date());
     }
 
     // *********************** NICK **************************
@@ -163,35 +139,6 @@ public class ASPlayer {
         Recipients = recipients;
     }
 
-    // ******************* BANN ****************************
-    public boolean isTempBanned() {
-        // is not temp banned
-        if (banEndTime == 0L)
-            return false;
-        // check expired temp banned
-        if (banEndTime <= System.currentTimeMillis()) {
-            banEndTime = 0L;
-            return false;
-        } else
-            return true;
-    }
-
-    public long getBanEndTime() {
-        return banEndTime;
-    }
-
-    protected void setBanEndTime(long banEndTime) {
-        this.banEndTime = banEndTime;
-    }
-
-    public boolean isBanned() {
-        return isBanned;
-    }
-
-    protected void setBanned(boolean isBanned) {
-        this.isBanned = isBanned;
-    }
-
     // ****************** HIDE CHAT ***********************
     public boolean isHideChat() {
         return hideChat;
@@ -199,15 +146,6 @@ public class ASPlayer {
 
     public void setHideChat(boolean hideChat) {
         this.hideChat = hideChat;
-    }
-
-    // ****************** GOD MODE ************************
-    public boolean isGod() {
-        return isGod;
-    }
-
-    protected void setGod(boolean isGod) {
-        this.isGod = isGod;
     }
 
     // ****************** GAME MODE ***********************

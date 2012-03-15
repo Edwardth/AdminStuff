@@ -130,11 +130,6 @@ public class PlayerManager {
 //        dbHandler.saveDisplayName(target.getPlayerName(), name);
     }
 
-    public void setGodMode(ASPlayer target, boolean isGod) {
-        target.setGod(isGod);
-        dbHandler.saveGod(target.getPlayerName(), isGod);
-    }
-
     public void setGameMode(ASPlayer target, Player player, GameMode mode) {
         target.setGameMode(mode);
         player.setGameMode(mode);

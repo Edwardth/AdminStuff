@@ -26,19 +26,16 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.manager.ASPlayer;
-import de.minestar.AdminStuff.manager.PlayerManager;
+import de.minestar.core.MinestarCore;
+import de.minestar.core.units.MinestarPlayer;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdSeen extends AbstractCommand {
 
-    private PlayerManager pManager;
-
-    public cmdSeen(String syntax, String arguments, String node, PlayerManager pManager) {
+    public cmdSeen(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.pManager = pManager;
     }
 
     @Override
@@ -67,8 +64,13 @@ public class cmdSeen extends AbstractCommand {
         if (correct == null)
             ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + "' wurde nicht gefunden!");
         else {
-            ASPlayer thisTarget = pManager.getPlayer(correct);
-            ChatUtils.writeInfo(sender, pluginName, "Spieler '" + correct + "' wurde zuletzt " + thisTarget.getLastSeen() + " gesehen!");
+            MinestarPlayer mPlayer = MinestarCore.getPlayer(correct);
+            String seen = mPlayer.getString("adminstuff.lastseen");
+            if (seen == null) {
+                seen = "Niemals";
+                mPlayer.setString("adminstuff.lastseen", seen);
+            }
+            ChatUtils.writeInfo(sender, pluginName, "Spieler '" + correct + "' wurde zuletzt " + seen + " gesehen!");
         }
     }
 }
