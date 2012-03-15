@@ -30,20 +30,20 @@ import de.minestar.AdminStuff.commands.cmdBlockCount;
 import de.minestar.AdminStuff.commands.cmdBroadcast;
 import de.minestar.AdminStuff.commands.cmdBurn;
 import de.minestar.AdminStuff.commands.cmdButcher;
-import de.minestar.AdminStuff.commands.cmdChatAdd;
+import de.minestar.AdminStuff.commands.cmdChat;
 import de.minestar.AdminStuff.commands.cmdClassic;
 import de.minestar.AdminStuff.commands.cmdClearInventory;
 import de.minestar.AdminStuff.commands.cmdCompass;
 import de.minestar.AdminStuff.commands.cmdDeleteItem;
 import de.minestar.AdminStuff.commands.cmdFillChest;
 import de.minestar.AdminStuff.commands.cmdFlash;
-import de.minestar.AdminStuff.commands.cmdGiveAmount;
+import de.minestar.AdminStuff.commands.cmdGive;
 import de.minestar.AdminStuff.commands.cmdGlue;
 import de.minestar.AdminStuff.commands.cmdGlueHere;
 import de.minestar.AdminStuff.commands.cmdGod;
 import de.minestar.AdminStuff.commands.cmdHeal;
 import de.minestar.AdminStuff.commands.cmdHideChat;
-import de.minestar.AdminStuff.commands.cmdI;
+import de.minestar.AdminStuff.commands.cmdItem;
 import de.minestar.AdminStuff.commands.cmdInvsee;
 import de.minestar.AdminStuff.commands.cmdKick;
 import de.minestar.AdminStuff.commands.cmdKickAll;
@@ -52,7 +52,7 @@ import de.minestar.AdminStuff.commands.cmdKit;
 import de.minestar.AdminStuff.commands.cmdListKits;
 import de.minestar.AdminStuff.commands.cmdMe;
 import de.minestar.AdminStuff.commands.cmdMessage;
-import de.minestar.AdminStuff.commands.cmdMutePlayer;
+import de.minestar.AdminStuff.commands.cmdMute;
 import de.minestar.AdminStuff.commands.cmdNickname;
 import de.minestar.AdminStuff.commands.cmdPing;
 import de.minestar.AdminStuff.commands.cmdReply;
@@ -136,9 +136,9 @@ public class Core extends AbstractCore {
                 new cmdTempBan          ("/tempban",    "<Player> <Time>",      "adminstuff.commands.admin.tempban", pManager),
 
                  // GIVE COMMANDS
-                new cmdI                ("/i",      "<ItemID or Name>[:SubID] [Amount]",            "adminstuff.commands.admin.i"),
-                new cmdI                ("/item",   "<ItemID or Name>[:SubID] [Amount]",            "adminstuff.commands.admin.i"),
-                new cmdGiveAmount       ("/give",   "<Player> <ItemID or Name>[:SubID] [Amount]",   "adminstuff.commands.admin.give"),
+                new cmdItem                ("/i",      "<ItemID or Name>[:SubID] [Amount]",            "adminstuff.commands.admin.i"),
+                new cmdItem                ("/item",   "<ItemID or Name>[:SubID] [Amount]",            "adminstuff.commands.admin.i"),
+                new cmdGive       ("/give",   "<Player> <ItemID or Name>[:SubID] [Amount]",   "adminstuff.commands.admin.give"),
 
                 // KIT COMMAND
                 new cmdKit              ("/kit",        "<Name>",   "adminstuff.commands.admin.usekit", kManager),
@@ -158,7 +158,7 @@ public class Core extends AbstractCore {
                 // MESSAGE COMMANDS
                 new cmdBroadcast        ("/broadcast",  "<Message>",            "adminstuff.commands.admin.broadcast"),
                 new cmdBroadcast        ("/cast",       "<Message>",            "adminstuff.commands.admin.broadcast"), 
-                new cmdMutePlayer       ("/mute",       "<Player>",             "adminstuff.commands.admin.mute", pManager),
+                new cmdMute       ("/mute",       "<Player>",             "adminstuff.commands.admin.mute", pManager),
                 new cmdMessage          ("/message",    "<Player> <Message>",   "adminstuff.commands.user.message", pManager),
                 new cmdMessage          ("/msg",        "<Player> <Message>",   "adminstuff.commands.user.message", pManager),
                 new cmdMessage          ("/m",          "<Player> <Message>",   "adminstuff.commands.user.message", pManager),
@@ -167,7 +167,7 @@ public class Core extends AbstractCore {
                 new cmdHideChat         ("/hidechat",   "",                     "adminstuff.commands.admin.hidechat", pManager),
 
                 // RECIPIENT COMMANDS
-                new cmdChatAdd          ("/chat", "",                           "adminstuff.commands.user.chat", pManager),
+                new cmdChat          ("/chat", "",                           "adminstuff.commands.user.chat", pManager),
 
                 // USER COMMANDS
                 new cmdAFK              ("/afk",        "",                     "adminstuff.commands.user.afk", pManager),

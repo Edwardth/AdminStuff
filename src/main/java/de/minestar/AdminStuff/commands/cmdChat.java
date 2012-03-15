@@ -32,12 +32,11 @@ import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
-// TODO: Rename
-public class cmdChatAdd extends AbstractExtendedCommand {
+public class cmdChat extends AbstractExtendedCommand {
 
     private PlayerManager pManager;
 
-    public cmdChatAdd(String syntax, String arguments, String node, PlayerManager pManager) {
+    public cmdChat(String syntax, String arguments, String node, PlayerManager pManager) {
         super(Core.NAME, syntax, arguments, node);
         this.pManager = pManager;
     }

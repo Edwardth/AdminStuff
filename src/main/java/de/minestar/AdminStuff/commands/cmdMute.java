@@ -32,11 +32,11 @@ import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
-public class cmdMutePlayer extends AbstractExtendedCommand {
+public class cmdMute extends AbstractExtendedCommand {
 
     private PlayerManager pManager;
 
-    public cmdMutePlayer(String syntax, String arguments, String node, PlayerManager pManager) {
+    public cmdMute(String syntax, String arguments, String node, PlayerManager pManager) {
         super(Core.NAME, syntax, arguments, node);
         this.pManager = pManager;
     }

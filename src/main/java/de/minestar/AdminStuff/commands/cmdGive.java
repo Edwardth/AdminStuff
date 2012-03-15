@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 MineStar.de 
+b * Copyright (C) 2011 MineStar.de 
  * 
  * This file is part of 'AdminStuff'.
  * 
@@ -30,51 +30,60 @@ import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
-public class cmdI extends AbstractExtendedCommand {
+public class cmdGive extends AbstractExtendedCommand {
 
-    public cmdI(String syntax, String arguments, String node) {
+    public cmdGive(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
     /**
      * Representing the command <br>
-     * /i <ItemID or Name>[:SubID] <Amount> <br>
+     * /give <ItemID or Name>[:SubID] <Amount> <br>
      * This gives the player a specified itemstack
      * 
      * @param player
      *            Called the command
      * @param split
-     *            split[0] is the item name
-     *            split[1] is the itemamount
+     * 	          split[0] is the targets name
+     *            split[1] is the item name
+     *            split[2] is the itemamount
      */
     public void execute(String[] args, Player player) {
-        String ID = ASItem.getIDPart(args[0]);
-        int amount = 64;
-        if (args.length == 2) {
+        Player target = PlayerUtils.getOnlinePlayer(args[0]);
+        if (target == null) {
+            PlayerUtils.sendError(player, pluginName, "Spieler '" + args[0] + "' nicht gefunden!");
+            return;
+        }
+        String ID = ASItem.getIDPart(args[1]);
+        int amount = 1;
+        if (args.length == 2)
+            amount = 64;
+        else if (args.length == 3) {
             try {
-                amount = Integer.parseInt(args[1]);
+                amount = Integer.parseInt(args[2]);
             } catch (Exception e) {
-                PlayerUtils.sendError(player, ID, args[1] + " ist keine Zahl! Itemanzahl auf Eins gesetzt!");
+                PlayerUtils.sendError(player, ID, args[2] + " ist keine Zahl! Itemanzahl auf Eins gesetzt!");
             }
             if (amount < 1) {
-                PlayerUtils.sendError(player, pluginName, args[1] + "ist kleiner als Eins! Itemanzahl auf Eins gesetzt!");
+                PlayerUtils.sendError(player, pluginName, args[2] + "ist kleiner als Eins! Itemanzahl auf Eins gesetzt!");
                 amount = 1;
             }
         }
-        byte data = ASItem.getDataPart(args[0]);
+        byte data = ASItem.getDataPart(args[1]);
         ItemStack item = ASItem.getItemStack(ID, amount);
         if (item == null) {
             PlayerUtils.sendError(player, pluginName, "'" + args[0] + "' wurde nicht gefunden");
             return;
         }
         item.setDurability(data);
-        player.getInventory().addItem(item);
+        target.getInventory().addItem(item);
 
         // when item has a sub id
         String itemName = item.getType().name() + (data == 0 ? "" : ":" + data);
 
-        PlayerUtils.sendInfo(player, "Du erhaelst " + amount + " mal " + itemName);
-        ConsoleUtils.printInfo(pluginName, "ITEM: " + player.getName() + " himself : " + amount + " x " + itemName);
+        PlayerUtils.sendSuccess(player, pluginName, "Spieler '" + target.getName() + "' erhaelt " + amount + " mal " + itemName);
+        PlayerUtils.sendInfo(target, "Du erhaelst " + amount + " mal " + itemName);
+        ConsoleUtils.printInfo(pluginName, "GIVE: " + player.getName() + " TO " + target.getName() + " : " + amount + " x " + itemName);
     }
 }
