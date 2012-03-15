@@ -25,18 +25,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.manager.ASPlayer;
-import de.minestar.AdminStuff.manager.PlayerManager;
+import de.minestar.core.MinestarCore;
+import de.minestar.core.units.MinestarPlayer;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdAFK extends AbstractCommand {
 
-    private PlayerManager pManager;
-
-    public cmdAFK(String syntax, String arguments, String node, PlayerManager pManager) {
+    public cmdAFK(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.pManager = pManager;
     }
 
     @Override
@@ -51,10 +48,13 @@ public class cmdAFK extends AbstractCommand {
      */
     public void execute(String[] args, Player player) {
 
-        ASPlayer thisPlayer = pManager.getPlayer(player);
-        boolean isAFK = !thisPlayer.isAFK();
-
-        pManager.setAFK(thisPlayer, isAFK, player);
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
+        Boolean isAFK = mPlayer.getBoolean("adminstuff.afk");
+        if (isAFK == null || false)
+            isAFK = true;
+        else
+            isAFK = false;
+        mPlayer.setBoolean("adminstuff.afk", isAFK);
 
         if (isAFK) {
             Bukkit.broadcastMessage(player.getDisplayName() + " ist AFK");

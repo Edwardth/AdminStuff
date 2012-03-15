@@ -44,12 +44,9 @@ public class DatabaseHandler extends AbstractDatabaseHandler {
 
     // Prepared Statements
     private PreparedStatement setMute;
-    private PreparedStatement setBann;
     private PreparedStatement setGod;
     private PreparedStatement setDisplayName;
     private PreparedStatement setMode;
-    private PreparedStatement setTempBann;
-    private PreparedStatement setLastseen;
     private PreparedStatement setGlueLoc;
 
     private PreparedStatement addPlayer;
@@ -81,12 +78,9 @@ public class DatabaseHandler extends AbstractDatabaseHandler {
     protected void createStatements(String pluginName, Connection con) throws Exception {
         //@formatter:off
         setMute = con.prepareStatement(         "UPDATE player SET muted = ? WHERE accountName = ?");
-        setBann = con.prepareStatement(         "UPDATE player SET banned = ? WHERE accountName = ?");
         setGod = con.prepareStatement(          "UPDATE player SET god = ? WHERE accountName = ?");
         setDisplayName = con.prepareStatement(  "UPDATE player SET displayName = ? WHERE accountName = ?");
         setMode = con.prepareStatement(         "UPDATE player SET mode = ? WHERE accountName = ?");
-        setTempBann = con.prepareStatement(     "UPDATE player SET tempBann = ? WHERE accountName = ?");
-        setLastseen = con.prepareStatement(     "UPDATE player SET lastSeen = NOW() WHERE accountName = ?");
         setGlueLoc = con.prepareStatement(      "UPDATE player SET glueLocation = ? WHERE accountName = ?");
         
         addPlayer = con.prepareStatement(       "INSERT INTO player" +
@@ -135,17 +129,6 @@ public class DatabaseHandler extends AbstractDatabaseHandler {
         }
     }
 
-    public boolean saveBanned(String playerName, boolean isBanned) {
-        try {
-            setBann.setBoolean(1, isBanned);
-            setBann.setString(2, playerName);
-            return setBann.executeUpdate() == 1;
-        } catch (Exception e) {
-            ConsoleUtils.printException(e, Core.NAME, "Can't update bann status for player '" + playerName + "'!");
-            return false;
-        }
-    }
-
     public boolean saveGod(String playerName, boolean isGod) {
         try {
             setGod.setBoolean(1, isGod);
@@ -175,28 +158,6 @@ public class DatabaseHandler extends AbstractDatabaseHandler {
             return setMode.executeUpdate() == 1;
         } catch (Exception e) {
             ConsoleUtils.printException(e, Core.NAME, "Can't update game mode for player '" + playerName + "'!");
-            return false;
-        }
-    }
-
-    public boolean updateLastSeen(String playerName) {
-        try {
-            setLastseen.setString(1, playerName);
-            return setLastseen.executeUpdate() == 1;
-        } catch (Exception e) {
-            ConsoleUtils.printException(e, Core.NAME, "Can't update last seen for player '" + playerName + "'!");
-            return false;
-        }
-    }
-
-    // in a far far galaxy a long time ago ...
-    public boolean saveTempBann(String playerName, long time) {
-        try {
-            setTempBann.setLong(1, time);
-            setTempBann.setString(2, playerName);
-            return setTempBann.executeUpdate() == 1;
-        } catch (Exception e) {
-            ConsoleUtils.printException(e, Core.NAME, "Can't update temp bann for player '" + playerName + "'!");
             return false;
         }
     }

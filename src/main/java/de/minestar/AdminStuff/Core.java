@@ -43,8 +43,8 @@ import de.minestar.AdminStuff.commands.cmdGlueHere;
 import de.minestar.AdminStuff.commands.cmdGod;
 import de.minestar.AdminStuff.commands.cmdHeal;
 import de.minestar.AdminStuff.commands.cmdHideChat;
-import de.minestar.AdminStuff.commands.cmdItem;
 import de.minestar.AdminStuff.commands.cmdInvsee;
+import de.minestar.AdminStuff.commands.cmdItem;
 import de.minestar.AdminStuff.commands.cmdKick;
 import de.minestar.AdminStuff.commands.cmdKickAll;
 import de.minestar.AdminStuff.commands.cmdKill;
@@ -89,7 +89,7 @@ public class Core extends AbstractCore {
     @Override
     protected boolean createManager() {
         dbHandler = new DatabaseHandler(getDataFolder());
-        pManager = new PlayerManager(dbHandler, getDataFolder());
+        pManager = new PlayerManager(dbHandler);
         kManager = new KitManager(getDataFolder());
         return true;
     }
@@ -131,9 +131,9 @@ public class Core extends AbstractCore {
                 new cmdKickAll          ("/kickall",    "[Message]",                     "adminstuff.commands.admin.kickall"),
 
                 // BAN COMMANDS
-                new cmdUnban            ("/unban",      "<Player>",             "adminstuff.commands.admin.unban", pManager),
-                new cmdBan              ("/ban",        "<Player> [Message]",   "adminstuff.commands.admin.ban", pManager),
-                new cmdTempBan          ("/tempban",    "<Player> <Time>",      "adminstuff.commands.admin.tempban", pManager),
+                new cmdUnban            ("/unban",      "<Player>",             "adminstuff.commands.admin.unban"),
+                new cmdBan              ("/ban",        "<Player> [Message]",   "adminstuff.commands.admin.ban"),
+                new cmdTempBan          ("/tempban",    "<Player> <Time>",      "adminstuff.commands.admin.tempban"),
 
                  // GIVE COMMANDS
                 new cmdItem                ("/i",      "<ItemID or Name>[:SubID] [Amount]",            "adminstuff.commands.admin.i"),
@@ -170,7 +170,7 @@ public class Core extends AbstractCore {
                 new cmdChat          ("/chat", "",                           "adminstuff.commands.user.chat", pManager),
 
                 // USER COMMANDS
-                new cmdAFK              ("/afk",        "",                     "adminstuff.commands.user.afk", pManager),
+                new cmdAFK              ("/afk",        "",                     "adminstuff.commands.user.afk"),
                 new cmdCompass          ("/compass",    "",                     "adminstuff.commands.user.compass"), 
                 new cmdNickname         ("/nickname",   "<Nickname> [Player]",  "adminstuff.commands.admin.nickname"),
                 new cmdNickname         ("/nick",       "<Nickname> [Player]",  "adminstuff.commands.admin.nickname"),

@@ -21,6 +21,7 @@
 
 package de.minestar.AdminStuff.listener;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
@@ -36,7 +37,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPreLoginEvent;
@@ -47,12 +47,16 @@ import org.bukkit.inventory.ItemStack;
 import com.bukkit.gemo.utils.BlockUtils;
 import com.bukkit.gemo.utils.UtilPermissions;
 
-import de.minestar.AdminStuff.manager.ASPlayer;
 import de.minestar.AdminStuff.Core;
+import de.minestar.AdminStuff.manager.ASPlayer;
 import de.minestar.AdminStuff.manager.PlayerManager;
+import de.minestar.core.MinestarCore;
+import de.minestar.core.units.MinestarPlayer;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class PlayerListener implements Listener {
+
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
     private PlayerManager pManager;
     public static Map<String, ItemStack> queuedFillChest = new TreeMap<String, ItemStack>();
@@ -74,44 +78,34 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerPreLogin(PlayerPreLoginEvent event) {
         String name = event.getName().toLowerCase();
-        ASPlayer thisPlayer = pManager.getPlayer(name);
-
-        // IS USER BANNED IN TXT?
-        if (pManager.isPermBanned(name) || thisPlayer.isBanned()) {
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(name);
+        Boolean permBanned = mPlayer.getBoolean("banned");
+        if (permBanned != null && permBanned == true) {
             event.disallow(Result.KICK_BANNED, "Du bist gebannt!");
             return;
         }
-
-        if (thisPlayer.isTempBanned())
-            event.disallow(Result.KICK_BANNED, ("Du bist temporaer gebannt bis " + new Date(thisPlayer.getBanEndTime() + 1000)));
-    }
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        ASPlayer thisPlayer = pManager.getPlayer(player);
-
-        // IS USER BANNED IN TXT OR TEMPBANNED
-        if (pManager.isPermBanned(player.getName()) || thisPlayer.isBanned()) {
-            player.kickPlayer("Du bist gebannt!");
-            return;
+        Long timeBann = mPlayer.getLong("tempBann");
+        if (timeBann != null && timeBann != 0L) {
+            if (timeBann <= System.currentTimeMillis())
+                mPlayer.setLong("tempBann", 0L);
+            else
+                event.disallow(Result.KICK_BANNED, ("Du bist temporaer gebannt bis " + new Date(timeBann + 1000)));
         }
-        // UPDATE NICK
-        pManager.updateLastSeen(thisPlayer);
+
     }
 
     @EventHandler
     public void onPlayerKick(PlayerKickEvent event) {
         if (event.isCancelled())
             return;
-        ASPlayer thisPlayer = pManager.getPlayer(event.getPlayer());
-        pManager.updateLastSeen(thisPlayer);
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
+        mPlayer.setString("adminstuff.lastseen", dateFormat.format(new Date()));
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        ASPlayer thisPlayer = pManager.getPlayer(event.getPlayer());
-        pManager.updateLastSeen(thisPlayer);
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
+        mPlayer.setString("adminstuff.lastseen", dateFormat.format(new Date()));
     }
 
     @EventHandler

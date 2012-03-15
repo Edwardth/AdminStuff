@@ -18,42 +18,24 @@
 
 package de.minestar.AdminStuff.manager;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 
-import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.database.DatabaseHandler;
-import de.minestar.minestarlibrary.utils.ConsoleUtils;
 
 public class PlayerManager {
 
     private Map<String, ASPlayer> players;
-    private Set<String> banList = new HashSet<String>();
     private DatabaseHandler dbHandler;
 
-    private CraftServer cServer = (CraftServer) Bukkit.getServer();
-
-    private File dataFolder = null;
-
-    public PlayerManager(DatabaseHandler dbHandler, File dataFolder) {
+    public PlayerManager(DatabaseHandler dbHandler) {
         this.dbHandler = dbHandler;
-        this.dataFolder = dataFolder;
         players = dbHandler.loadPlayer();
-        loadBanList();
     }
 
     /**
@@ -137,11 +119,6 @@ public class PlayerManager {
         dbHandler.saveGlueLocation(target.getPlayerName(), loc);
     }
 
-    public void updateLastSeen(ASPlayer target) {
-        target.updateLastSeen();
-        dbHandler.updateLastSeen(target.getPlayerName());
-    }
-
     public void setAFK(ASPlayer target, boolean isAFK, Player player) {
         target.setAFK(isAFK);
         target.updateNick(player);
@@ -172,81 +149,5 @@ public class PlayerManager {
     public void setSlapped(ASPlayer target, Player player, boolean isSlapped) {
         target.setSlapped(isSlapped);
         target.updateNick(player);
-    }
-
-    // ******************************************************
-    // ***************** BANN HANDLING **********************
-    // ******************************************************
-
-    public void bannPlayer(ASPlayer target, Player player, String message) {
-        if (player != null) {
-            player.setBanned(true);
-            player.kickPlayer(message);
-        }
-
-        target.setBanned(true);
-        banList.add(target.getPlayerName().toLowerCase());
-        dbHandler.saveBanned(target.getPlayerName(), true);
-        cServer.getHandle().addUserBan(target.getPlayerName());
-        saveBanList();
-    }
-
-    public void unbannPlayer(ASPlayer target, Player player) {
-        if (player != null)
-            player.setBanned(false);
-
-        target.setBanned(false);
-        target.setBanEndTime(0);
-        target.setBanEndTime(0);
-        banList.remove(target.getPlayerName().toLowerCase());
-        dbHandler.saveBanned(target.getPlayerName(), false);
-        cServer.getHandle().removeUserBan(target.getPlayerName());
-        saveBanList();
-    }
-
-    public boolean isPermBanned(String playerName) {
-        return banList.contains(playerName.toLowerCase());
-    }
-
-    private void saveBanList() {
-        try {
-            File banListFile = new File(dataFolder, "banned-adminstuff-players.txt");
-            BufferedWriter bWriter = new BufferedWriter(new FileWriter(banListFile));
-            for (String bannedPlayer : banList) {
-                bWriter.write(bannedPlayer);
-                bWriter.newLine();
-            }
-            bWriter.close();
-        } catch (Exception e) {
-            ConsoleUtils.printException(e, Core.NAME, "Can't save ban list!");
-        }
-    }
-
-    private void loadBanList() {
-        try {
-            File banListFile = new File(dataFolder, "banned-adminstuff-players.txt");
-            if (!banListFile.exists()) {
-                ConsoleUtils.printWarning(Core.NAME, "Banlist file does not exist");
-                return;
-            }
-            Set<String> banList = new HashSet<String>();
-            BufferedReader bReader = new BufferedReader(new FileReader(banListFile));
-            String s = "";
-            while ((s = bReader.readLine()) != null)
-                if (!s.isEmpty())
-                    banList.add(s);
-
-            bReader.close();
-        } catch (Exception e) {
-            ConsoleUtils.printException(e, Core.NAME, "Can't load ban list!");
-        }
-    }
-
-    public void tempBanPlayer(ASPlayer target, Player player, long time, String message) {
-        if (player != null)
-            player.kickPlayer(message);
-
-        target.setBanEndTime(time);
-        dbHandler.saveTempBann(target.getPlayerName(), time);
     }
 }

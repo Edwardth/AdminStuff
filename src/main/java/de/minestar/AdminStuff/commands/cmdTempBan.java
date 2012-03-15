@@ -29,8 +29,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.manager.ASPlayer;
-import de.minestar.AdminStuff.manager.PlayerManager;
+import de.minestar.core.MinestarCore;
+import de.minestar.core.units.MinestarPlayer;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
@@ -39,11 +39,8 @@ public class cmdTempBan extends AbstractCommand {
 
     private static final String[] examples = {"1d30h40m", "1d30h", "1d40m", "30h40m", "1d", "30h", "40m"};
 
-    private PlayerManager pManager;
-
-    public cmdTempBan(String syntax, String arguments, String node, PlayerManager pManager) {
+    public cmdTempBan(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.pManager = pManager;
     }
 
     @Override
@@ -90,12 +87,15 @@ public class cmdTempBan extends AbstractCommand {
         if (dates == null)
             return;
 
-        ASPlayer thisTarget = pManager.getPlayer(playerName);
         // end time = current time + day in milliseconds + hours in milliseconds
         // + mins in milliseconds
         long time = System.currentTimeMillis() + (24 * 60 * 60 * 1000 * dates[0]) + (60 * 60 * 1000 * dates[1]) + (60 * 1000 * dates[2]);
         String message = "gebannt fuer " + dates[0] + " Tage, " + dates[1] + " Stunden, " + dates[2] + " Minuten!";
-        pManager.tempBanPlayer(thisTarget, target, time, message);
+
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(playerName);
+        mPlayer.setLong("tempBann", time);
+        if (target != null)
+            target.kickPlayer(message);
 
         ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + playerName + "' ist " + message);
     }

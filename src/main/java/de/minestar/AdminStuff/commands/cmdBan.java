@@ -21,22 +21,23 @@
 
 package de.minestar.AdminStuff.commands;
 
+import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.manager.ASPlayer;
-import de.minestar.AdminStuff.manager.PlayerManager;
+import de.minestar.core.MinestarCore;
+import de.minestar.core.units.MinestarPlayer;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdBan extends AbstractExtendedCommand {
 
-    private PlayerManager pManager;
+    private CraftServer cServer = (CraftServer) Bukkit.getServer();
 
-    public cmdBan(String syntax, String arguments, String node, PlayerManager pManager) {
+    public cmdBan(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.pManager = pManager;
     }
 
     @Override
@@ -68,9 +69,14 @@ public class cmdBan extends AbstractExtendedCommand {
             else
                 PlayerUtils.sendInfo(player, pluginName, "Spieler '" + playerName + "' ist nicht online, wird dennoch gebannt!");
         }
-        ASPlayer thisTarget = pManager.getPlayer(playerName);
-        String message = target != null ? getMessage(args) : null;
-        pManager.bannPlayer(thisTarget, target, message);
+
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(playerName);
+        mPlayer.setBoolean("banned", true);
+        if (target != null) {
+            target.setBanned(true);
+            target.kickPlayer(getMessage(args));
+            cServer.getHandle().addUserBan(playerName);
+        }
 
         PlayerUtils.sendSuccess(player, pluginName, "Spieler '" + playerName + "' wurde gebannt!");
     }

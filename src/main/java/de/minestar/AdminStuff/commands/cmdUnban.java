@@ -21,22 +21,23 @@
 
 package de.minestar.AdminStuff.commands;
 
+import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.manager.ASPlayer;
-import de.minestar.AdminStuff.manager.PlayerManager;
+import de.minestar.core.MinestarCore;
+import de.minestar.core.units.MinestarPlayer;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdUnban extends AbstractCommand {
 
-    private PlayerManager pManager;
+    private CraftServer cServer = (CraftServer) Bukkit.getServer();
 
-    public cmdUnban(String syntax, String arguments, String node, PlayerManager pManager) {
+    public cmdUnban(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.pManager = pManager;
     }
 
     @Override
@@ -55,9 +56,16 @@ public class cmdUnban extends AbstractCommand {
         if (targetName == null) {
             ChatUtils.writeError(player, pluginName, "Spieler '" + args[0] + "' existiert nicht!");
         } else {
-            ASPlayer thisTarget = pManager.getPlayer(targetName);
-            pManager.unbannPlayer(thisTarget, player);
-            ChatUtils.writeSuccess(player, pluginName, "Spieler '" + targetName + "' wurde entbannt!");
+            MinestarPlayer mPlayer = MinestarCore.getPlayer(targetName);
+            Boolean b = mPlayer.getBoolean("banned");
+            if (b == null || false)
+                PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + " war nicht gebannt!");
+            else {
+                mPlayer.setBoolean("banned", false);
+                mPlayer.setLong("tempBann", 0L);
+                cServer.getHandle().removeUserBan(targetName);
+                ChatUtils.writeSuccess(player, pluginName, "Spieler '" + targetName + "' wurde entbannt!");
+            }
         }
     }
 }
