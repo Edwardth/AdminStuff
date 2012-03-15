@@ -21,8 +21,7 @@
 
 package de.minestar.AdminStuff;
 
-import java.io.File;
-
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 
 import de.minestar.AdminStuff.commands.cmdAFK;
@@ -43,8 +42,6 @@ import de.minestar.AdminStuff.commands.cmdGlue;
 import de.minestar.AdminStuff.commands.cmdGlueHere;
 import de.minestar.AdminStuff.commands.cmdGod;
 import de.minestar.AdminStuff.commands.cmdHeal;
-import de.minestar.AdminStuff.commands.cmdHelp;
-import de.minestar.AdminStuff.commands.cmdHelpPage;
 import de.minestar.AdminStuff.commands.cmdHideChat;
 import de.minestar.AdminStuff.commands.cmdI;
 import de.minestar.AdminStuff.commands.cmdInvsee;
@@ -76,6 +73,11 @@ import de.minestar.minestarlibrary.commands.CommandList;
 
 public class Core extends AbstractCore {
 
+    /** Listener */
+    private Listener entityListener;
+    private Listener playerListener;
+
+    /** Manager */
     private DatabaseHandler dbHandler;
     private PlayerManager pManager;
     private KitManager kManager;
@@ -86,23 +88,29 @@ public class Core extends AbstractCore {
 
     @Override
     protected boolean createManager() {
-        File dataFolder = getDataFolder();
-        dataFolder.mkdirs();
-        dbHandler = new DatabaseHandler(dataFolder);
-        pManager = new PlayerManager(dbHandler, dataFolder);
-        kManager = new KitManager(dataFolder);
+        dbHandler = new DatabaseHandler(getDataFolder());
+        pManager = new PlayerManager(dbHandler, getDataFolder());
+        kManager = new KitManager(getDataFolder());
+        return true;
+    }
+
+    @Override
+    protected boolean createListener() {
+        entityListener = new EntityListener(pManager);
+        playerListener = new PlayerListener(pManager);
         return true;
     }
 
     @Override
     protected boolean registerEvents(PluginManager pm) {
-        pm.registerEvents(new EntityListener(pManager), this);
-        pm.registerEvents(new PlayerListener(pManager), this);
+        pm.registerEvents(entityListener, this);
+        pm.registerEvents(playerListener, this);
         return true;
     }
 
     @Override
-    protected boolean createCommands() {//@formatter:off
+    protected boolean createCommands() {
+        //@formatter:off
         cmdList = new CommandList(NAME,
                 // USER PUNISH COMMANDS
                 new cmdBurn             ("/burn",       "<Player> <Time in seconds>",   "adminstuff.commands.admin.burn"),
@@ -128,8 +136,8 @@ public class Core extends AbstractCore {
                 new cmdTempBan          ("/tempban",    "<Player> <Time>",      "adminstuff.commands.admin.tempban", pManager),
 
                  // GIVE COMMANDS
-                new cmdI          ("/i",      "<ItemID or Name>[:SubID] [Amount]",            "adminstuff.commands.admin.i"),
-                new cmdI          ("/item",   "<ItemID or Name>[:SubID] [Amount]",            "adminstuff.commands.admin.i"),
+                new cmdI                ("/i",      "<ItemID or Name>[:SubID] [Amount]",            "adminstuff.commands.admin.i"),
+                new cmdI                ("/item",   "<ItemID or Name>[:SubID] [Amount]",            "adminstuff.commands.admin.i"),
                 new cmdGiveAmount       ("/give",   "<Player> <ItemID or Name>[:SubID] [Amount]",   "adminstuff.commands.admin.give"),
 
                 // KIT COMMAND
@@ -162,8 +170,6 @@ public class Core extends AbstractCore {
                 new cmdChatAdd          ("/chat", "",                           "adminstuff.commands.user.chat", pManager),
 
                 // USER COMMANDS
-                new cmdHelp             ("/help",       "",                     "adminstuff.commands.user.help"),
-                new cmdHelpPage         ("/help",       "<Page>",               "adminstuff.commands.user.help"),
                 new cmdAFK              ("/afk",        "",                     "adminstuff.commands.user.afk", pManager),
                 new cmdCompass          ("/compass",    "",                     "adminstuff.commands.user.compass"), 
                 new cmdNickname         ("/nickname",   "<Nickname> [Player]",  "adminstuff.commands.admin.nickname"),
@@ -187,5 +193,4 @@ public class Core extends AbstractCore {
             //@formatter:on
         return true;
     }
-
 }
