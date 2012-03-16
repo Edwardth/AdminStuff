@@ -19,7 +19,7 @@
  * 
  */
 
-package de.minestar.AdminStuff;
+package de.minestar.AdminStuff.data;
 
 import java.util.HashMap;
 import java.util.Map;
