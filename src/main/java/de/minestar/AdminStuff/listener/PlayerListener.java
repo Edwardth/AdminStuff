@@ -72,6 +72,7 @@ public class PlayerListener implements Listener {
         if (BlockUtils.LocationEquals(event.getTo(), event.getFrom()))
             return;
 
+        // check glue position
         MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
         Location gluePosition = mPlayer.getLocation("adminstuff.glue");
         if (gluePosition != null)
@@ -81,16 +82,23 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerPreLogin(PlayerPreLoginEvent event) {
         String name = event.getName().toLowerCase();
+
         MinestarPlayer mPlayer = MinestarCore.getPlayer(name);
+
+        // check whether player is banned
         Boolean permBanned = mPlayer.getBoolean("banned");
         if (permBanned != null && permBanned == true) {
             event.disallow(Result.KICK_BANNED, "Du bist gebannt!");
             return;
         }
+
+        // check time bann expire
         Long timeBann = mPlayer.getLong("tempBann");
-        if (timeBann != null && timeBann != 0L) {
+        if (timeBann != null) {
+            // timeBann is expired
             if (timeBann <= System.currentTimeMillis())
                 mPlayer.setLong("tempBann", 0L);
+            // player is timebanned
             else
                 event.disallow(Result.KICK_BANNED, ("Du bist temporaer gebannt bis " + new Date(timeBann + 1000)));
         }
@@ -100,16 +108,18 @@ public class PlayerListener implements Listener {
     public void onPlayerKick(PlayerKickEvent event) {
         if (event.isCancelled())
             return;
-        MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
-        mPlayer.setString("adminstuff.lastseen", dateFormat.format(new Date()));
-        mPlayer.removeValue("adminstuff.slapped", String.class);
-        mPlayer.removeValue("admisntuff.afk", String.class);
+        handleQuit(event.getPlayer());
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
+        handleQuit(event.getPlayer());
+    }
+
+    private void handleQuit(Player player) {
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
         mPlayer.setString("adminstuff.lastseen", dateFormat.format(new Date()));
+        // remove temponary values
         mPlayer.removeValue("adminstuff.slapped", String.class);
         mPlayer.removeValue("admisntuff.afk", String.class);
     }
