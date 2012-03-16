@@ -27,8 +27,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.manager.ASPlayer;
-import de.minestar.AdminStuff.manager.PlayerManager;
+import de.minestar.core.MinestarCore;
+import de.minestar.core.units.MinestarPlayer;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
@@ -36,11 +36,8 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdClassic extends AbstractExtendedCommand {
 
-    private PlayerManager pManager;
-
-    public cmdClassic(String syntax, String arguments, String node, PlayerManager pManager) {
+    public cmdClassic(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.pManager = pManager;
     }
 
     @Override
@@ -68,11 +65,11 @@ public class cmdClassic extends AbstractExtendedCommand {
             changeMode(console, args);
 
     }
+
     private void changeMode(CommandSender sender, String... targetNames) {
 
         Player target = null;
-        ASPlayer thisPlayer = null;
-        boolean isClassic = false;
+        MinestarPlayer mPlayer = null;
         for (String targetName : targetNames) {
             target = PlayerUtils.getOnlinePlayer(targetName);
             if (target == null) {
@@ -80,14 +77,16 @@ public class cmdClassic extends AbstractExtendedCommand {
                 return;
             }
 
-            thisPlayer = pManager.getPlayer(target);
-            isClassic = thisPlayer.getGameMode() == GameMode.CREATIVE;
+            mPlayer = MinestarCore.getPlayer(target);
+            Boolean isClassic = mPlayer.getBoolean("adminstuff.creative");
 
-            if (!isClassic) {
-                pManager.setGameMode(thisPlayer, target, GameMode.CREATIVE);
+            if (isClassic == null || !isClassic) {
+                target.setGameMode(GameMode.CREATIVE);
+                mPlayer.setBoolean("adminstuff.creative", true);
                 ChatUtils.writeSuccess(target, pluginName, "Du bist nun im Creative Modus!");
             } else {
-                pManager.setGameMode(thisPlayer, target, GameMode.SURVIVAL);
+                target.setGameMode(GameMode.SURVIVAL);
+                mPlayer.setBoolean("adminstuff.creative", false);
                 ChatUtils.writeSuccess(target, pluginName, "Du bist nun im Survival Modus!");
             }
         }

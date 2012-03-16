@@ -25,6 +25,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
+import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.core.MinestarCore;
 import de.minestar.core.units.MinestarPlayer;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
@@ -32,8 +33,11 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdAFK extends AbstractCommand {
 
-    public cmdAFK(String syntax, String arguments, String node) {
+    private PlayerManager pManager;
+
+    public cmdAFK(String syntax, String arguments, String node, PlayerManager pManager) {
         super(Core.NAME, syntax, arguments, node);
+        this.pManager = pManager;
     }
 
     @Override
@@ -63,5 +67,7 @@ public class cmdAFK extends AbstractCommand {
             Bukkit.broadcastMessage(player.getDisplayName() + " ist wieder da");
             PlayerUtils.sendInfo(player, pluginName, "Willkommen zurueck :)");
         }
+
+        pManager.updatePrefix(player, mPlayer);
     }
 }

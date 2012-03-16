@@ -27,7 +27,6 @@ import java.util.Set;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.manager.ASPlayer;
 import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
@@ -61,17 +60,11 @@ public class cmdChat extends AbstractExtendedCommand {
     }
 
     private void deleteRecipientList(Player player) {
-        // ADD PLAYER, IF NOT FOUND
-        ASPlayer thisPlayer = pManager.getPlayer(player);
-
-        // DELETE RECIPIENTLIST
-        thisPlayer.clearRecipients();
+        pManager.clearRecipients(player.getName());
         PlayerUtils.sendSuccess(player, pluginName, "Jetzt empfaengt jeder deine Nachrichten");
     }
 
     private void createRecipientList(String[] args, Player player) {
-        // ADD PLAYER, IF NOT FOUND
-        ASPlayer thisASPlayer = pManager.getPlayer(player);
 
         // ADD RECIPIENTLIST
         StringBuilder output = new StringBuilder(256);
@@ -80,7 +73,7 @@ public class cmdChat extends AbstractExtendedCommand {
         for (String arg : args) {
             temp = PlayerUtils.getOnlinePlayer(arg);
             if (temp != null) {
-                recipientSet.add(temp.getName());
+                recipientSet.add(temp.getName().toLowerCase());
                 output.append(temp.getName());
                 output.append(", ");
             }
@@ -92,8 +85,8 @@ public class cmdChat extends AbstractExtendedCommand {
         // delete the last ", "
         output.delete(output.length() - 2, output.length());
 
+        pManager.setRecipients(player.getName().toLowerCase(), recipientSet);
         // only this player will recieve the messages
-        thisASPlayer.setRecipients(recipientSet);
         PlayerUtils.sendSuccess(player, pluginName, "Folgende Spieler erhalten jetzt deine Nachrichten:");
         PlayerUtils.sendInfo(player, output.toString());
     }

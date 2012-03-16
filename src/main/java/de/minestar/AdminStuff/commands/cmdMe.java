@@ -26,18 +26,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.manager.ASPlayer;
-import de.minestar.AdminStuff.manager.PlayerManager;
+import de.minestar.core.MinestarCore;
+import de.minestar.core.units.MinestarPlayer;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 
 public class cmdMe extends AbstractExtendedCommand {
 
-    private PlayerManager pManager;
-
-    public cmdMe(String syntax, String arguments, String node, PlayerManager pManager) {
+    public cmdMe(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.pManager = pManager;
     }
 
     @Override
@@ -51,8 +48,8 @@ public class cmdMe extends AbstractExtendedCommand {
      * @param split
      */
     public void execute(String[] args, Player player) {
-        ASPlayer thisPlayer = pManager.getPlayer(player);
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
 
-        Bukkit.broadcastMessage(ChatColor.WHITE + " * " + thisPlayer.getNickname() + " " + ChatUtils.getMessage(args));
+        Bukkit.broadcastMessage(ChatColor.WHITE + " * " + mPlayer.getNickName() + " " + ChatUtils.getMessage(args));
     }
 }

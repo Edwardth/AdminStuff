@@ -21,24 +21,22 @@
 
 package de.minestar.AdminStuff.commands;
 
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import de.minestar.AdminStuff.manager.ASPlayer;
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.manager.PlayerManager;
+import de.minestar.core.MinestarCore;
+import de.minestar.core.units.MinestarPlayer;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdGlue extends AbstractExtendedCommand {
 
-    private PlayerManager pManager;
-
-    public cmdGlue(String syntax, String arguments, String node, PlayerManager pManager) {
+    public cmdGlue(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.pManager = pManager;
     }
 
     @Override
@@ -64,7 +62,7 @@ public class cmdGlue extends AbstractExtendedCommand {
     private void gluePlayer(String[] targetNames, CommandSender sender) {
 
         Player target = null;
-        ASPlayer thisPlayer = null;
+        MinestarPlayer mPlayer = null;
         for (String targetName : targetNames) {
             target = PlayerUtils.getOnlinePlayer(targetName);
             if (target == null)
@@ -72,17 +70,16 @@ public class cmdGlue extends AbstractExtendedCommand {
             else if (target.isDead() || !target.isOnline())
                 ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + "' ist tot oder offline!");
             else {
-                thisPlayer = pManager.getPlayer(target);
-
-                // player is glued -> unglue him
-                if (thisPlayer.isGlued()) {
-                    pManager.setGlue(thisPlayer, null);
-                    ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + target.getName() + "' ist wieder frei!");
-                    PlayerUtils.sendInfo(target, pluginName, "Du bist wieder frei!");
-                } else {
-                    pManager.setGlue(thisPlayer, target.getLocation());
+                mPlayer = MinestarCore.getPlayer(target);
+                Location loc = mPlayer.getLocation("adminstuff.glue");
+                if (loc == null) {
+                    mPlayer.setLocation("adminstuff.glue", target.getLocation());
                     ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + target.getName() + "' ist festgeklebt!");
                     PlayerUtils.sendInfo(target, pluginName, "Du bist festgeklebt!");
+                } else {
+                    mPlayer.removeValue("adminstuff.glue", Location.class);
+                    ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + target.getName() + "' ist wieder frei!");
+                    PlayerUtils.sendInfo(target, pluginName, "Du bist wieder frei!");
                 }
             }
         }

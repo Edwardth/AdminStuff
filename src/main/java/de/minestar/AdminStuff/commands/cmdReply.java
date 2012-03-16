@@ -25,18 +25,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.manager.ASPlayer;
-import de.minestar.AdminStuff.manager.PlayerManager;
+import de.minestar.core.MinestarCore;
+import de.minestar.core.units.MinestarPlayer;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
+import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdReply extends AbstractExtendedCommand {
 
-    private PlayerManager pManager;
-
-    public cmdReply(String syntax, String arguments, String node, PlayerManager pManager) {
+    public cmdReply(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.pManager = pManager;
     }
 
     @Override
@@ -50,32 +48,28 @@ public class cmdReply extends AbstractExtendedCommand {
      * @param split
      */
     public void execute(String[] args, Player player) {
-        // ADD PLAYER, IF NOT FOUND
-        ASPlayer thisPlayer = pManager.getPlayer(player);
-        if (thisPlayer.getLastSender() == null) {
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
+        String lastSender = mPlayer.getString("adminstuff.lastsender");
+        if (lastSender == null) {
             PlayerUtils.sendError(player, pluginName, "Du hast keinen Spieler, dem du antworten kannst...");
             return;
         }
 
-        Player target = PlayerUtils.getOnlinePlayer(thisPlayer.getLastSender());
+        Player target = PlayerUtils.getOnlinePlayer(lastSender);
         if (target == null)
-            PlayerUtils.sendError(player, pluginName, "Spieler '" + thisPlayer.getLastSender() + "' wurde nicht gefunden!");
+            PlayerUtils.sendError(player, pluginName, "Spieler '" + lastSender + "' wurde nicht gefunden!");
         else if (!target.isOnline())
             PlayerUtils.sendError(player, pluginName, "Spieler '" + target.getName() + "' ist nicht online!");
         else {
 
-            ASPlayer thisTarget = pManager.getPlayer(target);
+            MinestarPlayer mTarget = MinestarCore.getPlayer(target);
 
-            String text = "";
-            for (String txt : args) {
-                text += txt + " ";
-            }
+            String message = "] : " + ChatColor.GRAY + ChatUtils.getMessage(args);
+            PlayerUtils.sendBlankMessage(player, ChatColor.GOLD + "[ me -> " + mTarget.getNickName() + message);
+            PlayerUtils.sendBlankMessage(target, ChatColor.GOLD + "[ " + mPlayer.getNickName() + " -> me" + message);
 
-            String message = "] : " + ChatColor.GRAY + text;
-            PlayerUtils.sendBlankMessage(player, ChatColor.GOLD + "[ me -> " + thisTarget.getNickname() + message);
-            PlayerUtils.sendBlankMessage(target, ChatColor.GOLD + "[ " + thisPlayer.getNickname() + " -> me" + message);
-            thisPlayer.setLastSender(target.getName());
-            thisTarget.setLastSender(player.getName());
+            mPlayer.setString("adminstuff.lastsender", target.getName());
+            mTarget.setString("adminstuff.lastsender", player.getName());
         }
     }
 }

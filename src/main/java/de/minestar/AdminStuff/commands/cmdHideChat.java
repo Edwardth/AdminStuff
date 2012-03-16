@@ -24,18 +24,15 @@ package de.minestar.AdminStuff.commands;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.manager.ASPlayer;
-import de.minestar.AdminStuff.manager.PlayerManager;
+import de.minestar.core.MinestarCore;
+import de.minestar.core.units.MinestarPlayer;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdHideChat extends AbstractCommand {
 
-    private PlayerManager pManager;
-
-    public cmdHideChat(String syntax, String arguments, String node, PlayerManager pManager) {
+    public cmdHideChat(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.pManager = pManager;
     }
 
     @Override
@@ -49,12 +46,16 @@ public class cmdHideChat extends AbstractCommand {
      * @param split
      */
     public void execute(String[] args, Player player) {
-        // ADD PLAYER, IF NOT FOUND
-        ASPlayer thisPlayer = pManager.getPlayer(player);
-        boolean hide = !thisPlayer.isHideChat();
-        thisPlayer.setHideChat(hide);
 
-        if (hide)
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
+        Boolean hideChat = mPlayer.getBoolean("adminstuff.hidechat");
+        if (hideChat != null && !hideChat)
+            hideChat = true;
+        else
+            hideChat = false;
+        mPlayer.setBoolean("adminstuff.hidechat", hideChat);
+
+        if (hideChat)
             PlayerUtils.sendSuccess(player, pluginName, "Der Chat ist jetzt verborgen!");
         else
             PlayerUtils.sendSuccess(player, pluginName, "Der Chat ist wieder sichtbar!");

@@ -25,9 +25,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
@@ -48,7 +50,6 @@ import com.bukkit.gemo.utils.BlockUtils;
 import com.bukkit.gemo.utils.UtilPermissions;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.manager.ASPlayer;
 import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.core.MinestarCore;
 import de.minestar.core.units.MinestarPlayer;
@@ -58,8 +59,9 @@ public class PlayerListener implements Listener {
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
-    private PlayerManager pManager;
     public static Map<String, ItemStack> queuedFillChest = new TreeMap<String, ItemStack>();
+
+    private final PlayerManager pManager;
 
     public PlayerListener(PlayerManager pManager) {
         this.pManager = pManager;
@@ -70,9 +72,10 @@ public class PlayerListener implements Listener {
         if (BlockUtils.LocationEquals(event.getTo(), event.getFrom()))
             return;
 
-        ASPlayer target = pManager.getPlayer(event.getPlayer());
-        if (target.isGlued())
-            event.setTo(target.getGlueLocation());
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
+        Location gluePosition = mPlayer.getLocation("adminstuff.glue");
+        if (gluePosition != null)
+            event.setTo(gluePosition);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -91,7 +94,6 @@ public class PlayerListener implements Listener {
             else
                 event.disallow(Result.KICK_BANNED, ("Du bist temporaer gebannt bis " + new Date(timeBann + 1000)));
         }
-
     }
 
     @EventHandler
@@ -100,12 +102,16 @@ public class PlayerListener implements Listener {
             return;
         MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
         mPlayer.setString("adminstuff.lastseen", dateFormat.format(new Date()));
+        mPlayer.removeValue("adminstuff.slapped", String.class);
+        mPlayer.removeValue("admisntuff.afk", String.class);
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
         mPlayer.setString("adminstuff.lastseen", dateFormat.format(new Date()));
+        mPlayer.removeValue("adminstuff.slapped", String.class);
+        mPlayer.removeValue("admisntuff.afk", String.class);
     }
 
     @EventHandler
@@ -156,14 +162,16 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerChat(PlayerChatEvent event) {
-        ASPlayer thisPlayer = pManager.getPlayer(event.getPlayer());
+
+        // Mute Handeling
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
+        Boolean muted = mPlayer.getBoolean("adminstuff.muted");
 
         // Player is muted -> only ops and player with right permission can read
-        if (thisPlayer.isMuted()) {
+        if (muted != null && muted) {
             event.setCancelled(true);
 
-            String nick = thisPlayer.getNickname();
-            String message = ChatColor.RED + "[STUMM] " + nick + ChatColor.WHITE + ": " + event.getMessage();
+            String message = ChatColor.RED + "[STUMM] " + mPlayer.getNickName() + ChatColor.WHITE + ": " + event.getMessage();
             Player current = null;
 
             Iterator<Player> i = event.getRecipients().iterator();
@@ -172,6 +180,25 @@ public class PlayerListener implements Listener {
                 if (UtilPermissions.playerCanUseCommand(current, "adminstuff.chat.read.muted"))
                     PlayerUtils.sendBlankMessage(current, message);
             }
+        }
+
+        // want to chat to a few people
+        Set<String> recs = pManager.getRecipients(event.getPlayer().getName());
+        // player has used "chat" command
+        if (recs != null) {
+            Iterator<Player> i = event.getRecipients().iterator();
+            Player current = null;
+            while (i.hasNext()) {
+                current = i.next();
+                if (!recs.contains(current.getName().toLowerCase()))
+                    i.remove();
+            }
+        }
+
+        Boolean afk = mPlayer.getBoolean("adminstuff.afk");
+        if (afk != null && afk) {
+            mPlayer.setBoolean("adminstuff.afk", false);
+            pManager.updatePrefix(event.getPlayer(), mPlayer);
         }
     }
 }

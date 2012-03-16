@@ -28,8 +28,9 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.manager.ASPlayer;
 import de.minestar.AdminStuff.manager.PlayerManager;
+import de.minestar.core.MinestarCore;
+import de.minestar.core.units.MinestarPlayer;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
@@ -70,13 +71,18 @@ public class cmdSlap extends AbstractCommand {
         else if (target.isDead() || !target.isOnline())
             ChatUtils.writeError(sender, pluginName, "Spieler '" + target.getName() + "' ist tot oder nicht online!");
         else {
-            ASPlayer thisTarget = pManager.getPlayer(target);
-            boolean isSlapped = !thisTarget.isSlapped();
-            pManager.setSlapped(thisTarget, target, isSlapped);
-            if (isSlapped)
-                Bukkit.broadcastMessage(ChatColor.BLUE + sender.getName() + " schlaegt " + thisTarget.getNickname() + " mit einem kalten Fisch ins Gesicht!");
+            MinestarPlayer mPlayer = MinestarCore.getPlayer(target);
+            Boolean slapped = mPlayer.getBoolean("adminstuff.slapped");
+            if (slapped == null || !slapped)
+                slapped = true;
             else
-                Bukkit.broadcastMessage(ChatColor.BLUE + thisTarget.getNickname() + "s Fisch wurde von einer Sturmmoeve gefressen!");
+                slapped = false;
+            mPlayer.setBoolean("adminstuff.slapped", slapped);
+            pManager.updatePrefix(target, mPlayer);
+            if (slapped)
+                Bukkit.broadcastMessage(ChatColor.BLUE + sender.getName() + " schlaegt " + mPlayer.getNickName() + " mit einem kalten Fisch ins Gesicht!");
+            else
+                Bukkit.broadcastMessage(ChatColor.BLUE + mPlayer.getNickName() + "s Fisch wurde von einer Sturmmoeve gefressen!");
         }
     }
 }

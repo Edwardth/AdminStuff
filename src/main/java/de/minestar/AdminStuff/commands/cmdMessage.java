@@ -25,19 +25,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.manager.ASPlayer;
-import de.minestar.AdminStuff.manager.PlayerManager;
+import de.minestar.core.MinestarCore;
+import de.minestar.core.units.MinestarPlayer;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdMessage extends AbstractExtendedCommand {
 
-    private PlayerManager pManager;
-
-    public cmdMessage(String syntax, String arguments, String node, PlayerManager pManager) {
+    public cmdMessage(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.pManager = pManager;
     }
 
     @Override
@@ -69,17 +66,18 @@ public class cmdMessage extends AbstractExtendedCommand {
             return;
         }
 
-        ASPlayer thisPlayer = pManager.getPlayer(player);
-        ASPlayer thisTarget = pManager.getPlayer(target);
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
+        MinestarPlayer mTarget = MinestarCore.getPlayer(target);
 
         String message = "] : " + ChatColor.GRAY + ChatUtils.getMessage(args, " ", 1);
-        PlayerUtils.sendBlankMessage(player, ChatColor.GOLD + "[ me -> " + thisTarget.getNickname() + message);
-        PlayerUtils.sendBlankMessage(target, ChatColor.GOLD + "[ " + thisPlayer.getNickname() + " -> me" + message);
+        PlayerUtils.sendBlankMessage(player, ChatColor.GOLD + "[ me -> " + mTarget.getNickName() + message);
+        PlayerUtils.sendBlankMessage(target, ChatColor.GOLD + "[ " + mPlayer.getNickName() + " -> me" + message);
 
-        thisPlayer.setLastSender(target.getName());
-        thisTarget.setLastSender(player.getName());
+        mPlayer.setString("adminstuff.lastsender", target.getName());
+        mTarget.setString("adminstuff.lastsender", player.getName());
 
-        if (thisTarget.isAFK())
+        Boolean isAFK = mTarget.getBoolean("adminstuff.afk");
+        if (isAFK != null && isAFK == true)
             PlayerUtils.sendInfo(player, "Spieler ist AFK");
     }
 }

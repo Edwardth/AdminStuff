@@ -63,7 +63,6 @@ import de.minestar.AdminStuff.commands.cmdTempBan;
 import de.minestar.AdminStuff.commands.cmdTime;
 import de.minestar.AdminStuff.commands.cmdUnban;
 import de.minestar.AdminStuff.commands.cmdWeather;
-import de.minestar.AdminStuff.database.DatabaseHandler;
 import de.minestar.AdminStuff.listener.EntityListener;
 import de.minestar.AdminStuff.listener.PlayerListener;
 import de.minestar.AdminStuff.manager.KitManager;
@@ -78,7 +77,6 @@ public class Core extends AbstractCore {
     private Listener playerListener;
 
     /** Manager */
-    private DatabaseHandler dbHandler;
     private PlayerManager pManager;
     private KitManager kManager;
 
@@ -88,8 +86,7 @@ public class Core extends AbstractCore {
 
     @Override
     protected boolean createManager() {
-        dbHandler = new DatabaseHandler(getDataFolder());
-        pManager = new PlayerManager(dbHandler);
+        pManager = new PlayerManager();
         kManager = new KitManager(getDataFolder());
         return true;
     }
@@ -116,11 +113,11 @@ public class Core extends AbstractCore {
                 new cmdBurn             ("/burn",       "<Player> <Time in seconds>",   "adminstuff.commands.admin.burn"),
                 new cmdSlap             ("/slap",       "<Player>",                     "adminstuff.commands.admin.slap", pManager),
                 new cmdKill             ("/kill",       "[Player_1] ... [Player_N]",    "adminstuff.commands.admin.kill"),
-                new cmdGlue             ("/glue",       "<Player>",                     "adminstuff.commands.admin.glue", pManager),
-                new cmdGlueHere         ("/gluehere",   "<Player>",                     "adminstuff.commands.admin.gluehere", pManager),
+                new cmdGlue             ("/glue",       "<Player>",                     "adminstuff.commands.admin.glue"),
+                new cmdGlueHere         ("/gluehere",   "<Player>",                     "adminstuff.commands.admin.gluehere"),
 
                 // CLASSICMODE
-                new cmdClassic          ("/classic", "[Player_1] ... [Player_N]",            "adminstuff.commands.admin.classic", pManager),
+                new cmdClassic          ("/classic", "[Player_1] ... [Player_N]",            "adminstuff.commands.admin.classic"),
 
                 // FLASH COMMANDS
                 new cmdFlash            ("/flash",      "",         "adminstuff.commands.admin.flash"),
@@ -136,9 +133,9 @@ public class Core extends AbstractCore {
                 new cmdTempBan          ("/tempban",    "<Player> <Time>",      "adminstuff.commands.admin.tempban"),
 
                  // GIVE COMMANDS
-                new cmdItem                ("/i",      "<ItemID or Name>[:SubID] [Amount]",            "adminstuff.commands.admin.i"),
-                new cmdItem                ("/item",   "<ItemID or Name>[:SubID] [Amount]",            "adminstuff.commands.admin.i"),
-                new cmdGive       ("/give",   "<Player> <ItemID or Name>[:SubID] [Amount]",   "adminstuff.commands.admin.give"),
+                new cmdItem             ("/i",      "<ItemID or Name>[:SubID] [Amount]",            "adminstuff.commands.admin.i"),
+                new cmdItem             ("/item",   "<ItemID or Name>[:SubID] [Amount]",            "adminstuff.commands.admin.i"),
+                new cmdGive             ("/give",   "<Player> <ItemID or Name>[:SubID] [Amount]",   "adminstuff.commands.admin.give"),
 
                 // KIT COMMAND
                 new cmdKit              ("/kit",        "<Name>",   "adminstuff.commands.admin.usekit", kManager),
@@ -158,22 +155,22 @@ public class Core extends AbstractCore {
                 // MESSAGE COMMANDS
                 new cmdBroadcast        ("/broadcast",  "<Message>",            "adminstuff.commands.admin.broadcast"),
                 new cmdBroadcast        ("/cast",       "<Message>",            "adminstuff.commands.admin.broadcast"), 
-                new cmdMute       ("/mute",       "<Player>",             "adminstuff.commands.admin.mute", pManager),
-                new cmdMessage          ("/message",    "<Player> <Message>",   "adminstuff.commands.user.message", pManager),
-                new cmdMessage          ("/msg",        "<Player> <Message>",   "adminstuff.commands.user.message", pManager),
-                new cmdMessage          ("/m",          "<Player> <Message>",   "adminstuff.commands.user.message", pManager),
-                new cmdReply            ("/r",          "<Message>",            "adminstuff.commands.user.reply", pManager),
-                new cmdMe               ("/me",         "<Message>",            "adminstuff.commands.admin.me", pManager),
-                new cmdHideChat         ("/hidechat",   "",                     "adminstuff.commands.admin.hidechat", pManager),
+                new cmdMute             ("/mute",       "<Player>",             "adminstuff.commands.admin.mute"),
+                new cmdMessage          ("/message",    "<Player> <Message>",   "adminstuff.commands.user.message"),
+                new cmdMessage          ("/msg",        "<Player> <Message>",   "adminstuff.commands.user.message"),
+                new cmdMessage          ("/m",          "<Player> <Message>",   "adminstuff.commands.user.message"),
+                new cmdReply            ("/r",          "<Message>",            "adminstuff.commands.user.reply"),
+                new cmdMe               ("/me",         "<Message>",            "adminstuff.commands.admin.me"),
+                new cmdHideChat         ("/hidechat",   "",                     "adminstuff.commands.admin.hidechat"),
 
                 // RECIPIENT COMMANDS
-                new cmdChat          ("/chat", "",                           "adminstuff.commands.user.chat", pManager),
+                new cmdChat             ("/chat", "",                           "adminstuff.commands.user.chat", pManager),
 
                 // USER COMMANDS
-                new cmdAFK              ("/afk",        "",                     "adminstuff.commands.user.afk"),
+                new cmdAFK              ("/afk",        "",                     "adminstuff.commands.user.afk", pManager),
                 new cmdCompass          ("/compass",    "",                     "adminstuff.commands.user.compass"), 
-                new cmdNickname         ("/nickname",   "<Nickname> [Player]",  "adminstuff.commands.admin.nickname"),
-                new cmdNickname         ("/nick",       "<Nickname> [Player]",  "adminstuff.commands.admin.nickname"),
+                new cmdNickname         ("/nickname",   "<Nickname> [Player]",  "adminstuff.commands.admin.nickname", pManager),
+                new cmdNickname         ("/nick",       "<Nickname> [Player]",  "adminstuff.commands.admin.nickname", pManager),
 
                 // TIME & WEATHER COMMAND
                 new cmdTime             ("/time",       "<Time>",               "adminstuff.commands.admin.time"),
