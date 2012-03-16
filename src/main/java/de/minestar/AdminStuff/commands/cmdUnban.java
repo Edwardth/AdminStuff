@@ -61,8 +61,8 @@ public class cmdUnban extends AbstractCommand {
             if (b == null || false)
                 PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + " war nicht gebannt!");
             else {
-                mPlayer.setBoolean("banned", false);
-                mPlayer.setLong("tempBann", 0L);
+                mPlayer.removeValue("banned", Boolean.class);
+                mPlayer.removeValue("tempBann", Long.class);
                 cServer.getHandle().removeUserBan(targetName);
                 ChatUtils.writeSuccess(player, pluginName, "Spieler '" + targetName + "' wurde entbannt!");
             }
