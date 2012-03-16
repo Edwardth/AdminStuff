@@ -43,11 +43,12 @@ public class cmdFlash extends AbstractExtendedCommand {
         "Eat my Shorts, %s",
         "%s This...is...SPARTA!",
         "%s! SO EIN Feuerball!",
-        "%s wurde geblitzt"
+        "%s wurde geblitzt",
+        "It's over 9000!!!"
     };
     //@formatter:on
 
-    private static final Random rand = new Random();
+    private final Random rand = new Random();
 
     public cmdFlash(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
