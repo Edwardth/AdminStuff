@@ -43,16 +43,21 @@ public class cmdBlockCount extends AbstractCommand {
 
     @Override
     public void execute(String[] args, Player player) {
+        // count blocks
         if (pManager.isInSelectionMode(player)) {
             Location[] corner = pManager.getSelectedBlocks(player);
+            // have to select corner first
             if (corner == null || corner[0] == null || corner[1] == null) {
                 PlayerUtils.sendError(player, pluginName, "Du hast keine zwei Bloecke selektiert!");
                 return;
             }
             countBlocks(player, corner);
 
+            // deactivate mode
             pManager.setSelectionMode(player, false);
-        } else {
+        }
+        // activate selection mode
+        else {
             pManager.setSelectionMode(player, true);
             PlayerUtils.sendSuccess(player, pluginName, "Du bist nun im Selektionsmodus!");
             PlayerUtils.sendInfo(player, pluginName, "Markiere mit einem Linksklick Block 1 und mit Rechtsklick Block 2!");
@@ -71,6 +76,7 @@ public class cmdBlockCount extends AbstractCommand {
         Material mat = null;
         Counter total = new Counter();
 
+        // count all blocks in the selected area
         for (int x = min.getBlockX(); x <= max.getBlockX(); ++x) {
             for (int y = min.getBlockY(); y <= max.getBlockY(); ++y) {
                 for (int z = min.getBlockZ(); z <= max.getBlockZ(); ++z) {
@@ -89,7 +95,7 @@ public class cmdBlockCount extends AbstractCommand {
     private void printStatistic(Player player, Map<Material, Counter> blockCounter, Counter total) {
         PlayerUtils.sendSuccess(player, pluginName, "Es befinden sich " + total.getCount() + " Bloecke in dem Gebiet!");
         Counter counter = null;
-        
+
         for (Entry<Material, Counter> entry : blockCounter.entrySet()) {
             counter = entry.getValue();
             if (counter.getCount() != 0L) {
@@ -100,6 +106,7 @@ public class cmdBlockCount extends AbstractCommand {
 
     }
 
+    // fill hashmap with all block entities
     private void fillMap(Map<Material, Counter> blockCounter) {
         Material[] mats = Material.values();
         for (Material mat : mats)

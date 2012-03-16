@@ -195,6 +195,7 @@ public class PlayerListener implements Listener {
             }
         }
 
+        // reset afk
         Boolean afk = mPlayer.getBoolean("adminstuff.afk");
         if (afk != null && afk) {
             mPlayer.setBoolean("adminstuff.afk", false);

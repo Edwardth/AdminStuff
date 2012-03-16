@@ -39,6 +39,7 @@ public class EntityListener implements Listener {
         if (event.isCancelled() || !(event.getEntity() instanceof Player))
             return;
 
+        // Cancel damange when player is in god mode
         MinestarPlayer mPlayer = MinestarCore.getPlayer((Player) event.getEntity());
         Boolean godMode = mPlayer.getBoolean("adminstuff.god");
         if (godMode != null && godMode == true) {
