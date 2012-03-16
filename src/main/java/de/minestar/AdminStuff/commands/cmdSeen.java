@@ -60,7 +60,14 @@ public class cmdSeen extends AbstractCommand {
     }
 
     private void getSeen(String targetName, CommandSender sender) {
-        String correct = PlayerUtils.getCorrectPlayerName(targetName);
+        // is player online?
+        Player player = PlayerUtils.getOnlinePlayer(targetName);
+        if (player != null) {
+            ChatUtils.writeInfo(sender, targetName, "Spieler '" + player.getName() + "' ist gerade online!");
+            return;
+        }
+        // looking for offline player
+        String correct = PlayerUtils.getOfflinePlayerName(targetName);
         if (correct == null)
             ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + "' wurde nicht gefunden!");
         else {
