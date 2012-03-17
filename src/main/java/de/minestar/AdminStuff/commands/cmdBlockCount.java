@@ -100,7 +100,8 @@ public class cmdBlockCount extends AbstractCommand {
         for (Entry<Material, Counter> entry : blockCounter.entrySet()) {
             counter = entry.getValue();
             if (counter.getCount() != 0L) {
-                float percent = (counter.getCount() / total.getCount()) * 100;
+                double percent = ((double) counter.getCount() / (double) total.getCount()) * 100.0;
+                percent = Math.round(percent * 100.0) / 100.0;
                 PlayerUtils.sendInfo(player, entry.getKey().name() + " : " + counter.getCount() + " of " + total.getCount() + " ( " + percent + "% )");
             }
         }
