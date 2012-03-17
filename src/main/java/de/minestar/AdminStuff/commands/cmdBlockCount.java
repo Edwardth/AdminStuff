@@ -28,6 +28,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.manager.PlayerManager;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
@@ -37,7 +38,7 @@ public class cmdBlockCount extends AbstractCommand {
     private PlayerManager pManager;
 
     public cmdBlockCount(String syntax, String arguments, String node, PlayerManager pManager) {
-        super(syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
         this.pManager = pManager;
     }
 
