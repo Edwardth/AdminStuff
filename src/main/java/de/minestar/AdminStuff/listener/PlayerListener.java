@@ -37,6 +37,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -159,6 +160,12 @@ public class PlayerListener implements Listener {
             }
             return;
         }
+
+        // Block counting
+        if (pManager.isInSelectionMode(player)) {
+            pManager.setSelectedBlock(player, event.getClickedBlock(), event.getAction().equals(Action.LEFT_CLICK_BLOCK));
+            event.setCancelled(true);
+        }
     }
 
     private void fillChest(Chest chest, ItemStack item) {
@@ -208,7 +215,7 @@ public class PlayerListener implements Listener {
         // reset afk
         Boolean afk = mPlayer.getBoolean("adminstuff.afk");
         if (afk != null && afk) {
-            mPlayer.setBoolean("adminstuff.afk", false);
+            mPlayer.removeValue("adminstuff.afk", Boolean.class);
             pManager.updatePrefix(event.getPlayer(), mPlayer);
         }
     }

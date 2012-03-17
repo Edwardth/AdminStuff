@@ -27,6 +27,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import de.minestar.core.units.MinestarPlayer;
+import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class PlayerManager {
 
@@ -56,10 +57,13 @@ public class PlayerManager {
         String pName = player.getName().toLowerCase();
         Location[] corners = blockCountSel.get(pName);
         if (corners != null) {
-            if (leftClick)
+            if (leftClick) {
                 corners[0] = target.getLocation();
-            else
+                PlayerUtils.sendSuccess(player, "Block 1 markiert");
+            } else {
                 corners[1] = target.getLocation();
+                PlayerUtils.sendSuccess(player, "Block 2 markiert");
+            }
         }
         blockCountSel.put(pName, corners);
     }
@@ -94,7 +98,7 @@ public class PlayerManager {
         String displayName = mPlayer.getNickName().replaceFirst("[AFK] ", "").replaceFirst("was fished ", "");
         String prefix = "";
         if (afk != null && afk)
-            prefix = "[AFK] " + displayName;
+            prefix += "[AFK] ";
         if (slapped != null && slapped)
             prefix += "was fished ";
         displayName = prefix + displayName;
