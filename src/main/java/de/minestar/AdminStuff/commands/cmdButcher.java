@@ -48,10 +48,6 @@ public class cmdButcher extends AbstractExtendedCommand {
             PlayerUtils.sendError(player, pluginName, getHelpMessage());
         else {
             int radius = getRadius(args);
-            if (radius <= 0) {
-                PlayerUtils.sendError(player, pluginName, "Bitte nur positive Zahlen fuer den Radius benutzen!");
-                return;
-            }
             String entityName = getEntity(args);
             if (entityName == null)
                 deleteItems(radius, null, player.getLocation(), player, player.getWorld());
@@ -116,7 +112,7 @@ public class cmdButcher extends AbstractExtendedCommand {
         // delete all
         if (radius == -1 && type == null) {
             for (Entity entity : entities) {
-                entity.remove();
+                entity.
                 ++counter;
             }
         } else if (radius == -1 && type != null) {
@@ -144,7 +140,7 @@ public class cmdButcher extends AbstractExtendedCommand {
                 }
             }
         }
-        ChatUtils.writeSuccess(sender, pluginName, counter + " items wurden entfernt!");
+        ChatUtils.writeSuccess(sender, pluginName, counter + " Tiere wurden wurden entfernt!");
     }
 
     private boolean isIn(Location itemP, Location playerP, int radius) {

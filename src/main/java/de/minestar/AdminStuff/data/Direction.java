@@ -22,7 +22,8 @@ public enum Direction {
 
     // TODO: Correct directions
     //@formatter:off
-    N (338, 23,  "Norden"),
+    N (338, 359, "Norden"),
+    N_(0,   23,  "Norden"),
     NE(23,  68,  "Nord-Osten"),
     E (68,  113, "Osten"),
     SE(113, 158, "Sued-Osten"),
