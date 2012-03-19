@@ -27,6 +27,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
@@ -107,16 +108,20 @@ public class cmdButcher extends AbstractExtendedCommand {
 
     private void deleteItems(int radius, EntityType type, Location position, CommandSender sender, World world) {
 
-        Collection<? extends Entity> entities = world.getEntitiesByClass(Entity.class);
+        Collection<LivingEntity> entities = world.getEntitiesByClass(LivingEntity.class);
         long counter = 0L;
         // delete all
         if (radius == -1 && type == null) {
-            for (Entity entity : entities) {
-                entity.
+            for (LivingEntity entity : entities) {
+                if (entity instanceof Player)
+                    continue;
+                entity.remove();
                 ++counter;
             }
         } else if (radius == -1 && type != null) {
             for (Entity entity : entities) {
+                if (entity instanceof Player)
+                    continue;
                 if (entity.getType().equals(type)) {
                     entity.remove();
                     ++counter;
@@ -126,6 +131,8 @@ public class cmdButcher extends AbstractExtendedCommand {
             // square faster than square root
             radius *= radius;
             for (Entity entity : entities) {
+                if (entity instanceof Player)
+                    continue;
                 if (isIn(entity.getLocation(), position, radius)) {
                     entity.remove();
                     ++counter;
@@ -134,6 +141,8 @@ public class cmdButcher extends AbstractExtendedCommand {
         } else if (radius != -1 && type != null) {
             radius *= radius;
             for (Entity entity : entities) {
+                if (entity instanceof Player)
+                    continue;
                 if (entity.getType().equals(type) && isIn(entity.getLocation(), position, radius)) {
                     entity.remove();
                     ++counter;
