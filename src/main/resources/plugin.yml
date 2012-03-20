@@ -1,6 +1,6 @@
 name: AdminStuff
 main: de.minestar.AdminStuff.Core
-version: 1.2
+version: ${pom.version}
 depend: [MineStarLibrary, MinestarCore]
 commands:
   afk:
