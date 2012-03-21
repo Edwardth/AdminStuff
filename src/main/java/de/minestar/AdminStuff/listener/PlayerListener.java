@@ -40,6 +40,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPreLoginEvent;
@@ -115,14 +116,36 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         handleQuit(event.getPlayer());
+
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
+        // Fake quit
+        Boolean isHidden = mPlayer.getBoolean("adminstuff.hide");
+        if (isHidden != null && isHidden) {
+            event.setQuitMessage("");
+        }
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
+        // Fake quit
+        Boolean isHidden = mPlayer.getBoolean("adminstuff.hide");
+        if (isHidden != null && isHidden) {
+            event.setJoinMessage("");
+            pManager.hidePlayer(event.getPlayer());
+            PlayerUtils.sendInfo(event.getPlayer(), Core.NAME, "Du bist fuer alle anderen Spieler unsichtbar!");
+        } else
+            pManager.updateHidePlayer(event.getPlayer());
+
     }
 
     private void handleQuit(Player player) {
         MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
         mPlayer.setString("adminstuff.lastseen", dateFormat.format(new Date()));
         // remove temponary values
-        mPlayer.removeValue("adminstuff.slapped", String.class);
-        mPlayer.removeValue("admisntuff.afk", String.class);
+        mPlayer.removeValue("adminstuff.slapped", Boolean.class);
+        mPlayer.removeValue("admisntuff.afk", Boolean.class);
     }
 
     @EventHandler

@@ -129,3 +129,9 @@ commands:
   butcher:
     description: Remove mobs from  world
     usage: /butcher m[MobName] r[Radius]
+  quit:
+    description: Hide player
+    usage: /quit
+  join:
+    description: Show player
+    usage: /join

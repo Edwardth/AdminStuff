@@ -19,13 +19,19 @@
 package de.minestar.AdminStuff.manager;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
+import de.minestar.core.MinestarCore;
 import de.minestar.core.units.MinestarPlayer;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
@@ -103,5 +109,60 @@ public class PlayerManager {
             prefix += "was fished ";
         displayName = prefix + displayName;
         mPlayer.setNickName(displayName);
+    }
+
+    // ******************************************************
+    // ************* HIDDEN PLAYER HANDELING ****************
+    // ******************************************************
+
+    // Player in hide mode
+    private Set<Player> hiddenPlayer = new HashSet<Player>();
+
+    public void hidePlayer(Player player) {
+        // send fake packet
+        PlayerQuitEvent playerQuit = new PlayerQuitEvent(player, ChatColor.YELLOW + player.getName() + " left the game.");
+        Bukkit.getPluginManager().callEvent(playerQuit);
+        Bukkit.broadcastMessage(playerQuit.getQuitMessage());
+
+        hiddenPlayer.add(player);
+
+        // Only ops can see the hidden player
+        Player[] onlinePlayer = Bukkit.getOnlinePlayers();
+        for (Player other : onlinePlayer) {
+            if (!other.isOp())
+                other.hidePlayer(player);
+        }
+
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
+        mPlayer.setBoolean("adminstuff.hide", true);
+    }
+
+    // logged in player don't allow to see them
+    public void updateHidePlayer(Player loggedIn) {
+        if (loggedIn.isOp())
+            return;
+        for (Player hidden : hiddenPlayer)
+            loggedIn.hidePlayer(hidden);
+    }
+
+    public void showPlayer(Player player) {
+        // send fake packet
+        PlayerJoinEvent playerQuit = new PlayerJoinEvent(player, ChatColor.YELLOW + player.getName() + " left the game.");
+        Bukkit.getPluginManager().callEvent(playerQuit);
+        Bukkit.broadcastMessage(playerQuit.getJoinMessage());
+
+        hiddenPlayer.remove(player);
+
+        // Make player visible to everyone
+        Player[] onlinePlayer = Bukkit.getOnlinePlayers();
+        for (Player other : onlinePlayer)
+            other.showPlayer(player);
+
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
+        mPlayer.setBoolean("adminstuff.hide", false);
+    }
+
+    public boolean isHidden(Player player) {
+        return hiddenPlayer.contains(player);
     }
 }

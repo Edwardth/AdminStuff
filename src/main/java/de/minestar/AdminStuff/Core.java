@@ -45,6 +45,7 @@ import de.minestar.AdminStuff.commands.cmdHeal;
 import de.minestar.AdminStuff.commands.cmdHideChat;
 import de.minestar.AdminStuff.commands.cmdInvsee;
 import de.minestar.AdminStuff.commands.cmdItem;
+import de.minestar.AdminStuff.commands.cmdJoin;
 import de.minestar.AdminStuff.commands.cmdKick;
 import de.minestar.AdminStuff.commands.cmdKickAll;
 import de.minestar.AdminStuff.commands.cmdKill;
@@ -55,6 +56,7 @@ import de.minestar.AdminStuff.commands.cmdMessage;
 import de.minestar.AdminStuff.commands.cmdMute;
 import de.minestar.AdminStuff.commands.cmdNickname;
 import de.minestar.AdminStuff.commands.cmdPing;
+import de.minestar.AdminStuff.commands.cmdQuit;
 import de.minestar.AdminStuff.commands.cmdReply;
 import de.minestar.AdminStuff.commands.cmdSeen;
 import de.minestar.AdminStuff.commands.cmdSlap;
@@ -185,7 +187,11 @@ public class Core extends AbstractCore {
 
                 // REMOVE ENTITYS
                 new cmdDeleteItem       ("/delitem",    "i[ItemID] r[Radius]",    "adminstuff.commands.admin.delitem"),
-                new cmdButcher          ("/butcher",    "m[MobName] r[Radius]",    "adminstuff.commands.admin.butcher")
+                new cmdButcher          ("/butcher",    "m[MobName] r[Radius]",   "adminstuff.commands.admin.butcher"),
+                
+                // HIDE PLAYER
+                new cmdQuit             ("/quit",       "",                       "adminstuff.commands.admin.quit", pManager),
+                new cmdJoin             ("/join",       "",                       "adminstuff.commands.admin.join", pManager)
             );
             //@formatter:on
         return true;
