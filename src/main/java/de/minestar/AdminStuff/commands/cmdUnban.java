@@ -22,7 +22,6 @@
 package de.minestar.AdminStuff.commands;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
@@ -33,8 +32,6 @@ import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdUnban extends AbstractCommand {
-
-    private CraftServer cServer = (CraftServer) Bukkit.getServer();
 
     public cmdUnban(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
@@ -63,7 +60,7 @@ public class cmdUnban extends AbstractCommand {
             else {
                 mPlayer.removeValue("banned", Boolean.class);
                 mPlayer.removeValue("tempBann", Long.class);
-                cServer.getHandle().removeUserBan(targetName);
+                Bukkit.getOfflinePlayer(targetName).setBanned(false);
                 ChatUtils.writeSuccess(player, pluginName, "Spieler '" + targetName + "' wurde entbannt!");
             }
         }

@@ -22,7 +22,6 @@
 package de.minestar.AdminStuff.commands;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
@@ -33,8 +32,6 @@ import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdBan extends AbstractExtendedCommand {
-
-    private CraftServer cServer = (CraftServer) Bukkit.getServer();
 
     public cmdBan(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
@@ -75,8 +72,8 @@ public class cmdBan extends AbstractExtendedCommand {
         if (target != null) {
             target.setBanned(true);
             target.kickPlayer(getMessage(args));
-            cServer.getHandle().addUserBan(playerName);
-        }
+        } else
+            Bukkit.getOfflinePlayer(playerName).setBanned(true);
 
         PlayerUtils.sendSuccess(player, pluginName, "Spieler '" + playerName + "' wurde gebannt!");
     }
