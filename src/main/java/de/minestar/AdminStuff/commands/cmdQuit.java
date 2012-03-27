@@ -37,13 +37,13 @@ public class cmdQuit extends AbstractCommand {
 
     @Override
     public void execute(String[] args, Player player) {
-        if (pManager.isHidden(player)) 
+        if (pManager.isHidden(player))
             PlayerUtils.sendError(player, pluginName, "Du bist bereits unsichtbar!");
         else {
             pManager.hidePlayer(player);
             PlayerUtils.sendSuccess(player, pluginName, "Du bist nun unsichtbar!");
         }
-             
+
     }
 
 }

@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 
 import org.bukkit.inventory.ItemStack;
 
-import de.minestar.minestarlibrary.Core;
+import de.minestar.AdminStuff.Core;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
 
 public class KitManager {
@@ -101,7 +101,7 @@ public class KitManager {
     public List<ItemStack> getKit(String name) {
         return kits.get(name);
     }
-    
+
     public Iterable<String> getNames() {
         return kits.keySet();
     }

@@ -74,6 +74,8 @@ import de.minestar.minestarlibrary.commands.CommandList;
 
 public class Core extends AbstractCore {
 
+    public static String NAME = "AdminStuff";
+
     /** Listener */
     private Listener entityListener;
     private Listener playerListener;
