@@ -30,6 +30,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import de.minestar.AdminStuff.Core;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
@@ -38,7 +39,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdButcher extends AbstractExtendedCommand {
 
     public cmdButcher(String syntax, String arguments, String node) {
-        super(syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
         this.description = "Toetet Monster im Umkreis";
     }
 

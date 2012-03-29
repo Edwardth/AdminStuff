@@ -29,6 +29,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 
+import de.minestar.AdminStuff.Core;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
@@ -37,7 +38,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class cmdDeleteItem extends AbstractExtendedCommand {
 
     public cmdDeleteItem(String syntax, String arguments, String node) {
-        super(syntax, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
         this.description = "Loescht Items vom Boden";
     }
 
@@ -48,10 +49,6 @@ public class cmdDeleteItem extends AbstractExtendedCommand {
             PlayerUtils.sendError(player, pluginName, getHelpMessage());
         else {
             int radius = getRadius(args);
-            if (radius <= 0) {
-                PlayerUtils.sendError(player, pluginName, "Bitte nur positive Zahlen fuer den Radius benutzen!");
-                return;
-            }
             int itemId = getItemId(args);
             if (Material.getMaterial(itemId) == null) {
                 PlayerUtils.sendError(player, pluginName, "The item id " + itemId + " is not a valid id!");
