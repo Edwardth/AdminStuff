@@ -60,7 +60,7 @@ public class cmdClearInventory extends AbstractExtendedCommand {
                 PlayerUtils.sendError(player, pluginName, "Spieler '" + target.getName() + "' ist offline oder tot!");
             else {
                 target.getInventory().clear();
-                PlayerUtils.sendSuccess(target, pluginName, "Das Inventar von '" + target.getName() + "' wurde geleert!");
+                PlayerUtils.sendSuccess(player, pluginName, "Das Inventar von '" + target.getName() + "' wurde geleert!");
                 PlayerUtils.sendInfo(target, pluginName, "Dein Inventar wurde geleert!");
             }
         } else
