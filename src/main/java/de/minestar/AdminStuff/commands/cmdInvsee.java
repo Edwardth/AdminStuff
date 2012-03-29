@@ -21,14 +21,20 @@
 
 package de.minestar.AdminStuff.commands;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.minestarlibrary.commands.AbstractCommand;
+import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
-public class cmdInvsee extends AbstractCommand {
+public class cmdInvsee extends AbstractExtendedCommand {
+
+    private Map<Player, ItemStack[]> backup = new HashMap<Player, ItemStack[]>();
 
     public cmdInvsee(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
@@ -45,21 +51,35 @@ public class cmdInvsee extends AbstractCommand {
      * @param split
      */
     public void execute(String[] args, Player player) {
-        String targetName = args[0];
-        Player target = PlayerUtils.getOnlinePlayer(targetName);
-        if (target == null)
-            PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + "' wurde nicht gefunden!");
-        else if (target.isDead() || !target.isOnline())
-            PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + "' ist tot oder nicht online!");
-        else {
-            Inventory inv = player.getInventory();
+        if (args.length == 0) {
+            ItemStack[] items = backup.remove(player);
+            if (items == null)
+                PlayerUtils.sendError(player, pluginName, "Du hast kein Inventar zum Wiederherstellen!");
+            else {
+                player.getInventory().clear();
+                player.getInventory().setContents(items);
+            }
 
-            inv.clear();
+        } else if (args.length == 1) {
+            String targetName = args[0];
+            Player target = PlayerUtils.getOnlinePlayer(targetName);
+            if (target == null)
+                PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + "' wurde nicht gefunden!");
+            else if (target.isDead() || !target.isOnline())
+                PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + "' ist tot oder nicht online!");
+            else {
+                Inventory inv = player.getInventory();
+                // backup current inventory
+                backup.put(player, inv.getContents());
 
-            // copy inventory
-            inv.setContents(target.getInventory().getContents());
+                inv.clear();
 
-            PlayerUtils.sendSuccess(player, pluginName, "Zeige dir das Inventar von  '" + targetName + "'");
-        }
+                // copy inventory
+                inv.setContents(target.getInventory().getContents());
+
+                PlayerUtils.sendSuccess(player, pluginName, "Zeige dir das Inventar von  '" + targetName + "'");
+            }
+        } else
+            PlayerUtils.sendError(player, pluginName, getHelpMessage());
     }
 }
