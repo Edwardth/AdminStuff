@@ -120,9 +120,9 @@ public class PlayerManager {
 
     public void hidePlayer(Player player) {
         // send fake packet
-        PlayerQuitEvent playerQuit = new PlayerQuitEvent(player, ChatColor.YELLOW + player.getName() + " left the game.");
-        Bukkit.getPluginManager().callEvent(playerQuit);
-        Bukkit.broadcastMessage(playerQuit.getQuitMessage());
+        PlayerQuitEvent quitEvent = new PlayerQuitEvent(player, ChatColor.YELLOW + player.getName() + " left the game.");
+        Bukkit.getPluginManager().callEvent(quitEvent);
+        Bukkit.broadcastMessage(quitEvent.getQuitMessage());
 
         hiddenPlayer.add(player);
 
@@ -147,9 +147,9 @@ public class PlayerManager {
 
     public void showPlayer(Player player) {
         // send fake packet
-        PlayerJoinEvent playerQuit = new PlayerJoinEvent(player, ChatColor.YELLOW + player.getName() + " left the game.");
-        Bukkit.getPluginManager().callEvent(playerQuit);
-        Bukkit.broadcastMessage(playerQuit.getJoinMessage());
+        PlayerJoinEvent joinEvent = new PlayerJoinEvent(player, ChatColor.YELLOW + player.getName() + " joined the game.");
+        Bukkit.getPluginManager().callEvent(joinEvent);
+        Bukkit.broadcastMessage(joinEvent.getJoinMessage());
 
         hiddenPlayer.remove(player);
 

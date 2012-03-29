@@ -44,5 +44,4 @@ public class cmdJoin extends AbstractCommand {
             PlayerUtils.sendSuccess(player, pluginName, "Du bist nun wieder sichtbar!");
         }
     }
-
 }
