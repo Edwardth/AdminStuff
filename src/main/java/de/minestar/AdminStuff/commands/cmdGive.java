@@ -73,7 +73,7 @@ public class cmdGive extends AbstractExtendedCommand {
         byte data = ASItem.getDataPart(args[1]);
         ItemStack item = ASItem.getItemStack(ID, amount);
         if (item == null) {
-            PlayerUtils.sendError(player, pluginName, "'" + args[0] + "' wurde nicht gefunden");
+            PlayerUtils.sendError(player, pluginName, "'" + args[1] + "' wurde nicht gefunden");
             return;
         }
         item.setDurability(data);
