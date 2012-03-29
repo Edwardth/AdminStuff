@@ -82,7 +82,7 @@ public class cmdGod extends AbstractExtendedCommand {
     private void changeGodMode(CommandSender sender, Player target) {
         MinestarPlayer mPlayer = MinestarCore.getPlayer(target);
         Boolean godMode = mPlayer.getBoolean("adminstuff.god");
-        if (godMode == null || false)
+        if (godMode == null || !godMode)
             godMode = true;
         else
             godMode = false;
