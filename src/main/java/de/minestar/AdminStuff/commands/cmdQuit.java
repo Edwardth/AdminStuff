@@ -30,7 +30,7 @@ public class cmdQuit extends AbstractCommand {
     private PlayerManager pManager;
 
     public cmdQuit(String syntax, String arguments, String node, PlayerManager pManager) {
-        super(Core.NAME, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
         this.description = "Spieler wird fuer alle andere Spieler unsichtbar";
         this.pManager = pManager;
     }
