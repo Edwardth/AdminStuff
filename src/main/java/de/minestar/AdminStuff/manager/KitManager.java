@@ -91,13 +91,17 @@ public class KitManager {
                         kit.add(new ItemStack(id, amount, subId));
                     }
                 }
+                // add last kit to list
+                if (name != null && kit != null && !kit.isEmpty())
+                    kits.put(name, kit);
+
+                ConsoleUtils.printInfo(Core.NAME, kits.size() + " kits loaded");
             } catch (Exception e) {
                 ConsoleUtils.printException(e, Core.NAME, "Error while reading " + kitFile + " !");
             }
         } else
             ConsoleUtils.printWarning(Core.NAME, kitFile + " doesn't exist! No kits loaded!");
     }
-
     public List<ItemStack> getKit(String name) {
         return kits.get(name);
     }
