@@ -50,7 +50,7 @@ public class cmdDeleteItem extends AbstractExtendedCommand {
         else {
             int radius = getRadius(args);
             int itemId = getItemId(args);
-            if (Material.getMaterial(itemId) == null) {
+            if (itemId != -1 && Material.getMaterial(itemId) == null) {
                 PlayerUtils.sendError(player, pluginName, "The item id " + itemId + " is not a valid id!");
                 return;
             }
