@@ -63,11 +63,12 @@ public class cmdAFK extends AbstractCommand {
         if (isAFK) {
             Bukkit.broadcastMessage(player.getDisplayName() + " ist AFK");
             PlayerUtils.sendInfo(player, pluginName, "Du bist jetzt AFK");
+            pManager.updatePrefix(player, mPlayer);
         } else {
+            pManager.updatePrefix(player, mPlayer);
             Bukkit.broadcastMessage(player.getDisplayName() + " ist wieder da");
             PlayerUtils.sendInfo(player, pluginName, "Willkommen zurueck :)");
         }
 
-        pManager.updatePrefix(player, mPlayer);
     }
 }

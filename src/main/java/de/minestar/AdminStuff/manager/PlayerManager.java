@@ -101,7 +101,7 @@ public class PlayerManager {
     public void updatePrefix(Player player, MinestarPlayer mPlayer) {
         Boolean slapped = mPlayer.getBoolean("adminstuff.slapped");
         Boolean afk = mPlayer.getBoolean("adminstuff.afk");
-        String displayName = mPlayer.getNickName().replaceFirst("[AFK] ", "").replaceFirst("was fished ", "");
+        String displayName = mPlayer.getNickName().replace("[AFK] ", "").replace("was fished ", "");
         String prefix = "";
         if (afk != null && afk)
             prefix += "[AFK] ";
