@@ -83,7 +83,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerPreLogin(PlayerPreLoginEvent event) {
-        String name = event.getName().toLowerCase();
+        String name = event.getName();
 
         MinestarPlayer mPlayer = MinestarCore.getPlayer(name);
 
@@ -145,7 +145,7 @@ public class PlayerListener implements Listener {
         mPlayer.setString("adminstuff.lastseen", dateFormat.format(new Date()));
         // remove temponary values
         mPlayer.removeValue("adminstuff.slapped", Boolean.class);
-        mPlayer.removeValue("admisntuff.afk", Boolean.class);
+        mPlayer.removeValue("adminstuff.afk", Boolean.class);
     }
 
     @EventHandler
