@@ -27,10 +27,10 @@ import org.bukkit.inventory.ItemStack;
 import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.data.ASItem;
 import de.minestar.AdminStuff.listener.PlayerListener;
-import de.minestar.minestarlibrary.commands.AbstractCommand;
+import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
-public class cmdFillChest extends AbstractCommand {
+public class cmdFillChest extends AbstractExtendedCommand {
 
     public cmdFillChest(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
@@ -48,15 +48,28 @@ public class cmdFillChest extends AbstractCommand {
      *            split[0] is the item name
      */
     public void execute(String[] args, Player player) {
-        String ID = ASItem.getIDPart(args[0]);
-        byte Data = ASItem.getDataPart(args[0]);
-        ItemStack item = ASItem.getItemStack(ID, Data, 64);
-        if (item != null) {
-            PlayerListener.queuedFillChest.put(player.getName(), item);
-            PlayerUtils.sendInfo(player, pluginName, "Klicke auf eine Kiste um diese mit '" + item.getType().name() + "' zu fuellen!");
+        ItemStack item = null;
+        if (args.length == 0) {
+            ItemStack itemInHand = player.getItemInHand();
+            if (itemInHand != null) {
+                item = ASItem.getItemStack(itemInHand.getTypeId(), itemInHand.getData().getData(), 64);
+            } else {
+                PlayerUtils.sendError(player, pluginName, "Bitte nimm ein Item in die Hand oder gebe eine ID/Itemnamen an!");
+                PlayerUtils.sendInfo(player, getHelpMessage());
+                return;
+            }
         } else {
-            PlayerUtils.sendError(player, pluginName, "'" + args[0] + "' wurde nicht gefunden");
-            PlayerUtils.sendInfo(player, getHelpMessage());
+            String ID = ASItem.getIDPart(args[0]);
+            byte Data = ASItem.getDataPart(args[0]);
+            item = ASItem.getItemStack(ID, Data, 64);
+            if (item == null) {
+                PlayerUtils.sendError(player, pluginName, "'" + args[0] + "' wurde nicht gefunden");
+                PlayerUtils.sendInfo(player, getHelpMessage());
+                return;
+            }
         }
+
+        PlayerListener.queuedFillChest.put(player.getName(), item);
+        PlayerUtils.sendInfo(player, pluginName, "Klicke auf eine Kiste um diese mit '" + item.getType().name() + "' zu fuellen!");
     }
 }

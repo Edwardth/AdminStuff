@@ -153,7 +153,7 @@ public class Core extends AbstractCore {
                 new cmdClearInventory   ("/clearinventory", "",                         "adminstuff.commands.user.clearinventory"),
                 new cmdClearInventory   ("/cli",            "",                         "adminstuff.commands.user.clearinventory"),
                 new cmdInvsee           ("/invsee",         "",                         "adminstuff.commands.admin.invsee"),
-                new cmdFillChest        ("/fillchest",      "<ItemID or Name>[:SubID]", "adminstuff.commands.admin.fillchest"),
+                new cmdFillChest        ("/fillchest",      "[ItemID or Name][:SubID]", "adminstuff.commands.admin.fillchest"),
                 new cmdStack            ("/stack",          "",                         "adminstuff.commands.user.stack"),
 
                 // MESSAGE COMMANDS
