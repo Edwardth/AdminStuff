@@ -230,7 +230,7 @@ public class PlayerListener implements Listener {
             Player current = null;
             while (i.hasNext()) {
                 current = i.next();
-                if (!recs.contains(current.getName().toLowerCase()))
+                if (!current.equals(event.getPlayer()) && !recs.contains(current.getName().toLowerCase()))
                     i.remove();
             }
         }
