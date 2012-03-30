@@ -58,6 +58,7 @@ public class cmdInvsee extends AbstractExtendedCommand {
             else {
                 player.getInventory().clear();
                 player.getInventory().setContents(items);
+                PlayerUtils.sendSuccess(player, pluginName, "Dein Inventar wurde wiederhergestellt!");
             }
 
         } else if (args.length == 1) {
