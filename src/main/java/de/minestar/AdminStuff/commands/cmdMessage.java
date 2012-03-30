@@ -58,7 +58,7 @@ public class cmdMessage extends AbstractExtendedCommand {
         }
         // the forever alone guy
         if (target.equals(player)) {
-            PlayerUtils.sendMessage(player, ChatColor.BLACK, pluginName, "Keine Freunde? Schreib doch Leif_Ericsson an :)");
+            PlayerUtils.sendMessage(player, ChatColor.LIGHT_PURPLE, pluginName, "Keine Freunde? Schreib doch Leif_Ericsson an :)");
             return;
         }
         if (!target.isOnline()) {
