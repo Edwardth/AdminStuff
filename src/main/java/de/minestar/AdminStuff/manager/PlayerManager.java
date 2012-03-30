@@ -28,11 +28,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import de.minestar.core.MinestarCore;
 import de.minestar.core.units.MinestarPlayer;
+import de.minestar.minestarlibrary.events.FakeJoinEvent;
+import de.minestar.minestarlibrary.events.FakeQuitEvent;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class PlayerManager {
@@ -120,9 +120,9 @@ public class PlayerManager {
 
     public void hidePlayer(Player player) {
         // send fake packet
-        PlayerQuitEvent quitEvent = new PlayerQuitEvent(player, ChatColor.YELLOW + player.getName() + " left the game.");
-        Bukkit.getPluginManager().callEvent(quitEvent);
-        Bukkit.broadcastMessage(quitEvent.getQuitMessage());
+        FakeQuitEvent fakeQuitEvent = new FakeQuitEvent(player, ChatColor.YELLOW + player.getName() + " left the game.");
+        Bukkit.getPluginManager().callEvent(fakeQuitEvent);
+        Bukkit.broadcastMessage(fakeQuitEvent.getQuitMessage());
 
         hiddenPlayer.add(player);
 
@@ -147,9 +147,9 @@ public class PlayerManager {
 
     public void showPlayer(Player player) {
         // send fake packet
-        PlayerJoinEvent joinEvent = new PlayerJoinEvent(player, ChatColor.YELLOW + player.getName() + " joined the game.");
-        Bukkit.getPluginManager().callEvent(joinEvent);
-        Bukkit.broadcastMessage(joinEvent.getJoinMessage());
+        FakeJoinEvent fakeJoinEvent = new FakeJoinEvent(player, ChatColor.YELLOW + player.getName() + " joined the game.");
+        Bukkit.getPluginManager().callEvent(fakeJoinEvent);
+        Bukkit.broadcastMessage(fakeJoinEvent.getJoinMessage());
 
         hiddenPlayer.remove(player);
 
@@ -161,7 +161,6 @@ public class PlayerManager {
         MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
         mPlayer.setBoolean("adminstuff.hide", false);
     }
-
     public boolean isHidden(Player player) {
         return hiddenPlayer.contains(player);
     }
