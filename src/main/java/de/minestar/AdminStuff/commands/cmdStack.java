@@ -100,6 +100,9 @@ public class cmdStack extends AbstractCommand {
 
                     if (item_2.getTypeId() != item_1.getTypeId() || item_1.getDurability() != item_2.getDurability())
                         continue;
+                    
+                    if(!item_1.getEnchantments().equals(item_2.getEnchantments()))
+                        continue;
 
                     if (item_2.getAmount() > needed) {
                         item_1.setAmount(64);

@@ -54,7 +54,7 @@ public class cmdAFK extends AbstractCommand {
 
         MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
         Boolean isAFK = mPlayer.getBoolean("adminstuff.afk");
-        if (isAFK == null || false)
+        if (isAFK == null || !isAFK)
             isAFK = true;
         else
             isAFK = false;

@@ -78,11 +78,14 @@ public class cmdSlap extends AbstractCommand {
             else
                 slapped = false;
             mPlayer.setBoolean("adminstuff.slapped", slapped);
-            pManager.updatePrefix(target, mPlayer);
-            if (slapped)
+            
+            if (slapped) {
                 Bukkit.broadcastMessage(ChatColor.BLUE + sender.getName() + " schlaegt " + mPlayer.getNickName() + " mit einem kalten Fisch ins Gesicht!");
-            else
+                pManager.updatePrefix(target, mPlayer);
+            } else {
+                pManager.updatePrefix(target, mPlayer);
                 Bukkit.broadcastMessage(ChatColor.BLUE + mPlayer.getNickName() + "s Fisch wurde von einer Sturmmoeve gefressen!");
+            }
         }
     }
 }
